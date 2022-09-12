@@ -1,4 +1,5 @@
 ﻿using Controllers;
+using Controllers.PlayerControllers;
 using Data.UnityObject;
 using Data.ValueObject.PlayerData;
 using Enums;
@@ -24,6 +25,8 @@ namespace Managers
 
         [SerializeField] private PlayerAnimationController animationController;
 
+        [SerializeField] private PlayerPhysicsController physicsController;
+
         #endregion
 
         #region Private Variables
@@ -31,7 +34,7 @@ namespace Managers
         [SerializeField] private Rigidbody playerRigidbody;
 
         [SerializeField] private CapsuleCollider playerCollider;
-        
+
         #endregion
 
         #endregion
@@ -91,25 +94,29 @@ namespace Managers
         {
             movementController.UpdateInputValue(inputParams);
         }
-        
+
 
         private void OnActivateMovement()
         {
-            Debug.Log("Active Move");
             movementController.EnableMovement();
         }
 
         private void OnDeactiveMovement()
         {
-            Debug.Log("Deactive Move");
             movementController.DeactiveMovement();
         }
-        
+
 
         public void ChangePlayerAnimation(PlayerAnimTypes animType)
         {
             animationController.ChangeAnimationState(animType);
         }
+
+        public void GateControlller()
+        {
+            
+        }
+        
 
         private void OnPlay() => movementController.IsReadyToPlay(true);
 

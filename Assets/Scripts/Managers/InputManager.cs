@@ -73,7 +73,7 @@ public class InputManager : MonoBehaviour
     {
         if (!isReadyForTouch) return;
 
-        if (Input.GetMouseButtonUp(0) && !IsPointerOverUIElement())
+        if (Input.GetMouseButtonUp(0))
         {
             _isTouching = false;
             InputSignals.Instance.onInputReleased?.Invoke();

@@ -50,8 +50,6 @@ namespace Controllers
 
         public void DeactiveMovement()
         {
-            var movement = Vector3.zero;
-            rigidbody.velocity = movement;
             isReadyToMove = false;
         }
 

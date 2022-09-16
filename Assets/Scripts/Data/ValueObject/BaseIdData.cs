@@ -1,6 +1,8 @@
-﻿namespace Data.ValueObject
+﻿using Abstract;
+
+namespace Data.ValueObject
 {
-    public class BaseIdData
+    public class BaseIdData : SaveableEntity
     {
         public static string BaseKey = "Base";
 

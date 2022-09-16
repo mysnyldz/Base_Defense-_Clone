@@ -1,4 +1,5 @@
 ﻿using Command.SaveLoadCommands;
+using Data.ValueObject;
 using Keys;
 using Signals;
 using UnityEngine;
@@ -13,13 +14,23 @@ namespace Managers
 
         private LoadCommand _loadCommand;
         private SaveCommand _saveCommand;
- 
 
         #endregion
-        
+
         #endregion
-        
+
         #region Event Subscription
+
+        private void Awake()
+        {
+            Initialization();
+        }
+
+        private void Initialization()
+        {
+            _loadCommand = new LoadCommand();
+            _saveCommand = new SaveCommand();
+        }
 
         private void OnEnable()
         {
@@ -28,19 +39,21 @@ namespace Managers
 
         private void Subscribe()
         {
-            SaveLoadSignals.Instance.onSaveIdleData += OnSaveIdleData;
-            SaveLoadSignals.Instance.onSaveScoreData += OnSaveScoreData;
-            SaveLoadSignals.Instance.onLoadBaseData += OnLoadIdleData;
-            SaveLoadSignals.Instance.onLoadScoreData += OnLoadScoreData;
+            SaveLoadSignals.Instance.onSaveIdleData += _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadIdleData += _loadCommand.Execute<BaseIdData>;
+            
+            SaveLoadSignals.Instance.onSaveCurrencyData += _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadCurrencyData += _loadCommand.Execute<CurrencyIdData>;
         }
 
 
         private void Unsubscribe()
         {
-            SaveLoadSignals.Instance.onSaveIdleData -= OnSaveIdleData;
-            SaveLoadSignals.Instance.onSaveScoreData -= OnSaveScoreData;
-            SaveLoadSignals.Instance.onLoadBaseData -= OnLoadIdleData;
-            SaveLoadSignals.Instance.onLoadScoreData -= OnLoadScoreData;
+            SaveLoadSignals.Instance.onSaveIdleData -= _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadIdleData -= _loadCommand.Execute<BaseIdData>;
+            
+            SaveLoadSignals.Instance.onSaveCurrencyData -= _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadCurrencyData -= _loadCommand.Execute<CurrencyIdData>;
         }
 
         private void OnDisable()
@@ -49,40 +62,5 @@ namespace Managers
         }
 
         #endregion
-
-        private void Awake()
-        {
-            Initialization();
-         
-        }
-
-        private void Initialization()
-        {
-            _loadCommand = new LoadCommand();
-            _saveCommand = new SaveCommand(); 
-        }
-
-        private void OnSaveIdleData()
-        {
-            _saveCommand.Execute();
-        }
-
-        private void OnSaveScoreData()
-        {
-        }
-        
-        private void SaveIdleData(BaseDataParams baseDataParams)
-        {
-            
-        }
-
-        private void OnLoadIdleData()
-        {
-        }
-
-
-        private void OnLoadScoreData()
-        {
-        }
     }
 }

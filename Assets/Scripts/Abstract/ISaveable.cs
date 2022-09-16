@@ -1,6 +1,6 @@
 ﻿namespace Abstract
 {
-    public class ISaveable
+    public interface ISaveable
     {
         void Save(int uniqueId);
 

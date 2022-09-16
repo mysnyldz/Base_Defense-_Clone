@@ -37,13 +37,11 @@ namespace Managers
 
         #region Private Variables
 
-        
         private CD_Base _cdBase;
 
         private int _baseID;
 
-        // private int _gameScore;
-        private int _uniqueID = 1234;
+        private int _uniqueID = 1;
 
         #endregion Private Variables
 
@@ -53,11 +51,13 @@ namespace Managers
 
         private void Awake()
         {
-            GetData();
+            
         }
 
         private void Start()
         {
+            GetData();
+            
             OnInitializeBase();
         }
 
@@ -70,11 +70,11 @@ namespace Managers
                 if (!ES3.KeyExists("Base"))
                 {
                     BaseData = GetBaseData();
-                    //    Save(_uniqueID);
+                    Save(_uniqueID);
                 }
             }
 
-            //Load(_uniqueID);
+            Load(_uniqueID);
 
             BaseData = GetBaseData();
         }
@@ -121,16 +121,15 @@ namespace Managers
 
         private void OnSave()
         {
-            //  Save(_uniqueID);
+            Save(_uniqueID);
         }
-
-
+        
         #region Level Management
 
         private void OnNextLevel()
         {
             _baseID++;
-            // Save(_uniqueID);
+            Save(_uniqueID);
             CoreGameSignals.Instance.onReset?.Invoke();
             UISignals.Instance.onSetBaseText?.Invoke(_baseID);
         }
@@ -146,30 +145,26 @@ namespace Managers
             int newBaseData = _baseID % Resources.Load<CD_Base>($"Data/CD_Base").Bases.Count;
             baseLoader.InitializeLevel(newBaseData, BaseHolder.transform);
         }
-
         private void OnClearActiveBase()
         {
             baseClearer.ClearActiveBase(BaseHolder.transform);
         }
-
         #endregion
 
         #region Level Save and Load
 
-        public void Save()
+        public void Save(int uniqueId)
         {
-            BaseDataParams datas = SaveLoadSignals.Instance.onLoadBaseData();
+            BaseIdData baseIdData = new BaseIdData(_baseID);
 
-            SaveLoadSignals.Instance.onLoadBaseData.Invoke(baseIdData, uniqueId);
+            SaveLoadSignals.Instance.onSaveIdleData.Invoke(baseIdData, uniqueId);
         }
-
         public void Load(int uniqueId)
         {
-            BaseIdData levelIdData = SaveLoadSignals.Instance.onLoadGameData.Invoke(BaseIdData.BaseKey, uniqueId);
+            BaseIdData baseIdData = SaveLoadSignals.Instance.onLoadIdleData.Invoke(BaseIdData.BaseKey, uniqueId);
 
-            _baseID = BaseIdData.BaseId;
+            _baseID = baseIdData.BaseId;
         }
-
         #endregion
     }
 }

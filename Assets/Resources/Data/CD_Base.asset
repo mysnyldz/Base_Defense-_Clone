@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: CD_Base
   m_EditorClassIdentifier: 
   Bases:
-  - BaseCount: 10
+  - BaseLevelList:
+    - BaseLevels: {fileID: 1173506315528258957, guid: 82b363a5222236b4cb937c084dec060e, type: 3}

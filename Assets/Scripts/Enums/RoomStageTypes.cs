@@ -1,6 +1,6 @@
 ﻿namespace Enums
 {
-    public enum RoomStageType
+    public enum RoomStageTypes
     {
         Complete,
         Uncomplete

@@ -8,13 +8,17 @@ namespace Data.ValueObject
 
         public int BaseId;
 
+        
         public BaseIdData(int _baseId)
         {
             BaseId = _baseId;
         }
+        public BaseIdData()
+        {
+            
+        }
 
-
-        public string GetKey()
+        public override string GetKey()
         {
             return BaseKey;
         }

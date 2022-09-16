@@ -6,7 +6,7 @@ using Enums;
 namespace ValueObject
 {
     [Serializable]
-    public class RoomData: SaveableEntity
+    public class RoomData : SaveableEntity
     {
         public string Key = "IdleRoomDataKey";
 
@@ -14,28 +14,28 @@ namespace ValueObject
 
         public TurretData Turret;
 
-        public int RoomPRice;
+        public int RoomPrice;
 
-        public int PayedValue;
+        public int PayedAmount;
 
         public int RoomID;
 
-        public RoomStageType roomStageType;
-    }
-    public RoomData(){}
+        public RoomStageTypes RoomStageType;
 
-    public RoomData(bool isCompleted, TurretData turret, int roomId, int roomPrice, int payedAmount,
-        RoomStageType roomStageType)
-    {
-        IsCompleted = isCompleted;
-        Turret = turret;
-        RoomID = roomId;
-        
+        public RoomData(bool isCompleted, TurretData turret, int roomId, int roomPrice, int payedAmount,
+            RoomStageTypes roomStageType)
+        {
+            IsCompleted = isCompleted;
+            Turret = turret;
+            RoomID = roomId;
+            RoomPrice = roomPrice;
+            PayedAmount = payedAmount;
+            RoomStageType = roomStageType;
+        }
 
-
-    }
-    public override string GetKey()
-    {
-        return Key;
+        public override string GetKey()
+        {
+            return Key;
+        }
     }
 }

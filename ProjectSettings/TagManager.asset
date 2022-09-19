@@ -8,6 +8,8 @@ TagManager:
   - GateOutside
   - Gate
   - AmmoWarehouse
+  - Mine
+  - GemDepot
   layers:
   - Default
   - TransparentFX

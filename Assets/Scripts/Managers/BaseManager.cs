@@ -18,7 +18,7 @@ namespace Managers
 
         #region Public Variables
 
-        [Header("BaseData")] public BaseData BaseData;
+        [Header("BaseData")] public CD_Base BaseData;
 
         [Header("BaseIdData")] public BaseIdData BaseIdData;
 
@@ -40,8 +40,7 @@ namespace Managers
         private CD_Base _cdBase;
 
         private int _baseID;
-
-        private int _uniqueID = 1;
+        private int _uniqueID;
 
         #endregion Private Variables
 
@@ -49,15 +48,9 @@ namespace Managers
 
         #region MonoBehavior Methods
 
-        private void Awake()
-        {
-            
-        }
-
         private void Start()
         {
             GetData();
-            
             OnInitializeBase();
         }
 
@@ -70,19 +63,16 @@ namespace Managers
                 if (!ES3.KeyExists("Base"))
                 {
                     BaseData = GetBaseData();
-                    Save(_uniqueID);
+                    Save();
                 }
             }
-
-            Load(_uniqueID);
-
+            Load();
             BaseData = GetBaseData();
         }
 
-        private BaseData GetBaseData()
+        private CD_Base GetBaseData()
         {
-            var newBaseData = _baseID % Resources.Load<CD_Base>("Data/CD_Base").Bases.Count;
-            return Resources.Load<CD_Base>("Data/CD_Base").Bases[newBaseData];
+            return Resources.Load<CD_Base>("Data/CD_Base");
         }
 
         #region Event Subscription
@@ -121,7 +111,7 @@ namespace Managers
 
         private void OnSave()
         {
-            Save(_uniqueID);
+            Save();
         }
         
         #region Level Management
@@ -129,7 +119,7 @@ namespace Managers
         private void OnNextLevel()
         {
             _baseID++;
-            Save(_uniqueID);
+            Save();
             CoreGameSignals.Instance.onReset?.Invoke();
             UISignals.Instance.onSetBaseText?.Invoke(_baseID);
         }
@@ -142,8 +132,9 @@ namespace Managers
 
         private void OnInitializeBase()
         {
-            int newBaseData = _baseID % Resources.Load<CD_Base>($"Data/CD_Base").Bases.Count;
-            baseLoader.InitializeLevel(newBaseData, BaseHolder.transform);
+            Instantiate(
+                Resources.Load<GameObject>($"Prefabs/Bases/Base {_baseID}"), BaseHolder.transform
+            );
         }
         private void OnClearActiveBase()
         {
@@ -153,17 +144,16 @@ namespace Managers
 
         #region Level Save and Load
 
-        public void Save(int uniqueId)
+        public void Save()
         {
             BaseIdData baseIdData = new BaseIdData(_baseID);
 
-            SaveLoadSignals.Instance.onSaveIdleData.Invoke(baseIdData, uniqueId);
+            SaveLoadSignals.Instance.onSaveIdleData.Invoke(baseIdData, _uniqueID);
+            
         }
-        public void Load(int uniqueId)
+        public void Load()
         {
-            BaseIdData baseIdData = SaveLoadSignals.Instance.onLoadIdleData.Invoke(BaseIdData.BaseKey, uniqueId);
-
-            _baseID = baseIdData.BaseId;
+            BaseIdData baseIdData = SaveLoadSignals.Instance.onLoadIdleData.Invoke(BaseIdData.BaseKey, _uniqueID);
         }
         #endregion
     }

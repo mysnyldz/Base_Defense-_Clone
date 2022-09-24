@@ -5,6 +5,7 @@ using Enums;
 using ObjectPool;
 using Signals;
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Managers
@@ -17,7 +18,7 @@ namespace Managers
 
         private Transform _objTransformCache;
         [ShowInInspector]private CD_Pool _poolData;
-        private int listCache;
+        private int _listCache;
         private List<GameObject> _poolGroup = new List<GameObject>();
 
         #endregion
@@ -71,15 +72,18 @@ namespace Managers
 
         #endregion
 
-        private GameObject OnGetPoolObject(PoolType poolType)
+        private GameObject OnGetPoolObject(PoolType poolType,Transform transform)
         {
-            listCache = (int)poolType;
+            _listCache = (int)poolType;
+            _objTransformCache = transform;
             var obj = ObjectPoolManager.Instance.GetObject<GameObject>(poolType.ToString());
+            
             return obj;
         }
 
         private void OnReleasePoolObject(PoolType poolType, GameObject obj)
         {
+            _listCache = (int)poolType;
             ObjectPoolManager.Instance.ReturnObject(obj,poolType.ToString());
         }
         
@@ -89,7 +93,7 @@ namespace Managers
         {
             for (int i = 0; i < _poolData.PoolValueDatas.Count; i++)
             {
-                listCache = i;
+                _listCache = i;
                 ObjectPoolManager.Instance.AddObjectPool<GameObject>(FabricateGameObject, TurnOnGameObject, TurnOffGameObject,
                     _poolData.PoolValueDatas[i].ObjectType.ToString(), _poolData.PoolValueDatas[i].ObjectLimit, true);
             }
@@ -97,20 +101,21 @@ namespace Managers
         
         private void TurnOnGameObject(GameObject gameObject)
         {
-            gameObject.transform.position = _objTransformCache.position;
+            gameObject.transform.localPosition = _objTransformCache.position;
             gameObject.SetActive(true);
         }
         
         private void TurnOffGameObject(GameObject gameObject)
         {
-            gameObject.transform.position = Vector3.zero;
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.SetParent(_poolGroup[_listCache].transform);
             gameObject.SetActive(false);
         }
         
         private GameObject FabricateGameObject()
         {
-            return Instantiate(_poolData.PoolValueDatas[listCache].PooledObject,Vector3.zero,
-                Quaternion.identity,_poolGroup[listCache].transform);
+            return Instantiate(_poolData.PoolValueDatas[_listCache].PooledObject,Vector3.zero,
+                _poolData.PoolValueDatas[_listCache].PooledObject.transform.rotation ,_poolGroup[_listCache].transform);
         }
         
         #endregion

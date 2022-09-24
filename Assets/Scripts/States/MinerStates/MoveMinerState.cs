@@ -1,4 +1,5 @@
 ﻿using Abstract;
+using Enums;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,7 @@ namespace States.MinerStates
         public override void EnterState(MinerManager minerManager)
         {
             minerManager.agent.SetDestination(minerManager.GemVeins.transform.position);
+            minerManager.SetTriggerAnim(MinerAnimTypes.Run);
         }
         
 
@@ -16,9 +18,15 @@ namespace States.MinerStates
         {
             if (other.CompareTag("Mine"))
             {
-                Debug.Log("Varmişem");
-                minerManager.SwitchState(minerManager.DigMiner);
+                minerManager.SetTriggerAnim(MinerAnimTypes.Dig); 
+                minerManager.SwitchState(MinerStatesType.Dig);
             }
+            else if (other.CompareTag("MineCart"))
+            {
+                minerManager.SetTriggerAnim(MinerAnimTypes.Gather); 
+                minerManager.SwitchState(MinerStatesType.Gather);
+            }
+            
         }
         
     }

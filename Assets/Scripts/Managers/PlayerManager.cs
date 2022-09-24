@@ -1,4 +1,5 @@
-﻿using Controllers;
+﻿using System;
+using Controllers;
 using Controllers.PlayerControllers;
 using Data.UnityObject;
 using Data.ValueObject.PlayerData;
@@ -26,6 +27,10 @@ namespace Managers
         [SerializeField] private PlayerAnimationController animationController;
 
         [SerializeField] private PlayerPhysicsController physicsController;
+        
+        [SerializeField] private AmmoStackController ammoStackController;
+        
+        
 
         #endregion
 
@@ -95,7 +100,6 @@ namespace Managers
             movementController.UpdateInputValue(inputParams);
         }
 
-
         private void OnActivateMovement()
         {
             movementController.EnableMovement();
@@ -112,11 +116,6 @@ namespace Managers
             animationController.ChangeAnimationState(animType);
         }
 
-        public void GateControlller()
-        {
-            
-        }
-        
 
         private void OnPlay() => movementController.IsReadyToPlay(true);
 

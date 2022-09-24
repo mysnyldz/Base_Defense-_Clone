@@ -5,5 +5,6 @@
         Dig,
         MoveMine,
         MoveDepot,
+        Gather,
     }
 }

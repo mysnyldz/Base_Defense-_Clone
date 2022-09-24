@@ -910,10 +910,11 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a59e7ff554c8c847a437b6f30ca70de, type: 2}
+  - {fileID: 2100000, guid: 758b996a604afe84da72f4d4e89e0021, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1038,6 +1039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5689509412484866764}
   - component: {fileID: 1735326758206126262}
+  - component: {fileID: 2652197065427054623}
   m_Layer: 0
   m_Name: Character_69
   m_TagString: Untagged
@@ -1058,6 +1060,7 @@ Transform:
   m_Children:
   - {fileID: 4053427864251883227}
   - {fileID: 6218387643830619833}
+  - {fileID: 4116626115556175229}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1071,15 +1074,29 @@ Animator:
   m_GameObject: {fileID: 5025702749855463542}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1cf2dbe8224f92441a61897a0a8a3ecd, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9874e2f6f61cff24890bcc7ae44bfcbd, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2652197065427054623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025702749855463542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 041fe3e88d054922bf20910cd027de97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimator: {fileID: 1735326758206126262}
+  playerAnimType: 0
 --- !u!1 &5037939064595278868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,6 +1505,79 @@ Transform:
   m_Father: {fileID: 264047187725913378}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6847368401244829516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4116626115556175229}
+  - component: {fileID: 3781364007538790542}
+  - component: {fileID: 5686363075953631922}
+  - component: {fileID: 6577458348496841822}
+  m_Layer: 0
+  m_Name: Stack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4116626115556175229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847368401244829516}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.95, z: -0.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5689509412484866764}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3781364007538790542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847368401244829516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaabd01c693745b9ad1849235928bb63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoStackManager: {fileID: 0}
+  moneyStackManager: {fileID: 0}
+--- !u!114 &5686363075953631922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847368401244829516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 100733b1d03542daa0407b4451e80dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StackList: []
+--- !u!114 &6577458348496841822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847368401244829516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa7f8f4e8de4e20b38fcdf384c741da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StackList: []
 --- !u!1 &6913038556580052349
 GameObject:
   m_ObjectHideFlags: 0

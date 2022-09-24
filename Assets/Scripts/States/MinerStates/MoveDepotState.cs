@@ -1,4 +1,5 @@
 ﻿using Abstract;
+using Enums;
 using Signals;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace States.MinerStates
         public override void EnterState(MinerManager minerManager)
         {
             minerManager.agent.SetDestination(minerManager.GemDepot.transform.position);
+            minerManager.SetTriggerAnim(MinerAnimTypes.Carry);
         }
 
        
@@ -16,9 +18,8 @@ namespace States.MinerStates
         {
             if (other.CompareTag("GemDepot"))
             {
-                Debug.Log("Depoliyem");
-                IdleSignals.Instance.onDepotAddGem?.Invoke(minerManager.transform);
-                minerManager.SwitchState(minerManager.MoveMiner);
+                IdleSignals.Instance.onDepotAddGem?.Invoke(minerManager.transform.gameObject);
+                minerManager.SwitchState(MinerStatesType.MoveMine);
             }
         }
 

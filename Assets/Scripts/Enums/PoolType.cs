@@ -5,6 +5,7 @@
         Gem,
         Enemy,
         Miner,
-        Ammo
+        Ammo,
+        Money
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Abstract;
+using Cinemachine;
+using Enums;
 using UnityEngine;
 
 namespace States.MinerStates
@@ -13,14 +15,13 @@ namespace States.MinerStates
 
         public override void OnTriggerEnter(MinerManager minerManager, Collider other)
         {
-            
         }
 
         private async void Timer(MinerManager minerManager)
         {
-            Debug.Log("Depoyagidiyem");
-            await Task.Delay(2000);
-            minerManager.SwitchState(minerManager.MoveDepot);
+            Debug.Log("Kaziyem");
+            await Task.Delay(2750);
+            minerManager.SwitchState(MinerStatesType.MoveDepot);
         }
         
     }

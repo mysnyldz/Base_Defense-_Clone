@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: CD_Player
   m_EditorClassIdentifier: 
   PlayerData:
-    PlayerHealth: 0
-    PlayerMovementData:
-      Speed: 5
-    AttackRange: 0
+    PlayerHealth: 100
+    MovementData:
+      PlayerJoystickSpeed: 3
+    PlayerStackData:
+      StackSize: 20
+      ZAxis: 4
+      YAxis: 0.5

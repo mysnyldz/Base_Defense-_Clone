@@ -108,26 +108,25 @@ namespace Managers
             return gemDepot;
         }
 
-        private void OnDepotAddGem(Transform miner)
+        private void OnDepotAddGem(GameObject obj)
         {
-            var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Gem);
-            if (obj == null) return;
-            obj.transform.parent = gemDepot.transform;
-            obj.transform.position = new Vector3(miner.transform.position.x, miner.transform.position.y + 2,miner.transform.position.z);
-            SetGemPosition(obj);
-            obj.SetActive(true);
-            _gemList.Add(obj);
+            var gem = PoolSignals.Instance.onGetPoolObject(PoolType.Gem,obj.transform);
+            if (gem == null) return;
+            gem.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + 2,obj.transform.position.z);
+            SetGemPosition(gem);
+            gem.transform.SetParent(gemDepot.transform);
+            _gemList.Add(gem);
         }
 
         private void SetGemPosition(GameObject gem)
         {
             _direct = _zoneData.GemInitPoint + gemDepot.transform.position;
             _direct.x = _direct.x + (int)(_gemList.Count % _zoneData.GemCountX)
-                / _zoneData.OffsetFactor;
-            _direct.y = _direct.y + (int)(_gemList.Count / _gemDistance)
-                / _zoneData.OffsetFactor;
-            _direct.z = _direct.z - (int)(_gemList.Count % _gemDistance / _zoneData.GemCountZ )
-                / _zoneData.OffsetFactor;
+                / _zoneData.OffsetFactorX;
+            _direct.z = _direct.z - (int)(_gemList.Count / _gemDistance)
+                / _zoneData.OffsetFactorZ;
+            _direct.y = _direct.y + (int)(_gemList.Count % _gemDistance / _zoneData.GemCountZ )
+                / _zoneData.OffsetFactorY;
             gem.transform.DOLocalMove(_direct, 0.5f);
         }
 

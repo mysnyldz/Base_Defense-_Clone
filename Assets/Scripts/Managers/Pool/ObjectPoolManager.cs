@@ -19,7 +19,7 @@ namespace ObjectPool
         //     }
         // }
 
-        [ShowInInspector]private readonly Dictionary<string, AbstractObjectPool> _pools;
+        private readonly Dictionary<string, AbstractObjectPool> _pools;
 
         
         public ObjectPoolManager()

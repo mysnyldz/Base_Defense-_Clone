@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Abstract;
+using Controllers;
 using Data.UnityObject;
 using Data.ValueObject;
 using Enums;
@@ -27,6 +28,18 @@ public class MinerManager : MonoBehaviour
 
     #endregion
 
+    #region Serialized Variables
+    
+    [SerializeField] private MinerAnimationController animationController;
+    [SerializeField] private GameObject gem;
+    [SerializeField] private GameObject pickaxe;
+
+
+    #endregion
+    #region Private Variables
+    
+
+    #endregion
     #endregion
 
     private void OnEnable()
@@ -43,10 +56,37 @@ public class MinerManager : MonoBehaviour
         currentMinerBaseState.OnTriggerEnter(this, other);
     }
 
-
-    public void SwitchState(MinerBaseState state)
+    public void SetTriggerAnim(MinerAnimTypes types)
     {
-        currentMinerBaseState = state;
+        animationController.SetAnim(types);
+    }
+
+
+    public void SwitchState(MinerStatesType state)
+    {
+        switch (state)
+        {
+            case MinerStatesType.MoveMine:
+                currentMinerBaseState = MoveMiner;
+                gem.SetActive(false);
+                pickaxe.SetActive(true);
+                break;
+            case MinerStatesType.MoveDepot:
+                currentMinerBaseState = MoveDepot;
+                gem.SetActive(true);
+                pickaxe.SetActive(false);
+                break;
+            case MinerStatesType.Dig:
+                currentMinerBaseState = DigMiner;
+                gem.SetActive(false);
+                pickaxe.SetActive(true);
+                break;
+            case MinerStatesType.Gather:
+                currentMinerBaseState = DigMiner;
+                gem.SetActive(false);
+                pickaxe.SetActive(false);
+                break;
+        }
         currentMinerBaseState.EnterState(this);
     }
 }

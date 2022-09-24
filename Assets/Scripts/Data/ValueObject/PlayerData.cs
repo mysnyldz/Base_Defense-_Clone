@@ -7,11 +7,14 @@ namespace Data.ValueObject.PlayerData
     {
         public int PlayerHealth;
         public PlayerMovementData MovementData;
-        
+
     }
+
     [Serializable]
     public class PlayerMovementData
     {
         public float PlayerJoystickSpeed = 3;
     }
+    
+    
 }

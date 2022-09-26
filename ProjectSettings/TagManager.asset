@@ -12,6 +12,7 @@ TagManager:
   - GemDepot
   - MineCart
   - Money
+  - Ground
   layers:
   - Default
   - TransparentFX

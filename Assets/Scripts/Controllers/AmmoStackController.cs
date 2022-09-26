@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Data.UnityObject;
 using Data.ValueObject;
 using DG.Tweening;
+using Enums;
+using Signals;
 using UnityEngine;
 
 namespace Controllers
@@ -19,7 +21,6 @@ namespace Controllers
 
         #region Serialized Variables
 
-        
         #endregion
 
         #region Private Variables
@@ -29,6 +30,7 @@ namespace Controllers
         private float _directx;
         private float _directy;
         private float _directz;
+        private int _maxAmmoCount = 0;
 
         #endregion
 
@@ -41,18 +43,33 @@ namespace Controllers
 
         public void AddStack(GameObject obj)
         {
-            obj.transform.SetParent(transform);
-            ObjPosition(obj);
-            StackList.Add(obj);
+            StackList.Capacity = _data.MaxAmmoCount;
+            if (_maxAmmoCount < StackList.Capacity)
+            {
+                obj.transform.SetParent(transform);
+                ObjPosition(obj);
+                StackList.Add(obj);
+            }
+            else
+            {
+                return;
+            }
         }
-        
+        public void OnGetAmmo()
+        {
+            var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Ammo,transform);
+            AddStack(obj);
+        }
+
         private void ObjPosition(GameObject obj)
         {
             _directx = 0;
             _directy = StackList.Count % _data.AmmoCountY * _data.OffsetFactorY;
-            _directz = -(StackList.Count % (_data.AmmoCountZ*_data.AmmoCountY) /_data.AmmoCountY * _data.OffsetFactorZ);
-            obj.transform.DOLocalRotate( new Vector3(0, 0, 0), 1).SetEase(Ease.OutQuad);
+            _directz = -(StackList.Count % (_data.AmmoCountZ * _data.AmmoCountY) / _data.AmmoCountY *
+                         _data.OffsetFactorZ);
+            obj.transform.DOLocalRotate(new Vector3(0, 0, 0), 1).SetEase(Ease.OutQuad);
             obj.transform.DOLocalMove(new Vector3(_directx, _directy, _directz), 0.5f).SetEase(Ease.OutQuad);
+            _maxAmmoCount++;
         }
     }
 }

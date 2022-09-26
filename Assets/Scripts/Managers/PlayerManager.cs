@@ -2,6 +2,7 @@
 using Controllers;
 using Controllers.PlayerControllers;
 using Data.UnityObject;
+using Data.ValueObject;
 using Data.ValueObject.PlayerData;
 using Enums;
 using Keys;
@@ -17,7 +18,9 @@ namespace Managers
         #region Public Variables
 
         [Header("Data")] public PlayerData Data;
-
+        [Header("Data")] public AmmoStackData AmmoStackData;
+        [Header("Data")] public MoneyStackData MoneyStackData;
+        
         #endregion
 
         #region Serialized Variables
@@ -27,10 +30,10 @@ namespace Managers
         [SerializeField] private PlayerAnimationController animationController;
 
         [SerializeField] private PlayerPhysicsController physicsController;
-        
+
         [SerializeField] private AmmoStackController ammoStackController;
-        
-        
+
+        [SerializeField] private MoneyStackController moneyStackController;
 
         #endregion
 
@@ -47,15 +50,20 @@ namespace Managers
         private void Awake()
         {
             Data = GetPlayerData();
+            MoneyStackData = GetMoneyStackData();
+            AmmoStackData = GetAmmoStackData();
             Init();
         }
 
         private PlayerData GetPlayerData() => Resources.Load<CD_Player>("Data/CD_Player").PlayerData;
+        private MoneyStackData GetMoneyStackData() => Resources.Load<CD_MoneyStackData>("Data/CD_MoneyStackData").Data;
+        private AmmoStackData GetAmmoStackData() => Resources.Load<CD_AmmoStackData>("Data/CD_AmmoStackData").Data;
 
         private void Init()
         {
             movementController = GetComponent<PlayerMovementController>();
             SetDataToControllers();
+            
         }
 
         private void SetDataToControllers()
@@ -110,12 +118,19 @@ namespace Managers
             movementController.DeactiveMovement();
         }
 
-
         public void ChangePlayerAnimation(PlayerAnimTypes animType)
         {
             animationController.ChangeAnimationState(animType);
         }
 
+        public void MoneyAddStack(GameObject obj)
+        {
+            moneyStackController.AddStack(obj);
+        } 
+        public void AmmoAddStack()
+        {
+            ammoStackController.OnGetAmmo();
+        }
 
         private void OnPlay() => movementController.IsReadyToPlay(true);
 

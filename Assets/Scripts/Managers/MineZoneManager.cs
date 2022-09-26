@@ -112,22 +112,22 @@ namespace Managers
         {
             var gem = PoolSignals.Instance.onGetPoolObject(PoolType.Gem,obj.transform);
             if (gem == null) return;
-            gem.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + 2,obj.transform.position.z);
-            SetGemPosition(gem);
             gem.transform.SetParent(gemDepot.transform);
+            SetGemPosition(gem);
             _gemList.Add(gem);
         }
 
         private void SetGemPosition(GameObject gem)
         {
             _direct = _zoneData.GemInitPoint + gemDepot.transform.position;
-            _direct.x = _direct.x + (int)(_gemList.Count % _zoneData.GemCountX)
+            _direct.x = _direct.x + (_gemList.Count % _zoneData.GemCountX)
                 / _zoneData.OffsetFactorX;
-            _direct.z = _direct.z - (int)(_gemList.Count / _gemDistance)
+            _direct.z = _direct.z - (_gemList.Count / _gemDistance)
                 / _zoneData.OffsetFactorZ;
-            _direct.y = _direct.y + (int)(_gemList.Count % _gemDistance / _zoneData.GemCountZ )
+            _direct.y = _direct.y +(_gemList.Count % _gemDistance / _zoneData.GemCountZ )
                 / _zoneData.OffsetFactorY;
-            gem.transform.DOLocalMove(_direct, 0.5f);
+            gem.transform.DOLocalRotate( new Vector3(90, 0, 0), 1).SetEase(Ease.OutQuad);
+            gem.transform.DOLocalMove(new Vector3(_direct.x,_direct.y,_direct.z), 0.5f);
         }
 
         public void PlayerEnterDepot(Transform other)

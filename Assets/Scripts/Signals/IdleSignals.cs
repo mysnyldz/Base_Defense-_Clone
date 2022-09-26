@@ -16,23 +16,5 @@ namespace Signals
         public UnityAction<GameObject> onDepotAddGem = delegate{  };
         #endregion
 
-        #region AmmoSignals
-
-        public Func<GameObject> onGetAmmo = delegate { return default;};
-        public Func<GameObject> onGetAmmoController = delegate { return default;};
-        public Func<GameObject> onGetAmmoManager = delegate { return default;};
-        
-
-
-        #endregion
-
-        #region MoneySignals
-
-        public Func<GameObject> onGetMoney = delegate { return default;};
-        public Func<GameObject> onGetMoneyController = delegate { return default;};
-        public Func<GameObject> onGetMoneyManager = delegate { return default;};
-
-        #endregion
-        
     }
 }

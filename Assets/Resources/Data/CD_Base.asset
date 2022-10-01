@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bases:
   - BaseLevelList:
-    - BaseLevels: {fileID: 1173506315528258957, guid: 82b363a5222236b4cb937c084dec060e, type: 3}
+    - BaseLevels: {fileID: 6248793500694871117, guid: f905f404262bb3f459131bff3d9490bd, type: 3}
     mineZoneData:
       MaxGemCapacity: 50
       GemInitPoint: {x: 0, y: 0, z: 0}
       GemCountX: 3
       GemCountZ: 3
-      OffsetFactor: 1.36
+      OffsetFactorX: 2.08
+      OffsetFactorY: 1.6
+      OffsetFactorZ: 1.87
       MaxMinerCapacity: 6
       CurrentMinerAmount: 0
       MineCartCapacity: 1
@@ -31,7 +33,9 @@ MonoBehaviour:
       GemInitPoint: {x: 0, y: 0, z: 0}
       GemCountX: 3
       GemCountZ: 3
-      OffsetFactor: 1.33
+      OffsetFactorX: 1.71
+      OffsetFactorY: 1.63
+      OffsetFactorZ: 1.92
       MaxMinerCapacity: 10
       CurrentMinerAmount: 0
       MineCartCapacity: 3

@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     MoneyInitPoint: {x: 0, y: 0, z: 0}
+    MaxMoneyCount: 10
     MoneyCountX: 0
-    MoneyCountY: 3
-    MoneyCountZ: 3
+    MoneyCountY: 20
+    MoneyCountZ: 2
     OffsetFactorX: 1
-    OffsetFactorY: 1
-    OffsetFactorZ: 1
+    OffsetFactorY: 0.15
+    OffsetFactorZ: 0.2

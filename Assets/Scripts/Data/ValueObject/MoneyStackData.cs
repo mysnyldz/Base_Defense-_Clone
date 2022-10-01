@@ -7,8 +7,9 @@ namespace Data.ValueObject
     public class MoneyStackData
     {
         public Vector3 MoneyInitPoint;
+        public int MaxMoneyCount;
         [Range(0, 10)] public int MoneyCountX;
-        [Range(0, 10)] public int MoneyCountY;
+        [Range(0, 25)] public int MoneyCountY;
         [Range(0, 10)] public int MoneyCountZ;
         [Range(0, 5)] public float OffsetFactorX;
         [Range(0, 5)] public float OffsetFactorY;

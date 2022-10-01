@@ -7,6 +7,7 @@ namespace Data.ValueObject
     public class AmmoStackData
     {
         public Vector3 AmmoInitPoint;
+        public int MaxAmmoCount;
         [Range(0, 10)] public int AmmoCountX;
         [Range(0, 10)] public int AmmoCountY;
         [Range(0, 10)] public int AmmoCountZ;

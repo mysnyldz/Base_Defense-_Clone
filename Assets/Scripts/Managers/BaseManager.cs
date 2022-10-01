@@ -30,6 +30,7 @@ namespace Managers
 
         [SerializeField] private BaseLoaderCommand baseLoader;
         [SerializeField] private ClearActiveBaseCommand baseClearer;
+        
 
         [ShowInInspector] private Dictionary<int, RoomData> _roomDictionary = new Dictionary<int, RoomData>();
 
@@ -113,6 +114,7 @@ namespace Managers
         {
             Save();
         }
+        
         
         #region Level Management
 

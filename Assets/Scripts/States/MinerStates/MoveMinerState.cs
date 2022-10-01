@@ -1,5 +1,6 @@
 ﻿using Abstract;
 using Enums;
+using Managers;
 using UnityEngine;
 using UnityEngine.AI;
 

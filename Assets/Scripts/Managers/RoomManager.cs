@@ -79,7 +79,7 @@ namespace Managers
         }
         private RoomData GetData()
         {
-            return Resources.Load<CD_Structure>("Data/CD_BuildData").RoomData[(int)roomTypes];
+            return Resources.Load<CD_Structure>("Data/CD_Structure").Data[(int)roomTypes];
         }
 
         private void RoomCostArea()

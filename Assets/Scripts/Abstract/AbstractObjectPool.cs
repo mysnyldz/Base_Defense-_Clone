@@ -1,4 +1,4 @@
-namespace DefaultNamespace
+namespace Abstract
 {
     public abstract class AbstractObjectPool
     {

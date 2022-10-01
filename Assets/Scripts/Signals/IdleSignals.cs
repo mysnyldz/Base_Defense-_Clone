@@ -10,11 +10,13 @@ namespace Signals
     public class IdleSignals : MonoSingleton<IdleSignals>
     {
         #region Mine Signals
-        public Func<GameObject> onGetMineGemVeinTarget = delegate { return default;};
-        public Func<GameObject> onGetMineDepotTarget = delegate { return default;};
-        public Func<CD_MineZoneData> onGetMineZoneData = delegate { return default;};
+        public Func<GameObject> onGetMineGemVeinTarget = () => default;
+        public Func<GameObject> onGetMineDepotTarget = () => default;
+        public Func<CD_MineZoneData> onGetMineZoneData = () => default;
         public UnityAction<GameObject> onDepotAddGem = delegate{  };
         #endregion
+        
+        public Func<GameObject> onGetAmmoArea = () => default;
 
     }
 }

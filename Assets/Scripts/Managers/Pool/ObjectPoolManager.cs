@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using DefaultNamespace;
+using Abstract;
 using Extentions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -99,7 +99,6 @@ namespace ObjectPool
         
         public void ReturnObject<T>(T o, string poolName)
         {
-            Debug.Log("poolName"+poolName+"T : "+o);
             ((ObjectPool<T>)_pools[poolName]).ReturnObject(o);
         }
         

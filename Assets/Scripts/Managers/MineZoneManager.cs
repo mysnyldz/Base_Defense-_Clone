@@ -26,6 +26,8 @@ namespace Managers
 
         [SerializeField] private GameObject gemDepot;
         [SerializeField] private List<GameObject> veins = new List<GameObject>();
+        [SerializeField] private List<GameObject> _gemList = new List<GameObject>();
+        [SerializeField] private List<GameObject> _gemListOnPlayer;
 
         #endregion
 
@@ -36,8 +38,6 @@ namespace Managers
         private int _rand;
         private int _gemDistance;
         private Vector3 _direct = Vector3.zero;
-        private List<GameObject> _gemList = new List<GameObject>();
-        private List<GameObject> _gemListCache;
         private CurrencyIdData _uniqueID;
 
         #endregion
@@ -110,7 +110,7 @@ namespace Managers
 
         private void OnDepotAddGem(GameObject obj)
         {
-            var gem = PoolSignals.Instance.onGetPoolObject(PoolType.Gem,obj.transform);
+            var gem = PoolSignals.Instance.onGetPoolObject(PoolType.Gem, obj.transform);
             if (gem == null) return;
             gem.transform.SetParent(gemDepot.transform);
             SetGemPosition(gem);
@@ -124,29 +124,31 @@ namespace Managers
                 / _zoneData.OffsetFactorX;
             _direct.z = _direct.z - (_gemList.Count / _gemDistance)
                 / _zoneData.OffsetFactorZ;
-            _direct.y = _direct.y +(_gemList.Count % _gemDistance / _zoneData.GemCountZ )
+            _direct.y = _direct.y + (_gemList.Count % _gemDistance / _zoneData.GemCountZ)
                 / _zoneData.OffsetFactorY;
-            gem.transform.DOLocalRotate( new Vector3(90, 0, 0), 1).SetEase(Ease.OutQuad);
-            gem.transform.DOLocalMove(new Vector3(_direct.x,_direct.y,_direct.z), 0.5f);
+            gem.transform.DOLocalRotate(new Vector3(-90, 0, 0), 1).SetEase(Ease.OutQuad);
+            gem.transform.DOLocalMove(new Vector3(_direct.x, _direct.y, _direct.z), 0.5f);
         }
 
         public void PlayerEnterDepot(Transform other)
         {
-            int count = _gemListCache.Count;
-            _gemListCache = new List<GameObject>(_gemList);
-            _gemList.Clear();
-            for (int i = 0; i < count; i++)
+            int limit = _gemList.Count;
+            for (int i = 0; i < limit; i++)
             {
-                var rand = new Vector3(Random.Range(0f, 2f), Random.Range(0f, 2f), Random.Range(0f, 2f));
-                var obj = _gemListCache[i];
+                var obj = _gemList[0];
+                
+                obj.transform.DOLocalMove(new Vector3(Random.Range(-2f, 2f), 0.75f, Random.Range(-2f, 2f)), 1f).SetEase(Ease.OutBack);
                 obj.transform.SetParent(other);
-                obj.transform.DOLocalMove(new Vector3(0, 0.1f, 0), 0.5f).SetDelay(1f).OnComplete(() =>
+                obj.transform.DOLocalRotate(Vector3.zero, 0.1f);
+                obj.transform.DOLocalMove(new Vector3(0,0.75f,0), 0.5f).SetDelay(1f).OnComplete(() =>
                 {
-                    PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Gem,obj);
+                    PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Gem, obj);
                 });
-                CurrencySignals.Instance.onAddGem?.Invoke(1f);
+                _gemList.Remove(obj);
+                _gemList.TrimExcess();
             }
+
+            CurrencySignals.Instance.onAddGem?.Invoke(limit);
         }
-        
     }
 }

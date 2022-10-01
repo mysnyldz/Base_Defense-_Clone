@@ -127,10 +127,20 @@ namespace Managers
         {
             moneyStackController.AddStack(obj);
         } 
+        public GameObject MoneyDecreaseStack()
+        {
+           return moneyStackController.DecreaseStack();
+        } 
+        
         public void AmmoAddStack()
         {
             ammoStackController.OnGetAmmo();
         }
+        public GameObject AmmoDecreaseStack()
+        {
+            return ammoStackController.DecreaseStack();
+        }
+        
 
         private void OnPlay() => movementController.IsReadyToPlay(true);
 

@@ -12,6 +12,8 @@ namespace Controllers.PlayerControllers
         #region Serialized Variables
 
         [SerializeField] private PlayerManager _manager;
+        [SerializeField] private MineZoneManager _mineManager;
+        
 
         #endregion
 
@@ -42,6 +44,28 @@ namespace Controllers.PlayerControllers
                 }
                 
             }
+
+            if (other.CompareTag("StackDropZone"))
+            {
+                if (_maxMoneyCount >=1)
+                {
+                    _manager.MoneyDecreaseStack();
+                }
+                if (_maxAmmoCount >= 1)
+                {
+                    _manager.AmmoDecreaseStack();
+                }
+            }
+
+            if (other.CompareTag("GemDepot"))
+            {
+                _mineManager.PlayerEnterDepot(gameObject.transform);
+            }
+
+            if (other.CompareTag("TurretDepot"))
+            {
+                //_manager.PlayerEnterDepot(gameObject.transform);
+            }
         }
 
 
@@ -49,7 +73,7 @@ namespace Controllers.PlayerControllers
         {
             if (other.CompareTag("AmmoWarehouse"))
             {
-                _timer += Time.fixedDeltaTime;
+                _timer += (Time.fixedDeltaTime)*3;
                 if (_timer >= _obtainTime && _maxAmmoCount <= _manager.AmmoStackData.MaxAmmoCount)
                 {
                     _timer = 0;

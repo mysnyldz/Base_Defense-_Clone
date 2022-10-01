@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: CD_MineZoneData
   m_EditorClassIdentifier: 
   Data:
-    MaxGemCapacity: 35
-    GemInitPoint: {x: 2.35, y: -0.75, z: -5}
+    MaxGemCapacity: 20
+    GemInitPoint: {x: 2.4, y: -0.599, z: -4.78}
     GemCountX: 3
     GemCountZ: 3
-    OffsetFactorX: 3
-    OffsetFactorY: 3
-    OffsetFactorZ: 3
+    OffsetFactorX: 1.8
+    OffsetFactorY: 1.9
+    OffsetFactorZ: 3.5
     MaxMinerCapacity: 10
     CurrentMinerAmount: 0
     MineCartCapacity: 1

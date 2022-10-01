@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Data.UnityObject;
 using Data.ValueObject;
 using DG.Tweening;
 using Enums;
 using Signals;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
 namespace Controllers
 {
@@ -21,12 +22,13 @@ namespace Controllers
 
         #region Serialized Variables
 
+        [SerializeField] private GameObject ammoArea;
+
         #endregion
 
         #region Private Variables
 
         private AmmoStackData _data;
-        private int _currentStackLevel;
         private float _directx;
         private float _directy;
         private float _directz;
@@ -41,7 +43,7 @@ namespace Controllers
             _data = Resources.Load<CD_AmmoStackData>("Data/CD_AmmoStackData").Data;
         }
 
-        public void AddStack(GameObject obj)
+        private void AddStack(GameObject obj)
         {
             StackList.Capacity = _data.MaxAmmoCount;
             if (_maxAmmoCount < StackList.Capacity)
@@ -55,10 +57,40 @@ namespace Controllers
                 return;
             }
         }
+
         public void OnGetAmmo()
         {
-            var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Ammo,transform);
+            var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Ammo, transform);
             AddStack(obj);
+        }
+
+        public GameObject DecreaseStack()
+        {
+            if (StackList.Count > 0)
+            {
+                int limit = StackList.Count;
+                for (int i = 0; i < limit; i++)
+                {
+                    var obj = StackList[0];
+                    StackList.RemoveAt(0);
+                    StackList.TrimExcess();
+                    obj.transform
+                        .DOLocalMove(new Vector3(Random.Range(-1f, 1f), Random.Range(0.1f, 1f), Random.Range(-1f, 1f)),
+                            0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
+                        {
+                            obj.transform.parent = ammoArea.transform;
+                        });
+                    obj.transform
+                        .DOLocalRotate(new Vector3(Random.Range(-90, 90), Random.Range(-90, 90), Random.Range(-90, 90)),
+                            1f).SetEase(Ease.OutBounce).SetDelay(0.5f);
+                    obj.transform.DOLocalMove(new Vector3(0, 0.1f, 0), 1f).SetDelay(1.5f).OnComplete(() =>
+                    {
+                        PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Ammo, obj);
+                    });
+                }
+            }
+
+            return null;
         }
 
         private void ObjPosition(GameObject obj)

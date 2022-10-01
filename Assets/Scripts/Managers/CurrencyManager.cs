@@ -124,7 +124,6 @@ namespace Managers
         private void SaveData()
         {
             CurrencyIdData currencyIdData = new CurrencyIdData(_money,_gem);
-
             SaveLoadSignals.Instance.onSaveCurrencyData.Invoke(currencyIdData, _uniqueID);
         }
 

@@ -13,6 +13,9 @@ TagManager:
   - MineCart
   - Money
   - Ground
+  - StackDropZone
+  - TurretDepot
+  - TurretOperatorArea
   layers:
   - Default
   - TransparentFX

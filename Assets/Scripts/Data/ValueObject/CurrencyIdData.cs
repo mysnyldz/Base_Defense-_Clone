@@ -6,13 +6,13 @@ namespace Data.ValueObject
     {
         public static string CurrencyKey = "Currency";
 
-        public float MoneyId;
-        public float GemId;
+        public float Money;
+        public float Gem;
 
-        public CurrencyIdData(float _moneyId, float _gemId)
+        public CurrencyIdData(float _money, float _gem)
         {
-            MoneyId = _moneyId;
-            GemId = _gemId;
+            Money = _money;
+            Gem = _gem;
         }
 
         public CurrencyIdData()

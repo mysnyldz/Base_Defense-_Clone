@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Abstract;
 using Controllers;
-using Data.UnityObject;
-using Data.ValueObject;
 using Enums;
 using Signals;
 using Sirenix.OdinInspector;
@@ -12,81 +7,84 @@ using States.MinerStates;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MinerManager : MonoBehaviour
+namespace Managers
 {
-    #region Self Variables
+    public class MinerManager : MonoBehaviour
+    {
+        #region Self Variables
 
-    #region Public Variables
+        #region Public Variables
 
-    public NavMeshAgent agent;
-    [ShowInInspector] public MinerBaseState currentMinerBaseState;
-    public MoveMinerState MoveMiner = new MoveMinerState();
-    public MoveDepotState MoveDepot = new MoveDepotState();
-    public DigMinerState DigMiner = new DigMinerState();
-    public GameObject GemVeins;
-    public GameObject GemDepot;
+        public NavMeshAgent agent;
+        [ShowInInspector] public MinerBaseState currentMinerBaseState;
+        public MoveMinerState MoveMiner = new MoveMinerState();
+        public MoveDepotState MoveDepot = new MoveDepotState();
+        public DigMinerState DigMiner = new DigMinerState();
+        public GameObject GemVeins;
+        public GameObject GemDepot;
 
-    #endregion
+        #endregion
 
-    #region Serialized Variables
+        #region Serialized Variables
     
-    [SerializeField] private MinerAnimationController animationController;
-    [SerializeField] private GameObject gem;
-    [SerializeField] private GameObject pickaxe;
+        [SerializeField] private MinerAnimationController animationController;
+        [SerializeField] private GameObject gem;
+        [SerializeField] private GameObject pickaxe;
 
 
-    #endregion
-    #region Private Variables
+        #endregion
+        #region Private Variables
     
 
-    #endregion
-    #endregion
+        #endregion
+        #endregion
 
-    private void OnEnable()
-    {
-        GemVeins = IdleSignals.Instance.onGetMineGemVeinTarget();
-        GemDepot = IdleSignals.Instance.onGetMineDepotTarget();
-        agent = GetComponent<NavMeshAgent>();
-        currentMinerBaseState = MoveMiner;
-        currentMinerBaseState.EnterState(this);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        currentMinerBaseState.OnTriggerEnter(this, other);
-    }
-
-    public void SetTriggerAnim(MinerAnimTypes types)
-    {
-        animationController.SetAnim(types);
-    }
-
-
-    public void SwitchState(MinerStatesType state)
-    {
-        switch (state)
+        private void OnEnable()
         {
-            case MinerStatesType.MoveMine:
-                currentMinerBaseState = MoveMiner;
-                gem.SetActive(false);
-                pickaxe.SetActive(true);
-                break;
-            case MinerStatesType.MoveDepot:
-                currentMinerBaseState = MoveDepot;
-                gem.SetActive(true);
-                pickaxe.SetActive(false);
-                break;
-            case MinerStatesType.Dig:
-                currentMinerBaseState = DigMiner;
-                gem.SetActive(false);
-                pickaxe.SetActive(true);
-                break;
-            case MinerStatesType.Gather:
-                currentMinerBaseState = DigMiner;
-                gem.SetActive(false);
-                pickaxe.SetActive(false);
-                break;
+            GemVeins = IdleSignals.Instance.onGetMineGemVeinTarget();
+            GemDepot = IdleSignals.Instance.onGetMineDepotTarget();
+            agent = GetComponent<NavMeshAgent>();
+            currentMinerBaseState = MoveMiner;
+            currentMinerBaseState.EnterState(this);
         }
-        currentMinerBaseState.EnterState(this);
+
+        private void OnTriggerEnter(Collider other)
+        {
+            currentMinerBaseState.OnTriggerEnter(this, other);
+        }
+
+        public void SetTriggerAnim(MinerAnimTypes types)
+        {
+            animationController.SetAnim(types);
+        }
+
+
+        public void SwitchState(MinerStatesType state)
+        {
+            switch (state)
+            {
+                case MinerStatesType.MoveMine:
+                    currentMinerBaseState = MoveMiner;
+                    gem.SetActive(false);
+                    pickaxe.SetActive(true);
+                    break;
+                case MinerStatesType.MoveDepot:
+                    currentMinerBaseState = MoveDepot;
+                    gem.SetActive(true);
+                    pickaxe.SetActive(false);
+                    break;
+                case MinerStatesType.Dig:
+                    currentMinerBaseState = DigMiner;
+                    gem.SetActive(false);
+                    pickaxe.SetActive(true);
+                    break;
+                case MinerStatesType.Gather:
+                    currentMinerBaseState = DigMiner;
+                    gem.SetActive(false);
+                    pickaxe.SetActive(false);
+                    break;
+            }
+            currentMinerBaseState.EnterState(this);
+        }
     }
 }

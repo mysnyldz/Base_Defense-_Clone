@@ -2,6 +2,7 @@
 using Abstract;
 using Cinemachine;
 using Enums;
+using Managers;
 using UnityEngine;
 
 namespace States.MinerStates
@@ -19,7 +20,6 @@ namespace States.MinerStates
 
         private async void Timer(MinerManager minerManager)
         {
-            Debug.Log("Kaziyem");
             await Task.Delay(2750);
             minerManager.SwitchState(MinerStatesType.MoveDepot);
         }

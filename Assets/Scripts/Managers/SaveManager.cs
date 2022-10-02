@@ -39,8 +39,11 @@ namespace Managers
 
         private void Subscribe()
         {
-            SaveLoadSignals.Instance.onSaveIdleData += _saveCommand.Execute;
-            SaveLoadSignals.Instance.onLoadIdleData += _loadCommand.Execute<BaseIdData>;
+            SaveLoadSignals.Instance.onSaveBaseData += _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadBaseData += _loadCommand.Execute<BaseIdData>;
+            
+            SaveLoadSignals.Instance.onSaveRoomData += _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadRoomData += _loadCommand.Execute<RoomIDData>;
             
             SaveLoadSignals.Instance.onSaveCurrencyData += _saveCommand.Execute;
             SaveLoadSignals.Instance.onLoadCurrencyData += _loadCommand.Execute<CurrencyIdData>;
@@ -49,8 +52,11 @@ namespace Managers
 
         private void Unsubscribe()
         {
-            SaveLoadSignals.Instance.onSaveIdleData -= _saveCommand.Execute;
-            SaveLoadSignals.Instance.onLoadIdleData -= _loadCommand.Execute<BaseIdData>;
+            SaveLoadSignals.Instance.onSaveBaseData -= _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadBaseData -= _loadCommand.Execute<BaseIdData>;
+            
+            SaveLoadSignals.Instance.onSaveRoomData -= _saveCommand.Execute;
+            SaveLoadSignals.Instance.onLoadRoomData -= _loadCommand.Execute<RoomIDData>;
             
             SaveLoadSignals.Instance.onSaveCurrencyData -= _saveCommand.Execute;
             SaveLoadSignals.Instance.onLoadCurrencyData -= _loadCommand.Execute<CurrencyIdData>;

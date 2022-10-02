@@ -1,4 +1,5 @@
 ﻿using Managers;
+using Signals;
 using UnityEngine;
 
 namespace Controllers.Room
@@ -13,13 +14,27 @@ namespace Controllers.Room
 
         #endregion
 
+        #region Private Variables
+
+        private float _timer = 0;
+        private float _spendTime = 1;
+        
+
+        #endregion
+
         #endregion
         
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                roomManager.StartTimer();
+                _timer += (Time.fixedDeltaTime)*20;
+                if (_timer >= _spendTime)
+                {
+                    roomManager.OnBuyRoomArea();
+                    //RoomSignals.Instance.onBuyRoomArea?.Invoke(roomManager.gameObject);
+                    _timer = 0;
+                }
             }
         }
 
@@ -27,7 +42,7 @@ namespace Controllers.Room
         {
             if (other.CompareTag("Player"))
             {
-                roomManager.StopTimer();
+               // roomManager.StopTimer();
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ValueObject;
+using Data.ValueObject;
 
 namespace Keys
 {
@@ -8,6 +8,5 @@ namespace Keys
     public struct BaseDataParams
     {
         public int BaseLevel;
-        public Dictionary<int, RoomData> RoomDictionary;
     }
 }

@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Command.BaseCommands;
 using Data.UnityObject;
 using Data.ValueObject;
+using Enums;
 using Keys;
 using Signals;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using ValueObject;
 
 
 namespace Managers
@@ -19,26 +20,21 @@ namespace Managers
         #region Public Variables
 
         [Header("BaseData")] public CD_Base BaseData;
-
-        [Header("BaseIdData")] public BaseIdData BaseIdData;
+        
 
         #endregion Public Variables
 
         #region Serialized Variables
 
         [Space] [SerializeField] private GameObject BaseHolder;
-
-        [SerializeField] private BaseLoaderCommand baseLoader;
-        [SerializeField] private ClearActiveBaseCommand baseClearer;
         
-
-        [ShowInInspector] private Dictionary<int, RoomData> _roomDictionary = new Dictionary<int, RoomData>();
 
         #endregion Serialized Variables
 
         #region Private Variables
 
-        private CD_Base _cdBase;
+        private BaseLoaderCommand _baseLoader;
+        private ClearActiveBaseCommand _baseClearer;
 
         private int _baseID;
         private int _uniqueID;
@@ -48,6 +44,12 @@ namespace Managers
         #endregion Self Variables
 
         #region MonoBehavior Methods
+
+        private void Awake()
+        {
+            _baseLoader = new BaseLoaderCommand();
+            _baseClearer = new ClearActiveBaseCommand();
+        }
 
         private void Start()
         {
@@ -67,9 +69,11 @@ namespace Managers
                     Save();
                 }
             }
+
             Load();
             BaseData = GetBaseData();
         }
+        
 
         private CD_Base GetBaseData()
         {
@@ -114,8 +118,8 @@ namespace Managers
         {
             Save();
         }
-        
-        
+
+
         #region Level Management
 
         private void OnNextLevel()
@@ -134,14 +138,21 @@ namespace Managers
 
         private void OnInitializeBase()
         {
-            Instantiate(
-                Resources.Load<GameObject>($"Prefabs/Bases/Base {_baseID}"), BaseHolder.transform
-            );
+            _baseID = GetLevelCount();
+            _baseLoader.InitializeLevel(_baseID, BaseHolder.transform);
         }
+
+        private int GetLevelCount()
+        {
+            return _baseID % Resources.Load<CD_Base>("Data/CD_Base").baseData.Count;
+        }
+
+
         private void OnClearActiveBase()
         {
-            baseClearer.ClearActiveBase(BaseHolder.transform);
+            _baseClearer.ClearActiveBase(BaseHolder.transform);
         }
+
         #endregion
 
         #region Level Save and Load
@@ -149,14 +160,14 @@ namespace Managers
         public void Save()
         {
             BaseIdData baseIdData = new BaseIdData(_baseID);
-
-            SaveLoadSignals.Instance.onSaveIdleData.Invoke(baseIdData, _uniqueID);
-            
+            SaveLoadSignals.Instance.onSaveBaseData.Invoke(baseIdData, _uniqueID);
         }
+
         public void Load()
         {
-            BaseIdData baseIdData = SaveLoadSignals.Instance.onLoadIdleData.Invoke(BaseIdData.BaseKey, _uniqueID);
+            BaseIdData baseIdData = SaveLoadSignals.Instance.onLoadBaseData.Invoke(BaseIdData.BaseKey, _uniqueID);
         }
+
         #endregion
     }
 }

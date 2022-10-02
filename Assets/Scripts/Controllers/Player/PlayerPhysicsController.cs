@@ -12,14 +12,13 @@ namespace Controllers.PlayerControllers
         #region Serialized Variables
 
         [SerializeField] private PlayerManager _manager;
-        [SerializeField] private MineZoneManager _mineManager;
         
 
         #endregion
 
         #region Private Variables
 
-        private int _obtainTime = 1;
+        private int _spendTime = 1;
         private float _timer;
         private int _maxAmmoCount = 0;
         private int _maxMoneyCount = 0;
@@ -47,25 +46,26 @@ namespace Controllers.PlayerControllers
 
             if (other.CompareTag("StackDropZone"))
             {
-                if (_maxMoneyCount >=1)
+                if (_maxMoneyCount >= 1)
                 {
                     _manager.MoneyDecreaseStack();
+                    _maxMoneyCount = 0;
                 }
                 if (_maxAmmoCount >= 1)
                 {
                     _manager.AmmoDecreaseStack();
+                    _maxAmmoCount = 0;
                 }
             }
 
+            
+
             if (other.CompareTag("GemDepot"))
             {
-                _mineManager.PlayerEnterDepot(gameObject.transform);
+                IdleSignals.Instance.onPlayerEnterDepot?.Invoke(gameObject);
             }
 
-            if (other.CompareTag("TurretDepot"))
-            {
-                //_manager.PlayerEnterDepot(gameObject.transform);
-            }
+            
         }
 
 
@@ -74,13 +74,21 @@ namespace Controllers.PlayerControllers
             if (other.CompareTag("AmmoWarehouse"))
             {
                 _timer += (Time.fixedDeltaTime)*3;
-                if (_timer >= _obtainTime && _maxAmmoCount <= _manager.AmmoStackData.MaxAmmoCount)
+                if (_timer >= _spendTime && _maxAmmoCount <= _manager.AmmoStackData.MaxAmmoCount)
                 {
                     _timer = 0;
                     _manager.AmmoAddStack();
                     _maxAmmoCount++;
                 }
             }
+            if (other.CompareTag("TurretDepot"))
+            {
+                
+                
+            }
+            
+           
+            
         }
     }
 }

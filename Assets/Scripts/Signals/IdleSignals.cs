@@ -14,6 +14,7 @@ namespace Signals
         public Func<GameObject> onGetMineDepotTarget = () => default;
         public Func<CD_MineZoneData> onGetMineZoneData = () => default;
         public UnityAction<GameObject> onDepotAddGem = delegate{  };
+        public UnityAction<GameObject> onPlayerEnterDepot = delegate{  };
         #endregion
         
         public Func<GameObject> onGetAmmoArea = () => default;

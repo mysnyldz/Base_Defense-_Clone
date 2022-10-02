@@ -2,9 +2,9 @@
 {
     public enum RoomTypes
     {
-        Room_1,
-        Room_2,
-        Room_3,
-        Room_4
+        Room_Lvl1_Right,
+        Room_Lvl1_Left,
+        Room_Lvl2_Right,
+        Room_lvl2_Left
     }
 }

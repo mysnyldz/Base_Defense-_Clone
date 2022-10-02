@@ -2,11 +2,11 @@
 
 namespace Command.BaseCommands
 {
-    public class ClearActiveBaseCommand : MonoBehaviour
+    public class ClearActiveBaseCommand
     {
         public void ClearActiveBase(Transform baseHolder)
         {
-            Destroy(baseHolder.GetChild(0).gameObject);
+            Object.Destroy(baseHolder.GetChild(0).gameObject);
         }
     }
 }

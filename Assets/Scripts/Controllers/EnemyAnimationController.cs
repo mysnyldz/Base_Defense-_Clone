@@ -15,9 +15,9 @@ namespace Controllers
         
         #endregion
 
-        public void SetAnim(EnemyAnimTypes typeses)
+        public void SetAnim(EnemyAnimTypes types)
         {
-            animator.SetTrigger(typeses.ToString());
+            animator.SetTrigger(types.ToString());
         }
     }
 }

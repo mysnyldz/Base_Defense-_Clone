@@ -54,15 +54,21 @@ namespace Controllers
                 ObjPosition(obj);
                 StackList.Add(obj);
             }
-            else
-            {
-                return;
-            }
+        }
+        private void ObjPosition(GameObject obj)
+        {
+            _directx = 0;
+            _directy = StackList.Count % _data.MoneyCountY * _data.OffsetFactorY;
+            _directz = -(StackList.Count % (_data.MoneyCountZ * _data.MoneyCountY) / _data.MoneyCountY *
+                         _data.OffsetFactorZ);
+            obj.transform.DOLocalRotate(new Vector3(-90, 90, 0), 0.5f).SetEase(Ease.OutQuad);
+            obj.transform.DOLocalMove(new Vector3(_directx, _directy, _directz), 0.5f).SetEase(Ease.OutQuad);
+            _maxMoneyCount++;
         }
 
         public GameObject DecreaseStack()
         {
-            if (StackList.Count > 0)
+            if (StackList.Count >= 1)
             {
                 int limit = StackList.Count;
                 for (int i = 0; i <= limit; i++)
@@ -73,32 +79,18 @@ namespace Controllers
                     obj.transform
                         .DOLocalMove(new Vector3(Random.Range(-1f, 1f), Random.Range(0, 1f), Random.Range(-1f, 1f)),
                             0.5f).OnComplete(() => { obj.transform.parent = moneyTakenPoint.transform; });
-                    obj.transform.DOLocalMove(new Vector3(0, 0.1f, 0), 2f).SetDelay(1f).OnComplete(() =>
+                    obj.transform.DOLocalMove(new Vector3(0, 0.05f, 0), 2f).SetDelay(1f).OnComplete(() =>
                     {
                         PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Money, obj);
                     });
+                    CurrencySignals.Instance.onAddMoney?.Invoke(1);
+                    _maxMoneyCount--;
                 }
-            }
 
+            }
             return null;
         }
 
 
-        private void ObjPosition(GameObject obj)
-        {
-            _directx = 0;
-            _directy = StackList.Count % _data.MoneyCountY * _data.OffsetFactorY;
-            _directz = -(StackList.Count % (_data.MoneyCountZ * _data.MoneyCountY) / _data.MoneyCountY *
-                         _data.OffsetFactorZ);
-            obj.transform.DOLocalRotate(new Vector3(-90, 90, 0), 0.5f).SetEase(Ease.OutQuad);
-            obj.transform.DOLocalMove(new Vector3(Random.Range(-0.5f, 0.5f), 0.5f, Random.Range(-0.5f, 0.5f)), 1f)
-                .SetEase(Ease.OutBounce).SetDelay(0.5f).OnComplete(
-                    () =>
-                    {
-                        obj.transform.DOLocalMove(new Vector3(_directx, _directy, _directz), 0.5f).SetEase(Ease.OutQuad);
-                    });
-            
-            _maxMoneyCount++;
-        }
     }
 }

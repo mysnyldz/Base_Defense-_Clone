@@ -79,7 +79,7 @@ public class InputManager : MonoBehaviour
             InputSignals.Instance.onInputReleased?.Invoke();
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)  && Input.mousePosition.y <= 960 )
         {
             _isTouching = true;
             InputSignals.Instance.onInputTaken?.Invoke();

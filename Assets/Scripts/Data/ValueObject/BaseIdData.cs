@@ -1,7 +1,9 @@
-﻿using Abstract;
+﻿using System;
+using Abstract;
 
 namespace Data.ValueObject
 {
+    [Serializable]
     public class BaseIdData : SaveableEntity
     {
         public static string BaseKey = "Base";

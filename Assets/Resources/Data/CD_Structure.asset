@@ -12,59 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf47567c89ca4b708a1bb744fd2891e2, type: 3}
   m_Name: CD_Structure
   m_EditorClassIdentifier: 
-  RoomData:
-  - Key: 1
-    IsCompleted: 0
-    Turret:
-      TurretPrice: 100
-      PayedValue: 0
-      TurretId: 2
-      roomStageTypes: 1
-    RoomPrice: 100
-    PayedAmount: 0
-    RoomID: 1
-    RoomStageType: 1
-  - Key: 2
-    IsCompleted: 0
-    Turret:
-      TurretPrice: 100
-      PayedValue: 0
-      TurretId: 0
-      roomStageTypes: 1
-    RoomPrice: 100
-    PayedAmount: 0
-    RoomID: 2
-    RoomStageType: 1
-  - Key: 3
-    IsCompleted: 0
-    Turret:
-      TurretPrice: 0
-      PayedValue: 0
-      TurretId: 0
-      roomStageTypes: 1
-    RoomPrice: 0
-    PayedAmount: 0
-    RoomID: 0
-    RoomStageType: 0
-  - Key: 4
-    IsCompleted: 0
-    Turret:
-      TurretPrice: 0
-      PayedValue: 0
-      TurretId: 0
-      roomStageTypes: 1
-    RoomPrice: 0
-    PayedAmount: 0
-    RoomID: 0
-    RoomStageType: 0
-  - Key: 5
-    IsCompleted: 0
-    Turret:
-      TurretPrice: 0
-      PayedValue: 0
-      TurretId: 0
-      roomStageTypes: 1
-    RoomPrice: 0
-    PayedAmount: 0
-    RoomID: 0
-    RoomStageType: 0
+  Data:
+    RoomIDList:
+    - Turret:
+        TurretPrice: 0
+        PayedValue: 0
+        TurretId: 0
+        roomStageTypes: 1
+      RoomPrice: 200
+      PayedAmount: 0
+      RoomID: 1
+      RoomStageType: 1
+    - Turret:
+        TurretPrice: 0
+        PayedValue: 0
+        TurretId: 0
+        roomStageTypes: 1
+      RoomPrice: 500
+      PayedAmount: 0
+      RoomID: 2
+      RoomStageType: 1
+    - Turret:
+        TurretPrice: 0
+        PayedValue: 0
+        TurretId: 0
+        roomStageTypes: 1
+      RoomPrice: 750
+      PayedAmount: 0
+      RoomID: 3
+      RoomStageType: 1
+    - Turret:
+        TurretPrice: 0
+        PayedValue: 0
+        TurretId: 0
+        roomStageTypes: 1
+      RoomPrice: 1500
+      PayedAmount: 0
+      RoomID: 4
+      RoomStageType: 1

@@ -13,20 +13,20 @@ namespace Managers
 
         #region Public Variables
 
+        
         #endregion
 
-        #region SerilizeField
-        
+        #region SerilizeField Variables
         
 
         #endregion
 
         #region Private Variables
         
-        private float _money = 200; 
-        private float _gem = 1520;
-        private int _uniqueID = 1;
-        
+        private float _money; 
+        private float _gem;
+        private int _uniqueID;
+        private CurrencyIdData _currencyIdData;
 
         #endregion
 
@@ -67,43 +67,51 @@ namespace Managers
         {
             UnsubscribeEvents();
         }
-
         private void Start()
         {
-            LoadData();
+            Load();
+            GetReferences();
             SetMoneyText();
             SetGemText();
         }
+        
 
-        private float OnGetMoney() => _money;
-        private float OnGetGem() => _gem;
+        private void GetReferences()
+        {
+            _money = _currencyIdData.Money;
+            _gem = _currencyIdData.Gem;
+        }
+
+
+        private float OnGetMoney() => _currencyIdData.Money;
+        private float OnGetGem() => _currencyIdData.Gem;
 
         private void OnAddMoney(float value)
         {
             _money += value;
             SetMoneyText();
-            SaveData();
+            Save();
         }
 
         private void OnReduceMoney(float value)
         {
             _money -= value;
             SetMoneyText();
-            SaveData();
+            Save();
         }
 
         private void OnAddGem(float value)
         {
             _gem += value;
             SetGemText();
-            SaveData();
+            Save();
         }
 
         private void OnReduceGem(float value)
         {
             _gem -= value;
             SetGemText();
-            SaveData();
+            Save();
         }
 
         private void SetMoneyText()
@@ -118,18 +126,18 @@ namespace Managers
 
         private void OnSave()
         {
-            SaveData();
+            Save();
         }
         
-        private void SaveData()
+        private void Save()
         {
-            CurrencyIdData currencyIdData = new CurrencyIdData(_money,_gem);
-            SaveLoadSignals.Instance.onSaveCurrencyData.Invoke(currencyIdData, _uniqueID);
+            _currencyIdData = new CurrencyIdData(_money,_gem);
+            SaveLoadSignals.Instance.onSaveCurrencyData.Invoke(_currencyIdData, _uniqueID);
         }
 
-        public void LoadData()
+        public void Load()
         {
-            CurrencyIdData data = SaveLoadSignals.Instance.onLoadCurrencyData(CurrencyIdData.CurrencyKey, _uniqueID);
+            _currencyIdData = SaveLoadSignals.Instance.onLoadCurrencyData(CurrencyIdData.CurrencyKey, _uniqueID);
         }
     }
 }

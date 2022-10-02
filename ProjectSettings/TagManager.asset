@@ -16,6 +16,7 @@ TagManager:
   - StackDropZone
   - TurretDepot
   - TurretOperatorArea
+  - CostArea
   layers:
   - Default
   - TransparentFX

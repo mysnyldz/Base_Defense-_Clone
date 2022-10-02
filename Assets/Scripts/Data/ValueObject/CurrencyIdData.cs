@@ -1,7 +1,9 @@
-﻿using Abstract;
+﻿using System;
+using Abstract;
 
 namespace Data.ValueObject
 {
+    [Serializable]
     public class CurrencyIdData : SaveableEntity
     {
         public static string CurrencyKey = "Currency";

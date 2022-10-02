@@ -27,7 +27,6 @@ namespace Managers
         [SerializeField] private GameObject gemDepot;
         [SerializeField] private List<GameObject> veins = new List<GameObject>();
         [SerializeField] private List<GameObject> _gemList = new List<GameObject>();
-        [SerializeField] private List<GameObject> _gemListOnPlayer;
 
         #endregion
 
@@ -56,14 +55,15 @@ namespace Managers
             IdleSignals.Instance.onGetMineGemVeinTarget += OnGetMineGemVeinTarget;
             IdleSignals.Instance.onGetMineDepotTarget += OnGetMineDepotTarget;
             IdleSignals.Instance.onDepotAddGem += OnDepotAddGem;
+            IdleSignals.Instance.onPlayerEnterDepot += OnPlayerEnterDepot;
         }
-
 
         private void UnsubscribeEvents()
         {
             IdleSignals.Instance.onGetMineGemVeinTarget -= OnGetMineGemVeinTarget;
             IdleSignals.Instance.onGetMineDepotTarget -= OnGetMineDepotTarget;
             IdleSignals.Instance.onDepotAddGem -= OnDepotAddGem;
+            IdleSignals.Instance.onPlayerEnterDepot += OnPlayerEnterDepot;
         }
 
         private void OnDisable()
@@ -129,7 +129,10 @@ namespace Managers
             gem.transform.DOLocalRotate(new Vector3(-90, 0, 0), 1).SetEase(Ease.OutQuad);
             gem.transform.DOLocalMove(new Vector3(_direct.x, _direct.y, _direct.z), 0.5f);
         }
-
+        private void OnPlayerEnterDepot(GameObject obj)
+        {
+            PlayerEnterDepot(obj.transform);
+        }
         public void PlayerEnterDepot(Transform other)
         {
             int limit = _gemList.Count;

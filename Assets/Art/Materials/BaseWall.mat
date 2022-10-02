@@ -205,7 +205,7 @@ Material:
     - _Light: 1
     - _LightBands: 4
     - _LightBandsScale: 0.5
-    - _LightThreshold: 0
+    - _LightThreshold: 0.29
     - _Metallic: 0
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
@@ -255,7 +255,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
+    - _AlbedoColor: {r: 0.8962264, g: 0.55485713, b: 0.17332679, a: 1}
     - _BaseColor: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}

@@ -45,23 +45,20 @@ namespace Controllers
 
         private void AddStack(GameObject obj)
         {
-            StackList.Capacity = _data.MaxAmmoCount;
-            if (_maxAmmoCount < StackList.Capacity)
-            {
-                obj.transform.SetParent(transform);
-                ObjPosition(obj);
-                StackList.Add(obj);
-            }
-            else
-            {
-                return;
-            }
+            
+            obj.transform.SetParent(transform);
+            ObjPosition(obj);
+            StackList.Add(obj);
         }
 
         public void OnGetAmmo()
         {
-            var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Ammo, transform);
-            AddStack(obj);
+            StackList.Capacity = _data.MaxAmmoCount;
+            if (_maxAmmoCount < StackList.Capacity)
+            {
+                var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Ammo, transform);
+                AddStack(obj);
+            }
         }
 
         public GameObject DecreaseStack()
@@ -86,7 +83,10 @@ namespace Controllers
                     obj.transform.DOLocalMove(new Vector3(0, 0.1f, 0), 1f).SetDelay(1.5f).OnComplete(() =>
                     {
                         PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Ammo, obj);
+                        obj.transform.DOLocalRotate(Vector3.zero, 0f);
+                        obj.transform.DOLocalMove(Vector3.zero, 0f);
                     });
+                    _maxAmmoCount--;
                 }
             }
 

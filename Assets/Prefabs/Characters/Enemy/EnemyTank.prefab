@@ -654,10 +654,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa1aa7cb64744f0a65df29e618f0b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   BasePoints: {fileID: 0}
   Player: {fileID: 0}
   MineTnt: {fileID: 0}
+  agent: {fileID: 0}
+  types: 1
   animationController: {fileID: 5230271954609140313}
 --- !u!95 &902194105381442462
 Animator:

@@ -1,29 +1,59 @@
 ﻿using Abstract;
+using Data.ValueObject;
 using Enums;
 using Managers;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace States.EnemyStates
 {
     public class EnemyMovePlayerState: EnemyBaseState
     {
-        public override void EnterState(EnemyManager enemyManager)
+        #region Self Variables
+        
+
+        #region Private Variables
+
+        private EnemyManager _manager;
+        private NavMeshAgent _agent;
+        private EnemyTypesData _data;
+        #endregion
+
+        #endregion
+
+        public EnemyMovePlayerState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyTypesData data)
+        {
+            _manager = manager;
+            _agent = agent;
+            _data = data;
+        }
+        public override void EnterState()
         {
             
         }
-        
-        public override void OnTriggerEnter(EnemyManager enemyManager, Collider other)
+
+        public override void UpdateState()
         {
-            if (other.CompareTag("PlayerSphere"))
+            
+        }
+
+        public override void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("PlayerTargetSphere"))
             {
-                enemyManager.agent.SetDestination(enemyManager.Player.transform.position);
-                enemyManager.SetTriggerAnim(EnemyAnimTypes.Run);
+                _agent.SetDestination(_manager.Player.transform.position);
+                _manager.SetTriggerAnim(EnemyAnimTypes.Run);
             }
 
             if (other.CompareTag("Player"))
             {
-                enemyManager.SetTriggerAnim(EnemyAnimTypes.Attack);
+                _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
             }
+        }
+
+        public override void OnTriggerExit(Collider other)
+        {
+            
         }
     }
 }

@@ -5,7 +5,9 @@ namespace Abstract
 {
     public abstract class EnemyBaseState
     {
-        public abstract void EnterState(EnemyManager minerManager);
-        public abstract void OnTriggerEnter(EnemyManager minerManager, Collider other);
+        public abstract void EnterState();
+        public abstract void UpdateState();
+        public abstract void OnTriggerEnter(Collider other);
+        public abstract void OnTriggerExit(Collider other);
     }
 }

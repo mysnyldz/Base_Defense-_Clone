@@ -1,26 +1,71 @@
-﻿using System.Threading.Tasks;
-using Abstract;
+﻿using Abstract;
+using Data.ValueObject;
 using Enums;
 using Managers;
+using Signals;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace States.EnemyStates
 {
     public class EnemyAttackState : EnemyBaseState
     {
-        public override void EnterState(EnemyManager enemyManager)
+        #region Self Variables
+        
+
+        #region Private Variables
+
+        private EnemyManager _manager;
+        private NavMeshAgent _agent;
+        private EnemyTypesData _data;
+        #endregion
+
+        #endregion
+
+        public EnemyAttackState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyTypesData data)
         {
+            _manager = manager;
+            _agent = agent;
+            _data = data;
+        }
+        
+        
+        public override void EnterState()
+        {
+            _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
+            _manager.StartCoroutine(_manager.AtackDelayTime());
         }
 
-        public override void OnTriggerEnter(EnemyManager enemyManager, Collider other)
+        public override void UpdateState()
         {
-            
+            _agent.destination = _manager.Player.transform.position;
+            if (_agent.remainingDistance >= _agent.stoppingDistance)
+            {
+                _manager.SwitchState(EnemyStatesTypes.MovePlayer);
+                _manager.StopAllCoroutines();
+            }
         }
 
-        private async void Timer(EnemyManager enemyManager)
+        public override void OnTriggerEnter(Collider other)
         {
-            await Task.Delay(2750);
-            enemyManager.SwitchState(EnemyStatesTypes.Attack);
+            if (other.CompareTag("PlayerSphere"))
+            {
+                _manager.Player = EnemySignals.Instance.onGetPlayerPoints?.Invoke();
+                _manager.BasePoints = null;
+                _manager.SwitchState(EnemyStatesTypes.MovePlayer);
+                
+            }
         }
+
+        public override void OnTriggerExit( Collider other)
+        {
+            if (other.CompareTag("PlayerSphere"))
+            {
+                _manager.BasePoints = EnemySignals.Instance.onGetBasePoints?.Invoke();
+                _manager.Player = null;
+                _manager.SwitchState(EnemyStatesTypes.MoveBase);
+            }
+        }
+        
     }
 }

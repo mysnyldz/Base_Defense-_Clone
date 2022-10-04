@@ -276,10 +276,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa1aa7cb64744f0a65df29e618f0b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   BasePoints: {fileID: 0}
   Player: {fileID: 0}
   MineTnt: {fileID: 0}
+  agent: {fileID: 0}
+  types: 0
   animationController: {fileID: 6354287229518163747}
 --- !u!95 &5777100673515979854
 Animator:
@@ -292,7 +293,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0c6a969a3c85e884e8de239750b78b7c, type: 3}
   m_Controller: {fileID: 9100000, guid: 2c48868b4f0a0744fa712e89427c4795, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0

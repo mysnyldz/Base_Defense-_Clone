@@ -95,6 +95,7 @@ namespace Managers
             CoreGameSignals.Instance.onReset += OnReset;
             CoreGameSignals.Instance.onApplicationQuit += OnSave;
             CoreGameSignals.Instance.onApplicationPause += OnSave;
+            BaseSignals.Instance.onGetBaseCount += OnGetBaseCount;
         }
 
         private void UnsubscribeEvents()
@@ -105,6 +106,7 @@ namespace Managers
             CoreGameSignals.Instance.onReset -= OnReset;
             CoreGameSignals.Instance.onApplicationQuit -= OnSave;
             CoreGameSignals.Instance.onApplicationPause -= OnSave;
+            BaseSignals.Instance.onGetBaseCount -= OnGetBaseCount;
         }
 
         private void OnDisable()
@@ -118,6 +120,7 @@ namespace Managers
         {
             Save();
         }
+        
 
 
         #region Level Management
@@ -138,11 +141,11 @@ namespace Managers
 
         private void OnInitializeBase()
         {
-            _baseID = GetLevelCount();
+            _baseID = OnGetBaseCount();
             _baseLoader.InitializeLevel(_baseID, BaseHolder.transform);
         }
 
-        private int GetLevelCount()
+        private int OnGetBaseCount()
         {
             return _baseID % Resources.Load<CD_Base>("Data/CD_Base").baseData.Count;
         }

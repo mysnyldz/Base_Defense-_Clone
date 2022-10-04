@@ -81,7 +81,7 @@ namespace Controllers
                             0.5f).OnComplete(() => { obj.transform.parent = moneyTakenPoint.transform; });
                     obj.transform.DOLocalMove(new Vector3(0, 0.05f, 0), 2f).SetDelay(1f).OnComplete(() =>
                     {
-                        PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Money, obj);
+                        PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Money.ToString(), obj);
                     });
                     CurrencySignals.Instance.onAddMoney?.Invoke(1);
                     _maxMoneyCount--;

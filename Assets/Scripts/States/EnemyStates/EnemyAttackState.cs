@@ -33,7 +33,7 @@ namespace States.EnemyStates
         public override void EnterState()
         {
             _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
-            _manager.StartCoroutine(_manager.AtackDelayTime());
+            _manager.Attack(true);
         }
 
         public override void UpdateState()
@@ -42,7 +42,11 @@ namespace States.EnemyStates
             if (_agent.remainingDistance >= _agent.stoppingDistance)
             {
                 _manager.SwitchState(EnemyStatesTypes.MovePlayer);
-                _manager.StopAllCoroutines();
+            }
+
+            if (_manager.Health())
+            {
+                _manager.SwitchState(EnemyStatesTypes.Death);
             }
         }
 
@@ -61,6 +65,7 @@ namespace States.EnemyStates
         {
             if (other.CompareTag("PlayerSphere"))
             {
+                _manager.Attack(false);
                 _manager.BasePoints = EnemySignals.Instance.onGetBasePoints?.Invoke();
                 _manager.Player = null;
                 _manager.SwitchState(EnemyStatesTypes.MoveBase);

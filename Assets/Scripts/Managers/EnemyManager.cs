@@ -35,13 +35,15 @@ namespace Managers
 
         #region Private Variables
 
+        [ShowInInspector] private EnemyAnimTypes _enemyAnimTypes;
         private EnemyBaseState _currentEnemyBaseState;
         private EnemyMoveBaseState _enemyMoveBaseState;
         private EnemyMovePlayerState _enemyMovePlayerState;
         private EnemyAttackState _enemyAttackState;
         private EnemyDeathState _enemyDeathState;
         private EnemyMoveMineTnt _enemyMoveMineTnt;
-        private EnemyTypesData _enemyTypesData;
+        private EnemyTypesData _data;
+        private int _healt;
 
         #endregion
 
@@ -49,36 +51,34 @@ namespace Managers
 
         private void Awake()
         {
-            var manager = this;
-            _enemyTypesData = Resources.Load<CD_Enemy>("Data/CD_Enemy").EnemyData.EnemyTypeDatas[types];
-            _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _enemyTypesData);
-            _enemyMovePlayerState = new EnemyMovePlayerState(ref manager, ref agent, ref _enemyTypesData);
-            _enemyAttackState = new EnemyAttackState(ref manager, ref agent, ref _enemyTypesData);
-            _enemyDeathState = new EnemyDeathState(ref manager, ref agent, ref _enemyTypesData);
-            _enemyMoveMineTnt = new EnemyMoveMineTnt(ref manager, ref agent, ref _enemyTypesData);
+            GetReferences();
         }
 
 
         private void OnEnable()
         {
+            _healt = _data.Health;
             BasePoints = EnemySignals.Instance.onGetBasePoints?.Invoke();
             Player = EnemySignals.Instance.onGetPlayerPoints?.Invoke();
             MineTnt = EnemySignals.Instance.onGetMineTntPoints?.Invoke();
-            agent = GetComponent<NavMeshAgent>();
+            _currentEnemyBaseState = _enemyMoveBaseState;
             _currentEnemyBaseState.EnterState();
         }
 
         private void OnDisable()
         {
-            BasePoints = null;
-            Player = null;
-            MineTnt = null;
-            _currentEnemyBaseState = _enemyMoveBaseState;
+            
         }
 
-        private void Start()
+        private void GetReferences()
         {
-            _currentEnemyBaseState.EnterState();
+            var manager = this;
+            _data = Resources.Load<CD_Enemy>("Data/CD_Enemy").EnemyData.EnemyTypeDatas[types];
+            _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _data);
+            _enemyMovePlayerState = new EnemyMovePlayerState(ref manager, ref agent, ref _data);
+            _enemyAttackState = new EnemyAttackState(ref manager, ref agent, ref _data);
+            _enemyDeathState = new EnemyDeathState(ref manager, ref agent, ref _data);
+            _enemyMoveMineTnt = new EnemyMoveMineTnt(ref manager, ref agent, ref _data);
         }
 
         private void Update()
@@ -92,15 +92,56 @@ namespace Managers
             _currentEnemyBaseState.OnTriggerEnter(other);
         }
 
+        private void OnTriggerExit(Collider other)
+        {
+            _currentEnemyBaseState.OnTriggerExit(other);
+        }
+
         public void SetTriggerAnim(EnemyAnimTypes types)
         {
+            _enemyAnimTypes = types;
+            Debug.Log("Anim "+ types);
             animationController.SetAnim(types);
         }
 
-        public IEnumerator AtackDelayTime()
+        public void Attack(bool attack)
         {
-            yield return new WaitForSeconds(1.5f);
-            SwitchState(EnemyStatesTypes.Attack);
+            if (attack)
+            {
+                StartCoroutine(AtackWaiter());
+            }
+            else
+            {
+                StopAllCoroutines();
+            }
+        }
+
+        public void Death()
+        {
+            StartCoroutine(DeathWaiter());
+        }
+
+        public bool Health()
+        {
+            return _healt == 0;
+        }
+
+
+        public IEnumerator AtackWaiter()
+        {
+            WaitForSeconds wait = new WaitForSeconds(1.5f);
+            while (true)
+            {
+                SwitchState(EnemyStatesTypes.Attack);
+                yield return wait;
+            }
+        }
+
+        public IEnumerator DeathWaiter()
+        {
+            WaitForSeconds wait = new WaitForSeconds(1.5f);
+            SwitchState(EnemyStatesTypes.Death);
+            yield return wait;
         }
 
 

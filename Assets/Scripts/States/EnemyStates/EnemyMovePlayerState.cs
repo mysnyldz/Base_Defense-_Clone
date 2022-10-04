@@ -39,7 +39,7 @@ namespace States.EnemyStates
 
         public override void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("PlayerTargetSphere"))
+            if (other.CompareTag("PlayerSphere"))
             {
                 _agent.SetDestination(_manager.Player.transform.position);
                 _manager.SetTriggerAnim(EnemyAnimTypes.Run);

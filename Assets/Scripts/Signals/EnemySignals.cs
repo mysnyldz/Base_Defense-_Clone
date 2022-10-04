@@ -6,8 +6,8 @@ namespace Signals
 {
     public class EnemySignals : MonoSingleton <EnemySignals>
     {
-        public Func<GameObject> onGetBasePoints = () => default;
-        public Func<GameObject> onGetPlayerPoints = () => default;
-        public Func<GameObject> onGetMineTntPoints = () => default;
+        public Func<GameObject> onGetBasePoints = delegate { return default;};
+        public Func<GameObject> onGetPlayerPoints = delegate { return default;};
+        public Func<GameObject> onGetMineTntPoints = delegate { return default;};
     }
 }

@@ -13,7 +13,41 @@ MonoBehaviour:
   m_Name: CD_Base
   m_EditorClassIdentifier: 
   baseData:
-  - BaseId: 0
-  - BaseId: 1
-  - BaseId: 2
-  - BaseId: 3
+  - BaseData:
+      BaseIdDatas:
+        BaseId: 0
+    SpawnData:
+      SpawnDatas:
+      - EnemyTypes: 0
+        EnemyCount: 10
+        CurrentEnemyCount: 0
+      - EnemyTypes: 1
+        EnemyCount: 5
+        CurrentEnemyCount: 0
+      - EnemyTypes: 2
+        EnemyCount: 6
+        CurrentEnemyCount: 0
+  - BaseData:
+      BaseIdDatas:
+        BaseId: 1
+    SpawnData:
+      SpawnDatas:
+      - EnemyTypes: 0
+        EnemyCount: 0
+        CurrentEnemyCount: 0
+      - EnemyTypes: 0
+        EnemyCount: 0
+        CurrentEnemyCount: 0
+      - EnemyTypes: 0
+        EnemyCount: 0
+        CurrentEnemyCount: 0
+  - BaseData:
+      BaseIdDatas:
+        BaseId: 2
+    SpawnData:
+      SpawnDatas: []
+  - BaseData:
+      BaseIdDatas:
+        BaseId: 3
+    SpawnData:
+      SpawnDatas: []

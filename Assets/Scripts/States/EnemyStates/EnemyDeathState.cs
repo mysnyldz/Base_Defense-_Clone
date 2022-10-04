@@ -28,7 +28,9 @@ namespace States.EnemyStates
         }
         public override void EnterState()
         {
-            
+            _agent.Stop();
+            _manager.Attack(false);
+            _manager.Death();
         }
 
         public override void UpdateState()

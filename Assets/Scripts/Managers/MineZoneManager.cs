@@ -110,7 +110,7 @@ namespace Managers
 
         private void OnDepotAddGem(GameObject obj)
         {
-            var gem = PoolSignals.Instance.onGetPoolObject(PoolType.Gem, obj.transform);
+            var gem = PoolSignals.Instance.onGetPoolObject(PoolType.Gem.ToString(), obj.transform);
             if (gem == null) return;
             gem.transform.SetParent(gemDepot.transform);
             SetGemPosition(gem);
@@ -145,7 +145,7 @@ namespace Managers
                 obj.transform.DOLocalRotate(Vector3.zero, 0.1f);
                 obj.transform.DOLocalMove(new Vector3(0,0.75f,0), 0.5f).SetDelay(1f).OnComplete(() =>
                 {
-                    PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Gem, obj);
+                    PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Gem.ToString(), obj);
                 });
                 _gemList.Remove(obj);
                 _gemList.TrimExcess();

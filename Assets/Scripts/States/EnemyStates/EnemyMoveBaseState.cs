@@ -32,20 +32,31 @@ namespace States.EnemyStates
         }
         public override void EnterState()
         {
-            _agent.SetDestination(_manager.BasePoints.transform.position);
+            _agent.speed = _data.MoveSpeed;
             _manager.SetTriggerAnim(EnemyAnimTypes.Walk);
+            _agent.SetDestination(_manager.BasePoints.transform.position);
         }
 
         public override void UpdateState()
         {
+            if (_manager.Health())
+            {
+                _manager.SwitchState(EnemyStatesTypes.Death);
+            }
             
         }
 
         public override void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("EnemyBasePoint"))
+            if (other.CompareTag("EnemyBasePoints"))
             {
                 _manager.SwitchState(EnemyStatesTypes.Attack);
+            }
+
+            if (other.CompareTag("PlayerSphere"))
+            {
+                _manager.Player = other.transform.parent.gameObject;
+                _manager.SwitchState(EnemyStatesTypes.MovePlayer);
             }
         }
 

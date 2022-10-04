@@ -2,8 +2,8 @@
 {
     public enum EnemyTypes
     {
-        Normal,
-        Tank,
-        Speed
+        EnemyNormal,
+        EnemyTank,
+        EnemySpeed
     }
 }

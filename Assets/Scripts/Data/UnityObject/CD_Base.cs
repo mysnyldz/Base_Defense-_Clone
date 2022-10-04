@@ -7,6 +7,6 @@ namespace Data.UnityObject
     [CreateAssetMenu(fileName = "CD_Base", menuName = "CD_Objects/CD_Base", order = 0)]
     public class CD_Base : ScriptableObject
     {
-        public List<BaseIdData> baseData = new List<BaseIdData>();
+        public List<LevelData> baseData;
     }
 }

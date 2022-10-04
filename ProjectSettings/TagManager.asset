@@ -18,6 +18,7 @@ TagManager:
   - TurretOperatorArea
   - CostArea
   - PlayerSphere
+  - EnemyBasePoints
   layers:
   - Default
   - TransparentFX

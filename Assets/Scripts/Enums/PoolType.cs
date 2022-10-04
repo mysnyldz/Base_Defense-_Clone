@@ -4,8 +4,10 @@
     {
         Gem,
         Ammo,
-        Money
-        //Enemy,
+        Money,
+        EnemyNormal,
+        EnemySpeed,
+        EnemyTank
         //Miner,
     }
 }

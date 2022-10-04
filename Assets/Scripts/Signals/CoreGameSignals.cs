@@ -27,8 +27,6 @@ namespace Signals
         
         public UnityAction onApplicationQuit = delegate { };
 
-        public Func<int> onGetLevelID = delegate { return 0; };
-
         public UnityAction onEnterTurret = delegate {  };
         public UnityAction onEnterDrone = delegate {  };
     }

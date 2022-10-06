@@ -1,6 +1,8 @@
 ﻿using Abstract;
 using Data.ValueObject;
+using Enums;
 using Managers;
+using Signals;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,9 +30,8 @@ namespace States.EnemyStates
         }
         public override void EnterState()
         {
-            _agent.Stop();
-            _manager.Attack(false);
-            _manager.Death();
+            _agent.enabled = false;
+            _agent.gameObject.SetActive(false);
         }
 
         public override void UpdateState()

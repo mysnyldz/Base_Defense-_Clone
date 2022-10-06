@@ -9,5 +9,6 @@ namespace Data.ValueObject
         public float MoveSpeed;
         public float RunSpeed;
         public int Damage;
+        public float AttackRange;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using Managers;
 using Signals;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Controllers.PlayerControllers
         #region Serialized Variables
 
         [SerializeField] private PlayerManager _manager;
+        [SerializeField] private GameObject _playerSphere;
         
 
         #endregion
@@ -58,7 +60,15 @@ namespace Controllers.PlayerControllers
                 }
             }
 
-            
+            if (other.CompareTag("GateOutside"))
+            {
+                _playerSphere.transform.DOScale(new Vector3(2.5f,2.5f,2.5f),1f).SetEase(Ease.OutFlash);
+            }
+
+            if (other.CompareTag("GateInside"))
+            {
+                _playerSphere.transform.DOScale(new Vector3(0,0,0),2f).SetEase(Ease.OutFlash);
+            }
 
             if (other.CompareTag("GemDepot"))
             {

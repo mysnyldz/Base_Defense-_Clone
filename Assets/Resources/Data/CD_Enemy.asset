@@ -17,14 +17,17 @@ MonoBehaviour:
       m_Keys: 000000000100000002000000
       m_Values:
       - Health: 15
-        MoveSpeed: 2
-        RunSpeed: 3
-        Damage: 10
-      - Health: 30
         MoveSpeed: 1
-        RunSpeed: 2
+        RunSpeed: 1.5
+        Damage: 10
+        AttackRange: 2
+      - Health: 30
+        MoveSpeed: 0.5
+        RunSpeed: 1
         Damage: 15
+        AttackRange: 2
       - Health: 10
-        MoveSpeed: 3
-        RunSpeed: 4
+        MoveSpeed: 2
+        RunSpeed: 2.5
         Damage: 7
+        AttackRange: 2

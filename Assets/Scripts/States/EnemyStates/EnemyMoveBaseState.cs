@@ -17,8 +17,6 @@ namespace States.EnemyStates
         private EnemyManager _manager;
         private NavMeshAgent _agent;
         private EnemyTypesData _data;
-        private EnemyBaseState _enemyBaseStateImplementation;
-        private EnemyBaseState _enemyBaseStateImplementation1;
 
         #endregion
 
@@ -57,6 +55,12 @@ namespace States.EnemyStates
             {
                 _manager.Player = other.transform.parent.gameObject;
                 _manager.SwitchState(EnemyStatesTypes.MovePlayer);
+            }
+
+            if (other.CompareTag("MineTnt"))
+            {
+                _manager.MineTnt = other.transform.parent.gameObject;
+                _manager.SwitchState(EnemyStatesTypes.MoveMineTnt);
             }
         }
 

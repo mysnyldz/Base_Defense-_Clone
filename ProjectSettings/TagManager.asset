@@ -19,6 +19,7 @@ TagManager:
   - CostArea
   - PlayerSphere
   - EnemyBasePoints
+  - MineTnt
   layers:
   - Default
   - TransparentFX

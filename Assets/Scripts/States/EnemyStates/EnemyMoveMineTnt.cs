@@ -29,6 +29,7 @@ namespace States.EnemyStates
         }
         public override void EnterState()
         {
+            _agent.speed = _data.RunSpeed;
             _agent.SetDestination(_manager.MineTnt.transform.position);
             _manager.SetTriggerAnim(EnemyAnimTypes.Run);
         }

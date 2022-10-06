@@ -97,29 +97,28 @@ namespace Managers
             _currentEnemyBaseState.OnTriggerExit(other);
         }
 
-        public void SetTriggerAnim(EnemyAnimTypes types)
+        public void SetTriggerAnim(EnemyAnimTypes animTypestypes)
         {
-            _enemyAnimTypes = types;
-            Debug.Log("Anim "+ types);
-            animationController.SetAnim(types);
+            _enemyAnimTypes = animTypestypes;
+            animationController.SetAnim(animTypestypes);
         }
 
-        public void Attack(bool attack)
-        {
-            if (attack)
-            {
-                StartCoroutine(AtackWaiter());
-            }
-            else
-            {
-                StopAllCoroutines();
-            }
-        }
+        //public void Attack(bool attack)
+        //{
+        //    if (attack)
+        //    {
+        //        StartCoroutine(AttackWaiter());
+        //    }
+        //    else
+        //    {
+        //        StopAllCoroutines();
+        //    }
+        //}
 
-        public void Death()
-        {
-            StartCoroutine(DeathWaiter());
-        }
+      //  public void Death()
+      //  {
+      //      StartCoroutine(DeathWaiter());
+      //  }
 
         public bool Health()
         {
@@ -127,22 +126,22 @@ namespace Managers
         }
 
 
-        public IEnumerator AtackWaiter()
-        {
-            WaitForSeconds wait = new WaitForSeconds(1.5f);
-            while (true)
-            {
-                SwitchState(EnemyStatesTypes.Attack);
-                yield return wait;
-            }
-        }
-
-        public IEnumerator DeathWaiter()
-        {
-            WaitForSeconds wait = new WaitForSeconds(1.5f);
-            SwitchState(EnemyStatesTypes.Death);
-            yield return wait;
-        }
+       // public IEnumerator AttackWaiter()
+       // {
+       //     WaitForSeconds wait = new WaitForSeconds(2f);
+       //     while (true)
+       //     {
+       //         SwitchState(EnemyStatesTypes.Attack);
+       //         yield return wait;
+       //     }
+       // }
+//
+       // public IEnumerator DeathWaiter()
+       // {
+       //     WaitForSeconds wait = new WaitForSeconds(1.5f);
+       //     SwitchState(EnemyStatesTypes.Death);
+       //     yield return wait;
+       // }
 
 
         public void SwitchState(EnemyStatesTypes state)

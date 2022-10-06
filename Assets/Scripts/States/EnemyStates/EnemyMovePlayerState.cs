@@ -2,6 +2,7 @@
 using Data.ValueObject;
 using Enums;
 using Managers;
+using Signals;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -29,31 +30,40 @@ namespace States.EnemyStates
         }
         public override void EnterState()
         {
+            _agent.SetDestination(_manager.Player.transform.position);
+            _agent.speed = _data.RunSpeed;
+            _manager.SetTriggerAnim(EnemyAnimTypes.Run);
             
         }
 
         public override void UpdateState()
         {
-            
+            _agent.destination = _manager.Player.transform.position;
+            if (_data.AttackRange > _agent.remainingDistance)
+            {
+                _manager.SwitchState(EnemyStatesTypes.Attack);
+            }
+
+            if (_manager.Health())
+            {
+                _manager.SwitchState(EnemyStatesTypes.Death);
+            }
         }
 
         public override void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("PlayerSphere"))
-            {
-                _agent.SetDestination(_manager.Player.transform.position);
-                _manager.SetTriggerAnim(EnemyAnimTypes.Run);
-            }
-
             if (other.CompareTag("Player"))
             {
-                _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
+                _manager.SwitchState(EnemyStatesTypes.Attack);
             }
         }
 
         public override void OnTriggerExit(Collider other)
         {
-            
+            if (other.CompareTag("PlayerSphere"))
+            {
+                _manager.SwitchState(EnemyStatesTypes.MoveBase);
+            }
         }
     }
 }

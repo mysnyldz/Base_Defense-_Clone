@@ -20,6 +20,7 @@ namespace Managers
         [Header("Data")] public PlayerData Data;
         [Header("Data")] public AmmoStackData AmmoStackData;
         [Header("Data")] public MoneyStackData MoneyStackData;
+        [Header("Data")] public TurretAmmoData TurretAmmoData;
         
         #endregion
 
@@ -52,12 +53,14 @@ namespace Managers
             Data = GetPlayerData();
             MoneyStackData = GetMoneyStackData();
             AmmoStackData = GetAmmoStackData();
+            TurretAmmoData = GetTurretData();
             Init();
         }
 
         private PlayerData GetPlayerData() => Resources.Load<CD_Player>("Data/CD_Player").PlayerData;
         private MoneyStackData GetMoneyStackData() => Resources.Load<CD_MoneyStackData>("Data/CD_MoneyStackData").Data;
         private AmmoStackData GetAmmoStackData() => Resources.Load<CD_AmmoStackData>("Data/CD_AmmoStackData").Data;
+        private TurretAmmoData GetTurretData() => Resources.Load<CD_TurretAmmoData>("Data/CD_TurretAmmoData").Data;
 
         private void Init()
         {
@@ -85,6 +88,7 @@ namespace Managers
             InputSignals.Instance.onInputDragged += OnGetInputValues;
             InputSignals.Instance.onInputTaken += OnActivateMovement;
             InputSignals.Instance.onInputReleased += OnDeactiveMovement;
+            IdleSignals.Instance.onGetAmmoStackController += OnGetAmmoStackController;
         }
 
         private void UnsubscribeEvents()
@@ -94,6 +98,7 @@ namespace Managers
             InputSignals.Instance.onInputDragged -= OnGetInputValues;
             InputSignals.Instance.onInputTaken -= OnActivateMovement;
             InputSignals.Instance.onInputReleased -= OnDeactiveMovement;
+            IdleSignals.Instance.onGetAmmoStackController -= OnGetAmmoStackController;
         }
 
         private void OnDisable()
@@ -140,7 +145,6 @@ namespace Managers
         {
             return ammoStackController.DecreaseStack();
         }
-        
 
         private void OnPlay() => movementController.IsReadyToPlay(true);
 
@@ -148,5 +152,7 @@ namespace Managers
         {
             gameObject.SetActive(false);
         }
+        
+        private AmmoStackController OnGetAmmoStackController() => ammoStackController;
     }
 }

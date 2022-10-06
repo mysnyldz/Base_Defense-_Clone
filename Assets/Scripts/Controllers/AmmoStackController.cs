@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cinemachine;
 using Data.UnityObject;
 using Data.ValueObject;
 using DG.Tweening;
@@ -29,10 +30,11 @@ namespace Controllers
         #region Private Variables
 
         private AmmoStackData _data;
-        private float _directx;
-        private float _directy;
-        private float _directz;
+        private TurretAmmoData _zoneData;
         private int _maxAmmoCount = 0;
+        private List<int> _capacity;
+        private int _ammoDistance;
+        private Vector3 _direct = Vector3.zero;
 
         #endregion
 
@@ -45,9 +47,8 @@ namespace Controllers
 
         private void AddStack(GameObject obj)
         {
-            
             obj.transform.SetParent(transform);
-            ObjPosition(obj);
+            StackObjPosition(obj);
             StackList.Add(obj);
         }
 
@@ -93,14 +94,14 @@ namespace Controllers
             return null;
         }
 
-        private void ObjPosition(GameObject obj)
+        private void StackObjPosition(GameObject obj)
         {
-            _directx = 0;
-            _directy = StackList.Count % _data.AmmoCountY * _data.OffsetFactorY;
-            _directz = -(StackList.Count % (_data.AmmoCountZ * _data.AmmoCountY) / _data.AmmoCountY *
-                         _data.OffsetFactorZ);
+            _direct.x = 0;
+            _direct.y = StackList.Count % _data.AmmoCountY * _data.OffsetFactorY;
+            _direct.z = -(StackList.Count % (_data.AmmoCountZ * _data.AmmoCountY) / _data.AmmoCountY *
+                          _data.OffsetFactorZ);
             obj.transform.DOLocalRotate(new Vector3(0, 0, 0), 1).SetEase(Ease.OutQuad);
-            obj.transform.DOLocalMove(new Vector3(_directx, _directy, _directz), 0.5f).SetEase(Ease.OutQuad);
+            obj.transform.DOLocalMove(new Vector3(_direct.x, _direct.y, _direct.z), 0.5f).SetEase(Ease.OutQuad);
             _maxAmmoCount++;
         }
     }

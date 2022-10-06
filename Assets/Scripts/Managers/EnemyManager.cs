@@ -43,7 +43,7 @@ namespace Managers
         private EnemyDeathState _enemyDeathState;
         private EnemyMoveMineTnt _enemyMoveMineTnt;
         private EnemyTypesData _data;
-        private int _healt;
+        private int _health;
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace Managers
 
         private void OnEnable()
         {
-            _healt = _data.Health;
+            _health = _data.Health;
             BasePoints = EnemySignals.Instance.onGetBasePoints?.Invoke();
             Player = EnemySignals.Instance.onGetPlayerPoints?.Invoke();
             MineTnt = EnemySignals.Instance.onGetMineTntPoints?.Invoke();
@@ -103,45 +103,10 @@ namespace Managers
             animationController.SetAnim(animTypestypes);
         }
 
-        //public void Attack(bool attack)
-        //{
-        //    if (attack)
-        //    {
-        //        StartCoroutine(AttackWaiter());
-        //    }
-        //    else
-        //    {
-        //        StopAllCoroutines();
-        //    }
-        //}
-
-      //  public void Death()
-      //  {
-      //      StartCoroutine(DeathWaiter());
-      //  }
-
         public bool Health()
         {
-            return _healt == 0;
+            return _health == 0;
         }
-
-
-       // public IEnumerator AttackWaiter()
-       // {
-       //     WaitForSeconds wait = new WaitForSeconds(2f);
-       //     while (true)
-       //     {
-       //         SwitchState(EnemyStatesTypes.Attack);
-       //         yield return wait;
-       //     }
-       // }
-//
-       // public IEnumerator DeathWaiter()
-       // {
-       //     WaitForSeconds wait = new WaitForSeconds(1.5f);
-       //     SwitchState(EnemyStatesTypes.Death);
-       //     yield return wait;
-       // }
 
 
         public void SwitchState(EnemyStatesTypes state)

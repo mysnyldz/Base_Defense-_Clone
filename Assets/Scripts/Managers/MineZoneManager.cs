@@ -33,7 +33,7 @@ namespace Managers
         #region Private Variables
 
         private MineZoneData _zoneData;
-        private List<int> _capacity;
+        private List<int> _veinsListCache;
         private int _rand;
         private int _gemDistance;
         private Vector3 _direct = Vector3.zero;
@@ -55,7 +55,7 @@ namespace Managers
             IdleSignals.Instance.onGetMineGemVeinTarget += OnGetMineGemVeinTarget;
             IdleSignals.Instance.onGetMineDepotTarget += OnGetMineDepotTarget;
             IdleSignals.Instance.onDepotAddGem += OnDepotAddGem;
-            IdleSignals.Instance.onPlayerEnterDepot += OnPlayerEnterDepot;
+            IdleSignals.Instance.onPlayerEnterGemDepot += OnPlayerEnterDepot;
         }
 
         private void UnsubscribeEvents()
@@ -63,7 +63,7 @@ namespace Managers
             IdleSignals.Instance.onGetMineGemVeinTarget -= OnGetMineGemVeinTarget;
             IdleSignals.Instance.onGetMineDepotTarget -= OnGetMineDepotTarget;
             IdleSignals.Instance.onDepotAddGem -= OnDepotAddGem;
-            IdleSignals.Instance.onPlayerEnterDepot += OnPlayerEnterDepot;
+            IdleSignals.Instance.onPlayerEnterGemDepot += OnPlayerEnterDepot;
         }
 
         private void OnDisable()
@@ -82,7 +82,7 @@ namespace Managers
 
         private void Start()
         {
-            _capacity = new List<int>(new int[veins.Count]);
+            _veinsListCache = new List<int>(new int[veins.Count]);
             _gemDistance = _zoneData.GemCountX * _zoneData.GemCountZ;
         }
 
@@ -90,14 +90,14 @@ namespace Managers
         {
             while (true)
             {
-                _rand = Random.Range(0, _capacity.Count);
-                if (_capacity[_rand] != _zoneData.MaxMinerCapacity)
+                _rand = Random.Range(0, _veinsListCache.Count);
+                if (_veinsListCache[_rand] != _zoneData.MaxMinerCapacity)
                 {
-                    _capacity[_rand]++;
+                    _veinsListCache[_rand]++;
                     break;
                 }
 
-                if (_capacity.Any(cap => cap != _zoneData.MaxMinerCapacity)) continue;
+                if (_veinsListCache.Any(cap => cap != _zoneData.MaxMinerCapacity)) continue;
             }
 
             return veins[_rand];

@@ -72,6 +72,11 @@ namespace Controllers.PlayerControllers
             {
                 IdleSignals.Instance.onPlayerEnterGemDepot?.Invoke(gameObject);
             }
+
+            if (other.CompareTag("Turret"))
+            {
+                IdleSignals.Instance.onPlayerOnTurret?.Invoke(gameObject);
+            }
         }
 
         private void OnTriggerStay(Collider other)
@@ -89,8 +94,8 @@ namespace Controllers.PlayerControllers
 
             if (other.CompareTag("TurretDepot"))
             {
-                _timer += (Time.fixedDeltaTime) * 0.4f;
-                if (_timer >= _spendTime && _maxTurretAmmoCount < _manager.TurretAmmoData.MaxAmmoCapacity)
+                _timer += (Time.fixedDeltaTime) * 1.5f;
+                if (_timer >= _spendTime && _maxTurretAmmoCount < _manager.TurretData.MaxAmmoCapacity)
                 {
                     _timer = 0;
                     IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);

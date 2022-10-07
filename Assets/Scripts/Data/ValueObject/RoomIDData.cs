@@ -11,7 +11,7 @@ namespace Data.ValueObject
 
         //public RoomTypes RoomTypes;
         
-        public TurretData Turret;
+        public RoomTurretData roomTurret;
 
         public int RoomPrice;
 
@@ -21,11 +21,11 @@ namespace Data.ValueObject
         
         public RoomStageTypes RoomStageType;
 
-        public RoomIDData(RoomTypes roomTypes ,TurretData turret, int roomId, int roomPrice, int payedAmount,
+        public RoomIDData(RoomTypes roomTypes ,RoomTurretData roomTurret, int roomId, int roomPrice, int payedAmount,
             RoomStageTypes roomStageType)
         {
            // RoomTypes = roomTypes;
-            Turret = turret;
+            this.roomTurret = roomTurret;
             RoomID = roomId;
             RoomPrice = roomPrice;
             PayedAmount = payedAmount;

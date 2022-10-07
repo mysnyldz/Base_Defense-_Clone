@@ -4,7 +4,10 @@ using Controllers;
 using Data.UnityObject;
 using Data.ValueObject;
 using DG.Tweening;
+using Enums;
+using Keys;
 using Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Managers
@@ -20,18 +23,17 @@ namespace Managers
         #region Serializefield Variables
 
         [SerializeField] private GameObject turretDepot;
-        [SerializeField] private List<GameObject> _ammoList = new List<GameObject>();
-        [SerializeField] private List<GameObject> _ammoStackList = new List<GameObject>();
-        [SerializeField] private AmmoStackController ammoStackController;
+        [SerializeField] private GameObject playerFiringPosition;
+        [SerializeField] private TurretDepotController turretDepotController;
+        [SerializeField] private TurretStates TurretStates = TurretStates.Empty;
+        [SerializeField] private GameObject playerMovement;
 
         #endregion
 
         #region Private Variables
 
-        private TurretAmmoData _zoneData;
-        private List<int> _capacity;
-        private int _ammoDistance;
-        private Vector3 _direct = Vector3.zero;
+        private TurretData _data;
+        private Rigidbody _rb;
 
         #endregion
 
@@ -41,20 +43,22 @@ namespace Managers
 
         private void Awake()
         {
-            _zoneData = GetTurretData();
-            ammoStackController = IdleSignals.Instance.onGetAmmoStackController?.Invoke();
+            _data = GetTurretData();
+            playerMovement = IdleSignals.Instance.onPlayerMovement?.Invoke();
         }
-
 
         private void OnEnable()
         {
             SubscribeEvents();
         }
+        private TurretData GetTurretData() => Resources.Load<CD_TurretData>("Data/CD_TurretData").Data;
 
         private void SubscribeEvents()
         {
             IdleSignals.Instance.onGetAmmoDepotTarget += OnGetAmmoDepotTarget;
             IdleSignals.Instance.onPlayerEnterTurretDepot += OnPlayerEnterAmmoDepot;
+            IdleSignals.Instance.onPlayerOnTurret += OnPlayerOnTurret;
+
         }
 
 
@@ -62,6 +66,7 @@ namespace Managers
         {
             IdleSignals.Instance.onGetAmmoDepotTarget -= OnGetAmmoDepotTarget;
             IdleSignals.Instance.onPlayerEnterTurretDepot -= OnPlayerEnterAmmoDepot;
+            IdleSignals.Instance.onPlayerOnTurret -= OnPlayerOnTurret;
         }
 
 
@@ -72,50 +77,31 @@ namespace Managers
 
         #endregion
 
-        private void Start()
+        private void OnPlayerEnterAmmoDepot(GameObject obj)
         {
-            _ammoDistance = _zoneData.AmmoCountX * _zoneData.AmmoCountZ;
-            _ammoStackList = ammoStackController.StackList;
+            turretDepotController.OnDepotAmmo(obj);
         }
 
-        private TurretAmmoData GetTurretData() => Resources.Load<CD_TurretAmmoData>("Data/CD_TurretAmmoData").Data;
-
-
-        private void DepotAddAmmo(GameObject obj)
+        private void OnPlayerOnTurret(GameObject obj)
         {
-            var ammo = _ammoStackList[_ammoStackList.Count - 1];
-            ammo.transform.SetParent(turretDepot.transform);
-            SetAmmoPosition(ammo);
-            _ammoList.Add(ammo);
-            if (ammo == null) return;
-            _ammoStackList.RemoveAt(_ammoStackList.Count - 1);
-            _ammoStackList.TrimExcess();
+            _rb = obj.GetComponent<Rigidbody>();
+            if (TurretStates == TurretStates.Empty)
+            {
+                TurretStates = TurretStates.PlayerOnTurret;
+                obj.transform.SetParent(playerFiringPosition.transform);
+                obj.transform.position = playerFiringPosition.transform.position;
+                InputSignals.Instance.onInputReleased?.Invoke();
+                _rb.constraints = RigidbodyConstraints.FreezePosition;
+            }
+
+
         }
 
-        private GameObject OnGetAmmoDepotTarget()
+        public GameObject OnGetAmmoDepotTarget()
         {
             return turretDepot;
         }
-
-
-        public GameObject AmmoDecreaseDepot()
-        {
-            return null;
-        }
-
-        private void OnPlayerEnterAmmoDepot(GameObject obj)
-        {
-            DepotAddAmmo(obj);
-        }
-
-        private void SetAmmoPosition(GameObject obj)
-        {
-            _direct = _zoneData.AmmoInitPoint;
-            _direct.x = _direct.x + (_ammoList.Count % _zoneData.AmmoCountX) / _zoneData.OffsetFactorX;
-            _direct.y = _direct.y + (_ammoList.Count / _ammoDistance)  / _zoneData.OffsetFactorY;
-            _direct.z = _direct.z + ((_ammoList.Count / _zoneData.AmmoCountX) % _zoneData.AmmoCountZ) /_zoneData.OffsetFactorZ ;
-            obj.transform.DOLocalRotate(new Vector3(0, 0, 0), 1).SetEase(Ease.OutQuad);
-            obj.transform.DOLocalMove(new Vector3(_direct.x, _direct.y, _direct.z), 0.5f).SetEase(Ease.OutQuad);
-        }
+        
+        
     }
 }

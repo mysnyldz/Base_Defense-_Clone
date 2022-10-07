@@ -34,7 +34,7 @@ namespace Managers
         private float money = 0;
         private int _uniqueID;
         private bool isCompleted;
-        private TurretData turretData;
+        private RoomTurretData _roomTurretData;
         private int roomID;
         private int roomPrice;
         private int payedAmount;
@@ -186,7 +186,7 @@ namespace Managers
 
         public void Save()
         {
-            RoomIDData roomIdData = new RoomIDData(roomTypes,turretData,roomID,roomPrice,payedAmount,roomStageType);
+            RoomIDData roomIdData = new RoomIDData(roomTypes,_roomTurretData,roomID,roomPrice,payedAmount,roomStageType);
             SaveLoadSignals.Instance.onSaveRoomData.Invoke(roomIdData, _uniqueID);
         }
 

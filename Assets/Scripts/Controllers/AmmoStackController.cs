@@ -30,7 +30,7 @@ namespace Controllers
         #region Private Variables
 
         private AmmoStackData _data;
-        private TurretAmmoData _zoneData;
+        private TurretDepotAmmoData _zoneData;
         private int _maxAmmoCount = 0;
         private List<int> _capacity;
         private int _ammoDistance;

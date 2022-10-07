@@ -20,7 +20,7 @@ namespace Managers
         [Header("Data")] public PlayerData Data;
         [Header("Data")] public AmmoStackData AmmoStackData;
         [Header("Data")] public MoneyStackData MoneyStackData;
-        [Header("Data")] public TurretAmmoData TurretAmmoData;
+        [Header("Data")] public TurretDepotAmmoData TurretData;
         
         #endregion
 
@@ -53,14 +53,14 @@ namespace Managers
             Data = GetPlayerData();
             MoneyStackData = GetMoneyStackData();
             AmmoStackData = GetAmmoStackData();
-            TurretAmmoData = GetTurretData();
+            TurretData = GetTurretData();
             Init();
         }
 
         private PlayerData GetPlayerData() => Resources.Load<CD_Player>("Data/CD_Player").PlayerData;
         private MoneyStackData GetMoneyStackData() => Resources.Load<CD_MoneyStackData>("Data/CD_MoneyStackData").Data;
         private AmmoStackData GetAmmoStackData() => Resources.Load<CD_AmmoStackData>("Data/CD_AmmoStackData").Data;
-        private TurretAmmoData GetTurretData() => Resources.Load<CD_TurretAmmoData>("Data/CD_TurretAmmoData").Data;
+        private TurretDepotAmmoData GetTurretData() => Resources.Load<CD_TurretData>("Data/CD_TurretData").Data.DepotAmmoData;
 
         private void Init()
         {
@@ -89,7 +89,9 @@ namespace Managers
             InputSignals.Instance.onInputTaken += OnActivateMovement;
             InputSignals.Instance.onInputReleased += OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController += OnGetAmmoStackController;
+            IdleSignals.Instance.onPlayerMovement += OnPlayerMovement;
         }
+
 
         private void UnsubscribeEvents()
         {
@@ -99,6 +101,7 @@ namespace Managers
             InputSignals.Instance.onInputTaken -= OnActivateMovement;
             InputSignals.Instance.onInputReleased -= OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController -= OnGetAmmoStackController;
+            IdleSignals.Instance.onPlayerMovement -= OnPlayerMovement;
         }
 
         private void OnDisable()
@@ -144,6 +147,10 @@ namespace Managers
         public GameObject AmmoDecreaseStack()
         {
             return ammoStackController.DecreaseStack();
+        }
+        private GameObject OnPlayerMovement()
+        {
+            return movementController.gameObject;
         }
 
         private void OnPlay() => movementController.IsReadyToPlay(true);

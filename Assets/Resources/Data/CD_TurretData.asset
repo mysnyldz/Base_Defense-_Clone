@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0cb2c2989af4840ae851c711a1d5c56, type: 3}
-  m_Name: CD_TurretAmmoData
+  m_Name: CD_TurretData
   m_EditorClassIdentifier: 
   Data:
     MaxAmmoCapacity: 12

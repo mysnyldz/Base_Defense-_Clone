@@ -20,7 +20,7 @@ namespace Managers
         [Header("Data")] public PlayerData Data;
         [Header("Data")] public AmmoStackData AmmoStackData;
         [Header("Data")] public MoneyStackData MoneyStackData;
-        [Header("Data")] public TurretDepotAmmoData TurretData;
+        [Header("Data")] public TurretData TurretData;
         
         #endregion
 
@@ -35,6 +35,8 @@ namespace Managers
         [SerializeField] private AmmoStackController ammoStackController;
 
         [SerializeField] private MoneyStackController moneyStackController;
+
+        [SerializeField] private GameObject playerHolder;
 
         #endregion
 
@@ -60,7 +62,7 @@ namespace Managers
         private PlayerData GetPlayerData() => Resources.Load<CD_Player>("Data/CD_Player").PlayerData;
         private MoneyStackData GetMoneyStackData() => Resources.Load<CD_MoneyStackData>("Data/CD_MoneyStackData").Data;
         private AmmoStackData GetAmmoStackData() => Resources.Load<CD_AmmoStackData>("Data/CD_AmmoStackData").Data;
-        private TurretDepotAmmoData GetTurretData() => Resources.Load<CD_TurretData>("Data/CD_TurretData").Data.DepotAmmoData;
+        private TurretData GetTurretData() => Resources.Load<CD_TurretData>("Data/CD_TurretData").Data;
 
         private void Init()
         {
@@ -89,8 +91,11 @@ namespace Managers
             InputSignals.Instance.onInputTaken += OnActivateMovement;
             InputSignals.Instance.onInputReleased += OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController += OnGetAmmoStackController;
-            IdleSignals.Instance.onPlayerMovement += OnPlayerMovement;
+            PlayerSignals.Instance.onPlayerMovement += OnPlayerMovement;
+            PlayerSignals.Instance.onPlayerOnTurretAnimation += OnPlayerOnTurretAnimation;
+            PlayerSignals.Instance.onGetPlayerParent += OnGetPlayerParent;
         }
+
 
 
         private void UnsubscribeEvents()
@@ -101,7 +106,9 @@ namespace Managers
             InputSignals.Instance.onInputTaken -= OnActivateMovement;
             InputSignals.Instance.onInputReleased -= OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController -= OnGetAmmoStackController;
-            IdleSignals.Instance.onPlayerMovement -= OnPlayerMovement;
+            PlayerSignals.Instance.onPlayerMovement -= OnPlayerMovement;
+            PlayerSignals.Instance.onPlayerOnTurretAnimation -= OnPlayerOnTurretAnimation;
+            PlayerSignals.Instance.onGetPlayerParent -= OnGetPlayerParent;
         }
 
         private void OnDisable()
@@ -154,6 +161,11 @@ namespace Managers
         }
 
         private void OnPlay() => movementController.IsReadyToPlay(true);
+        
+        private void OnPlayerOnTurretAnimation(PlayerAnimTypes animtypes)
+        {
+            movementController.IsOnTurret(true);
+        }
 
         private void OnReset()
         {
@@ -161,5 +173,6 @@ namespace Managers
         }
         
         private AmmoStackController OnGetAmmoStackController() => ammoStackController;
+        private GameObject OnGetPlayerParent() => playerHolder;
     }
 }

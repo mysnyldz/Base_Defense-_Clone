@@ -2,6 +2,7 @@
 using Enums;
 using Keys;
 using Managers;
+using Signals;
 using UnityEngine;
 
 namespace Controllers
@@ -19,7 +20,7 @@ namespace Controllers
         [SerializeField] private PlayerManager playerManager;
 
         [SerializeField] private new Rigidbody rigidbody;
-        [SerializeField] private bool isReadyToMove, isReadyToPlay;
+        [SerializeField] private bool isReadyToMove, isReadyToPlay, isOnTurret;
 
         #endregion
 
@@ -55,13 +56,19 @@ namespace Controllers
 
         public void IsReadyToPlay(bool state) => isReadyToPlay = state;
 
+        public void IsOnTurret(bool state) => isOnTurret = state;
+
         private void FixedUpdate()
         {
             if (isReadyToPlay)
             {
-                if (isReadyToMove)
+                if (isReadyToMove && isOnTurret != true )
                 {
                     Move();
+                }
+                else if (isOnTurret)
+                {
+                    Turret();
                 }
                 else
                 {
@@ -74,27 +81,36 @@ namespace Controllers
             }
         }
 
+        private void Turret()
+        {
+            if (_movementDirection.z * _movementData.PlayerJoystickSpeed <= -2f)
+            {
+                isOnTurret = false;
+                PlayerSignals.Instance.onPlayerOutTurret?.Invoke(playerManager.gameObject);
+            }
+            
+            playerManager.ChangePlayerAnimation(PlayerAnimTypes.Turret);
+        }
+
         private void Move()
         {
+            var movement = rigidbody.velocity;
+            movement = new Vector3(_movementDirection.x * _movementData.PlayerJoystickSpeed,
+                0,
+                _movementDirection.z * _movementData.PlayerJoystickSpeed);
+            rigidbody.velocity = movement;
+
+            Vector3 position;
+            position = new Vector3(rigidbody.position.x, (position = rigidbody.position).y, position.z);
+            rigidbody.position = position;
+
+            playerManager.ChangePlayerAnimation(PlayerAnimTypes.Run);
+
+            if (_movementDirection != Vector3.zero)
             {
-                var movement = rigidbody.velocity;
-                movement = new Vector3(_movementDirection.x * _movementData.PlayerJoystickSpeed,
-                    0,
-                    _movementDirection.z * _movementData.PlayerJoystickSpeed);
-                rigidbody.velocity = movement;
-
-                Vector3 position;
-                position = new Vector3(rigidbody.position.x, (position = rigidbody.position).y, position.z);
-                rigidbody.position = position;
-               
-                playerManager.ChangePlayerAnimation(PlayerAnimTypes.Run);
-
-                if (_movementDirection != Vector3.zero)
-                {
-                    var _newDirect = Quaternion.LookRotation(_movementDirection);
-                    rigidbody.transform.GetChild(0)
-                        .rotation = _newDirect;
-                }
+                var _newDirect = Quaternion.LookRotation(_movementDirection);
+                rigidbody.transform.GetChild(0)
+                    .rotation = _newDirect;
             }
         }
 

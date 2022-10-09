@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: CD_TurretData
   m_EditorClassIdentifier: 
   Data:
-    MaxAmmoCapacity: 12
-    AmmoInitPoint: {x: -0.3, y: 0.05, z: -0.3}
-    AmmoCountX: 2
-    AmmoCountZ: 2
-    AmmoCountY: 5
-    OffsetFactorX: 2.5
-    OffsetFactorY: 2.5
-    OffsetFactorZ: 2.5
+    DepotAmmoData:
+      MaxAmmoCapacity: 20
+      AmmoInitPoint: {x: -0.3, y: 0, z: -0.3}
+      AmmoCountX: 2
+      AmmoCountZ: 2
+      AmmoCountY: 4
+      OffsetFactorX: 2
+      OffsetFactorY: 2
+      OffsetFactorZ: 2
+    FireRate: 1
+    Damage: 2

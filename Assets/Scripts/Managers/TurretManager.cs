@@ -18,6 +18,8 @@ namespace Managers
 
         #region Public Variables
 
+        public TurretStates TurretStates = TurretStates.Empty;
+
         #endregion
 
         #region Serializefield Variables
@@ -25,8 +27,8 @@ namespace Managers
         [SerializeField] private GameObject turretDepot;
         [SerializeField] private GameObject playerFiringPosition;
         [SerializeField] private TurretDepotController turretDepotController;
-        [SerializeField] private TurretStates TurretStates = TurretStates.Empty;
-        [SerializeField] private GameObject playerMovement;
+        [SerializeField] private TurretMovementController turretMovementController;
+        [SerializeField] private GameObject oldParent;
 
         #endregion
 
@@ -44,21 +46,23 @@ namespace Managers
         private void Awake()
         {
             _data = GetTurretData();
-            playerMovement = IdleSignals.Instance.onPlayerMovement?.Invoke();
+            oldParent = PlayerSignals.Instance.onGetPlayerParent?.Invoke();
         }
 
         private void OnEnable()
         {
             SubscribeEvents();
         }
+
         private TurretData GetTurretData() => Resources.Load<CD_TurretData>("Data/CD_TurretData").Data;
 
         private void SubscribeEvents()
         {
             IdleSignals.Instance.onGetAmmoDepotTarget += OnGetAmmoDepotTarget;
             IdleSignals.Instance.onPlayerEnterTurretDepot += OnPlayerEnterAmmoDepot;
-            IdleSignals.Instance.onPlayerOnTurret += OnPlayerOnTurret;
-
+            PlayerSignals.Instance.onPlayerOnTurret += OnPlayerOnTurret;
+            PlayerSignals.Instance.onPlayerOutTurret += OnPlayerOutTurret;
+            InputSignals.Instance.onInputDragged += OnInputDragged;
         }
 
 
@@ -66,7 +70,9 @@ namespace Managers
         {
             IdleSignals.Instance.onGetAmmoDepotTarget -= OnGetAmmoDepotTarget;
             IdleSignals.Instance.onPlayerEnterTurretDepot -= OnPlayerEnterAmmoDepot;
-            IdleSignals.Instance.onPlayerOnTurret -= OnPlayerOnTurret;
+            PlayerSignals.Instance.onPlayerOnTurret -= OnPlayerOnTurret;
+            PlayerSignals.Instance.onPlayerOutTurret -= OnPlayerOutTurret;
+            InputSignals.Instance.onInputDragged -= OnInputDragged;
         }
 
 
@@ -82,26 +88,41 @@ namespace Managers
             turretDepotController.OnDepotAmmo(obj);
         }
 
-        private void OnPlayerOnTurret(GameObject obj)
+        private void OnPlayerOnTurret(GameObject player)
         {
-            _rb = obj.GetComponent<Rigidbody>();
+            _rb = player.GetComponent<Rigidbody>();
             if (TurretStates == TurretStates.Empty)
             {
                 TurretStates = TurretStates.PlayerOnTurret;
-                obj.transform.SetParent(playerFiringPosition.transform);
-                obj.transform.position = playerFiringPosition.transform.position;
-                InputSignals.Instance.onInputReleased?.Invoke();
+                player.transform.position = playerFiringPosition.transform.position;
+                player.transform.SetParent(playerFiringPosition.transform);
                 _rb.constraints = RigidbodyConstraints.FreezePosition;
+                PlayerSignals.Instance.onPlayerOnTurretAnimation?.Invoke(PlayerAnimTypes.Turret);
+                player.transform.DOLocalRotate(new Vector3(gameObject.transform.rotation.x,gameObject.transform.rotation.y,gameObject.transform.rotation.z),0.1f);
             }
+        }
 
-
+        private void OnPlayerOutTurret(GameObject player)
+        {
+            _rb = player.GetComponent<Rigidbody>();
+            if (TurretStates == TurretStates.PlayerOnTurret)
+            {
+                TurretStates = TurretStates.Empty;
+                _rb.constraints = ~RigidbodyConstraints.FreezePosition;
+                player.transform.SetParent(oldParent.transform);
+                player.transform.DORotate(new Vector3(0, 0, 0), 0.2f);
+                gameObject.transform.DORotate(new Vector3(0, 0, 0), 0.2f);
+            }
         }
 
         public GameObject OnGetAmmoDepotTarget()
         {
             return turretDepot;
         }
-        
-        
+
+        private void OnInputDragged(InputParams data)
+        {
+            turretMovementController.TurretRotation(data);
+        }
     }
 }

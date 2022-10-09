@@ -21,6 +21,7 @@ TagManager:
   - EnemyBasePoints
   - MineTnt
   - Turret
+  - TurretRange
   layers:
   - Default
   - TransparentFX

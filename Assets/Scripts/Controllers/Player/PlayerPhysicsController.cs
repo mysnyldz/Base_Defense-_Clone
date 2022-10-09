@@ -75,7 +75,7 @@ namespace Controllers.PlayerControllers
 
             if (other.CompareTag("Turret"))
             {
-                IdleSignals.Instance.onPlayerOnTurret?.Invoke(gameObject);
+                PlayerSignals.Instance.onPlayerOnTurret?.Invoke(gameObject);
             }
         }
 
@@ -95,7 +95,7 @@ namespace Controllers.PlayerControllers
             if (other.CompareTag("TurretDepot"))
             {
                 _timer += (Time.fixedDeltaTime) * 1.5f;
-                if (_timer >= _spendTime && _maxTurretAmmoCount < _manager.TurretData.MaxAmmoCapacity)
+                if (_timer >= _spendTime && _maxTurretAmmoCount < _manager.TurretData.DepotAmmoData.MaxAmmoCapacity )
                 {
                     _timer = 0;
                     IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);

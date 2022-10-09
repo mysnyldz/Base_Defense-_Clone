@@ -133,11 +133,24 @@ MonoBehaviour:
     OffsetFactorX: 0
     OffsetFactorY: 0
     OffsetFactorZ: 0
+  TurretData:
+    DepotAmmoData:
+      MaxAmmoCapacity: 0
+      AmmoInitPoint: {x: 0, y: 0, z: 0}
+      AmmoCountX: 0
+      AmmoCountZ: 0
+      AmmoCountY: 0
+      OffsetFactorX: 0
+      OffsetFactorY: 0
+      OffsetFactorZ: 0
+    FireRate: 0
+    Damage: 0
   movementController: {fileID: 7384829007680550705}
   animationController: {fileID: 4141084878427637562}
   physicsController: {fileID: 7435219303850952263}
   ammoStackController: {fileID: 4912138957819381896}
   moneyStackController: {fileID: 5874588134811321956}
+  playerHolder: {fileID: 0}
   playerRigidbody: {fileID: 7384829007680550716}
   playerCollider: {fileID: 7384829007680550717}
 --- !u!54 &7384829007680550716
@@ -154,7 +167,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &7384829007680550717
 CapsuleCollider:
@@ -186,6 +199,7 @@ MonoBehaviour:
   rigidbody: {fileID: 7384829007680550716}
   isReadyToMove: 0
   isReadyToPlay: 0
+  isOnTurret: 0
 --- !u!114 &7435219303850952263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,8 +256,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5553025, y: 1.596296, z: 0.5210943}
-  m_Center: {x: -0.0034207106, y: 0.7853901, z: -0.013682842}
+  m_Size: {x: 0.5553025, y: 1.5022565, z: 0.5210943}
+  m_Center: {x: -0.0034207106, y: 0.83241, z: -0.013682842}
 --- !u!1001 &1499628024709122107
 PrefabInstance:
   m_ObjectHideFlags: 0

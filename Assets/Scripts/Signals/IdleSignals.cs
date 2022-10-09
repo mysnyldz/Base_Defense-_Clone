@@ -31,12 +31,5 @@ namespace Signals
 
         #endregion
 
-        #region TurretSignals
-        
-        public UnityAction<GameObject> onPlayerOnTurret = delegate {  };
-        public Func<GameObject> onPlayerMovement = delegate { return default;};
-
-        #endregion
-        
     }
 }

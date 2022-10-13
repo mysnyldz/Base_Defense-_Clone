@@ -15,6 +15,8 @@ namespace Controllers
 
         #region Public Variables
 
+        public List<GameObject> _ammoList = new List<GameObject>();
+        
         #endregion
 
         #region Serializefield Variables
@@ -26,7 +28,6 @@ namespace Controllers
 
         #region Private Variables
 
-        private List<GameObject> _ammoList = new List<GameObject>();
         private List<GameObject> _ammoStackList = new List<GameObject>();
         private TurretDepotAmmoData _zoneData;
         private List<int> _capacity;

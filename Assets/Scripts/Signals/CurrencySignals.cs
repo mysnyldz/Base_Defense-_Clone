@@ -7,14 +7,14 @@ namespace Signals
 {
     public class CurrencySignals : MonoSingleton<CurrencySignals>
     {
-        public UnityAction<float> onAddMoney = delegate {  };
-        public UnityAction<float> onAddGem = delegate {  };
+        public UnityAction<int> onAddMoney = delegate {  };
+        public UnityAction<int> onAddGem = delegate {  };
         
-        public UnityAction<float> onReduceMoney = delegate {  };
-        public UnityAction<float> onReduceGem = delegate {  };
+        public UnityAction<int> onReduceMoney = delegate {  };
+        public UnityAction<int> onReduceGem = delegate {  };
         
-        public Func<float> onGetMoney;
-        public Func<float> onGetGem;
+        public Func<int> onGetMoney;
+        public Func<int> onGetGem;
         
 
     }

@@ -1,4 +1,7 @@
-﻿using Enums;
+﻿using System;
+using Cinemachine;
+using DG.Tweening;
+using Enums;
 using Keys;
 using Managers;
 using Signals;
@@ -22,29 +25,26 @@ namespace Controllers
 
         #region Private Variables
 
-        private float _turretRot;
+        private float _turretRotX;
 
         #endregion
 
         #endregion
-
 
         public void TurretRotation(InputParams data)
         {
+            _turretRotX = data.InputValues.x;
             if (manager.TurretStates == TurretStates.PlayerOnTurret)
             {
-                _turretRot = data.InputValues.x;
                 TakeAim();
             }
+            
         }
 
         private void TakeAim()
         {
-            if (_turretRot > 0.15f || _turretRot < -0.15f)
-            {
-                transform.rotation = Quaternion.Slerp(Quaternion.Euler(0, transform.rotation.y, 0),
-                    Quaternion.Euler(0, Mathf.Clamp(_turretRot * 35, -35, 35), 0), 1f);
-            }
+            transform.rotation = Quaternion.Slerp(Quaternion.Euler(0, -transform.rotation.y, 0),
+                Quaternion.Euler(0, -Mathf.Clamp(_turretRotX * 45, -45, 45), 0), 1f);
         }
     }
 }

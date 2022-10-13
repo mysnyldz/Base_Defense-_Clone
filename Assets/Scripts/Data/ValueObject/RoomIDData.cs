@@ -7,11 +7,11 @@ namespace Data.ValueObject
     [Serializable]
     public class RoomIDData : SaveableEntity
     {
-        public static string Key = "RoomKey";
+        public static string Key = "Room";
 
-        //public RoomTypes RoomTypes;
+        public RoomTypes RoomTypes;
         
-        public RoomTurretData roomTurret;
+        public RoomTurretData RoomTurret;
 
         public int RoomPrice;
 
@@ -24,8 +24,8 @@ namespace Data.ValueObject
         public RoomIDData(RoomTypes roomTypes ,RoomTurretData roomTurret, int roomId, int roomPrice, int payedAmount,
             RoomStageTypes roomStageType)
         {
-           // RoomTypes = roomTypes;
-            this.roomTurret = roomTurret;
+            RoomTypes = roomTypes;
+            RoomTurret = roomTurret;
             RoomID = roomId;
             RoomPrice = roomPrice;
             PayedAmount = payedAmount;

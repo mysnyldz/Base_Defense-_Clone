@@ -57,7 +57,7 @@ namespace Controllers
             StackList.Capacity = _data.MaxAmmoCount;
             if (_maxAmmoCount < StackList.Capacity)
             {
-                var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Ammo.ToString(), transform);
+                var obj = PoolSignals.Instance.onGetPoolObject(PoolType.AmmoBox.ToString(), transform);
                 AddStack(obj);
             }
         }
@@ -83,7 +83,7 @@ namespace Controllers
                             1f).SetEase(Ease.OutBounce).SetDelay(0.5f);
                     obj.transform.DOLocalMove(new Vector3(0, 0.1f, 0), 1f).SetDelay(1.5f).OnComplete(() =>
                     {
-                        PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Ammo.ToString(), obj);
+                        PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.AmmoBox.ToString(), obj);
                         obj.transform.DOLocalRotate(Vector3.zero, 0f);
                         obj.transform.DOLocalMove(Vector3.zero, 0f);
                     });

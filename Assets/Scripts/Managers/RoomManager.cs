@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Data.UnityObject;
 using Data.ValueObject;
 using Enums;
+using ES3Types;
 using Signals;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -26,24 +27,27 @@ namespace Managers
         [SerializeField] private GameObject roomPriceCollider;
         [SerializeField] private GameObject fences;
         [SerializeField] private GameObject room;
+        [SerializeField] private RoomIDData roomData;
 
         #endregion
 
         #region Private Variables
 
-        private float money = 0;
+        private RoomIDData _roomDataCache;
+        private RoomIDData roomIDData;
+        private int _money;
         private int _uniqueID;
         private bool isCompleted;
         private RoomTurretData _roomTurretData;
-        private int roomID;
-        private int roomPrice;
-        private int payedAmount;
-        private RoomStageTypes roomStageType;
-        private CD_Structure _roomData;
+        private int _roomID;
+        private int _roomPrice;
+        private int _payedAmount;
+        private RoomStageTypes _roomStageType;
+
         #endregion
 
         #endregion
-        
+
 
         #region Event Subscription
 
@@ -54,13 +58,13 @@ namespace Managers
 
         private void SubscribeEvents()
         {
-            RoomSignals.Instance.onInitializeRoom += OnInitializeRoom;
+            // RoomSignals.Instance.onInitializeRoom += OnInitializeRoom;
         }
 
 
         private void UnSubscribeEvents()
         {
-            RoomSignals.Instance.onInitializeRoom -= OnInitializeRoom;
+            //  RoomSignals.Instance.onInitializeRoom -= OnInitializeRoom;
         }
 
 
@@ -75,40 +79,45 @@ namespace Managers
         {
             GetReferences();
         }
-        
+
         private void GetReferences()
         {
-            roomID = (int)roomTypes;
+            _uniqueID = (int)roomTypes;
+            _roomID = (int)roomTypes;
             GetData();
-            roomStageType = _roomData.Data.RoomIDList[(int)roomTypes].RoomStageType;
-            payedAmount = _roomData.Data.RoomIDList[(int)roomTypes].PayedAmount;
-            roomPrice = _roomData.Data.RoomIDList[(int)roomTypes].RoomPrice;
-
             RoomCostArea();
         }
-        
+
         private void GetData()
         {
             if (!ES3.FileExists($"Room{_uniqueID}.es3"))
             {
                 if (!ES3.KeyExists("Room"))
                 {
-                    _roomData = GetRoomData();
+                    roomData = GetRoomData();
+                    _roomDataCache = new RoomIDData
+                    {
+                        PayedAmount = roomData.PayedAmount,
+                        RoomID = roomData.RoomID,
+                        RoomPrice = roomData.RoomPrice,
+                        RoomStageType = roomData.RoomStageType,
+                        RoomTurret = roomData.RoomTurret,
+                        RoomTypes = roomData.RoomTypes
+                    };
                     Save();
                 }
             }
 
             Load();
-            _roomData = GetRoomData();
         }
 
-        private CD_Structure GetRoomData() => Resources.Load<CD_Structure>("Data/CD_Structure");
+        private RoomIDData GetRoomData() => Resources.Load<CD_Room>("Data/CD_Room").Data.RoomIDList[_uniqueID];
 
         private void RoomCostArea()
         {
-            switch (roomStageType)
+            switch (_roomDataCache.RoomStageType)
             {
-                case RoomStageTypes.Uncomplete:
+                case RoomStageTypes.UnComplete:
                     roomPriceCollider.SetActive(true);
                     room.SetActive(false);
                     fences.SetActive(true);
@@ -124,31 +133,31 @@ namespace Managers
 
         private void SetAreaTexts()
         {
-            roomPriceTMP.text = (roomPrice - payedAmount).ToString();
+            roomPriceTMP.text = (_roomDataCache.RoomPrice - _roomDataCache.PayedAmount).ToString();
         }
 
         private void RoomPriceDecrease()
         {
-            Debug.Log("girdim");
-            switch (roomStageType)
+            switch (_roomDataCache.RoomStageType)
             {
-                case RoomStageTypes.Uncomplete:
-                    
-                    payedAmount++;
-                    money--;
+                case RoomStageTypes.UnComplete:
+                    _roomDataCache.PayedAmount++;
+                    _money--;
                     SetAreaTexts();
-                    if (roomPrice == payedAmount) ChangeStage();
+                    if (_roomDataCache.RoomPrice == _roomDataCache.PayedAmount) ChangeStage();
+                    Save();
                     break;
             }
         }
 
         private void ChangeStage()
         {
-            if (roomStageType == RoomStageTypes.Uncomplete)
+            if (_roomDataCache.RoomStageType == RoomStageTypes.UnComplete)
             {
-                roomStageType = RoomStageTypes.Complete;
+                _roomDataCache.RoomStageType = RoomStageTypes.Complete;
                 RoomSignals.Instance.onRoomComplete?.Invoke();
                 RoomCostArea();
+                Save();
             }
             else
             {
@@ -158,41 +167,45 @@ namespace Managers
 
         public void OnBuyRoomArea()
         {
-            money = CurrencySignals.Instance.onGetMoney();
-            if (roomStageType == RoomStageTypes.Uncomplete)
+            _money = CurrencySignals.Instance.onGetMoney.Invoke();
+            if (_roomStageType == RoomStageTypes.UnComplete)
             {
-                if (money >= roomPrice)
+                if (_money >= _roomDataCache.RoomPrice)
                 {
                     RoomPriceDecrease();
                     CurrencySignals.Instance.onReduceMoney?.Invoke(1);
                 }
-                if (roomPrice - payedAmount == 0)
+
+                if (_roomDataCache.RoomPrice - _roomDataCache.PayedAmount == 0)
                 {
-                    roomStageType = RoomStageTypes.Complete;
+                    _roomStageType = RoomStageTypes.Complete;
+                    Save();
                 }
             }
         }
-       private void OnInitializeRoom()
-       {
-           roomID = GetRoomCount();
-       }
+        //private void OnInitializeRoom()
+        //{
+        //    _roomID = GetRoomCount();
+        //}
 
-        private int GetRoomCount()
-        {
-            return roomID % Resources.Load<CD_Structure>("Data/CD_Structure").Data.RoomIDList.Count;
-        }
-        
+        // private int GetRoomCount()
+        // {
+        //     return _roomID % Resources.Load<CD_Room>("Data/CD_Room").Data.RoomIDList.Count;
+        // }
+
         #region Room Save and Load
 
-        public void Save()
+        [Button]
+        private void Save()
         {
-            RoomIDData roomIdData = new RoomIDData(roomTypes,_roomTurretData,roomID,roomPrice,payedAmount,roomStageType);
+            RoomIDData roomIdData = new RoomIDData(_roomDataCache.RoomTypes, _roomDataCache.RoomTurret, _roomDataCache.RoomID,
+                _roomDataCache.RoomPrice, _roomDataCache.PayedAmount, _roomDataCache.RoomStageType);
             SaveLoadSignals.Instance.onSaveRoomData.Invoke(roomIdData, _uniqueID);
         }
 
-        public void Load()
+        private void Load()
         {
-            RoomIDData roomIDData = SaveLoadSignals.Instance.onLoadRoomData.Invoke(RoomIDData.Key, _uniqueID);
+            RoomIDData roomIDData = SaveLoadSignals.Instance.onLoadRoomData.Invoke(this.roomIDData.GetKey(), _uniqueID);
         }
 
         #endregion

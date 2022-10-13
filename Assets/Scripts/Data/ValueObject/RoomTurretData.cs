@@ -9,6 +9,6 @@ namespace Data.ValueObject
         public int TurretPrice;
         public int PayedValue;
         public int TurretId;
-        public RoomStageTypes roomStageTypes = RoomStageTypes.Uncomplete;
+        public RoomStageTypes roomStageTypes = RoomStageTypes.UnComplete;
     }
 }

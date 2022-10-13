@@ -33,6 +33,7 @@ Transform:
   - {fileID: 4324221163559367343}
   - {fileID: 7695396866728078119}
   - {fileID: 4682561651086554507}
+  - {fileID: 6834322088738541286}
   m_Father: {fileID: 122260794807418718}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -66,6 +67,8 @@ MonoBehaviour:
   playerFiringPosition: {fileID: 3867808170119023907}
   turretDepotController: {fileID: 9095298029542794087}
   turretMovementController: {fileID: 3618312870184967526}
+  turretShootController: {fileID: 8487704045599340163}
+  oldParent: {fileID: 0}
 --- !u!114 &3618312870184967526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +178,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.71000034, y: 0.69517785, z: 0.9051033}
   m_Center: {x: 0.00000011920929, y: 0.04241115, z: 0.40679032}
+--- !u!1 &1249728886231734812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6834322088738541286}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6834322088738541286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249728886231734812}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.051713943, y: 1.0437744, z: 0.73096657}
+  m_LocalScale: {x: 0.01247021, y: 0.026894372, z: 0.015529592}
+  m_Children: []
+  m_Father: {fileID: 659369185091990262}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2195467734429946794
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2567498123710051550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 1.25}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 659369185091990262}
@@ -331,6 +364,7 @@ GameObject:
   - component: {fileID: 4669553496726684470}
   - component: {fileID: 8265620597102947494}
   - component: {fileID: 9126980076570016405}
+  - component: {fileID: 8487704045599340163}
   m_Layer: 0
   m_Name: TurretRange
   m_TagString: TurretRange
@@ -346,7 +380,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4611301593064396031}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 122260794807418718}
@@ -363,8 +397,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 1, z: 1.83}
+  m_Radius: 6
+  m_Center: {x: 0, y: 1.45, z: 1.8}
 --- !u!54 &9126980076570016405
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -381,6 +415,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &8487704045599340163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4611301593064396031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b92d8a3493d48b3964e032f005d3edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Targets: []
+  FirePoint: {fileID: 1249728886231734812}
 --- !u!1 &4910566907109939272
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,8 +636,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.7769368, y: 0.7555958, z: 1.5753174}
-  m_Center: {x: 0.00000011920929, y: 0.36627758, z: -0.00598526}
+  m_Size: {x: 3.3912756, y: 1.2817597, z: 2.2378788}
+  m_Center: {x: -0.8071693, y: 0.6293595, z: 0.32529545}
 --- !u!114 &9095298029542794087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,5 +650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4b7b96d7984d5f80437ea9d79f52b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ammoList: []
   manager: {fileID: 2033817518301902623}
   ammoStackController: {fileID: 0}

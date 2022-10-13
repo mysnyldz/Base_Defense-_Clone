@@ -28,6 +28,8 @@ namespace Signals
         public UnityAction<GameObject> onDepotAddAmmo = delegate {  };
         public UnityAction<GameObject> onPlayerEnterTurretDepot = delegate {  };
         public Func<AmmoStackController> onGetAmmoStackController = delegate { return default;};
+        
+        public Func<int> onGetDamage = delegate { return default;};
 
         #endregion
 

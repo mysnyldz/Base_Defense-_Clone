@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Controllers;
+using Controllers.Player;
 using Controllers.PlayerControllers;
 using Data.UnityObject;
 using Data.ValueObject;
@@ -7,6 +9,7 @@ using Data.ValueObject.PlayerData;
 using Enums;
 using Keys;
 using Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Managers
@@ -21,7 +24,9 @@ namespace Managers
         [Header("Data")] public AmmoStackData AmmoStackData;
         [Header("Data")] public MoneyStackData MoneyStackData;
         [Header("Data")] public TurretData TurretData;
-        
+        public bool TurretMode, BattleMode, IdleMode, TargetMode;
+        public PlayerStateTypes playerTypes;
+
         #endregion
 
         #region Serialized Variables
@@ -36,7 +41,11 @@ namespace Managers
 
         [SerializeField] private MoneyStackController moneyStackController;
 
+        [SerializeField] private PlayerTargetController playerTargetController;
+
         [SerializeField] private GameObject playerHolder;
+        
+        [SerializeField] private List<GameObject> targets;
 
         #endregion
 
@@ -56,6 +65,7 @@ namespace Managers
             MoneyStackData = GetMoneyStackData();
             AmmoStackData = GetAmmoStackData();
             TurretData = GetTurretData();
+            playerTypes = PlayerStateTypes.Idle;
             Init();
         }
 
@@ -66,9 +76,7 @@ namespace Managers
 
         private void Init()
         {
-            movementController = GetComponent<PlayerMovementController>();
             SetDataToControllers();
-            
         }
 
         private void SetDataToControllers()
@@ -87,28 +95,38 @@ namespace Managers
         {
             CoreGameSignals.Instance.onPlay += OnPlay;
             CoreGameSignals.Instance.onReset += OnReset;
-            InputSignals.Instance.onInputDragged += OnGetInputValues;
+            InputSignals.Instance.onInputDragged += OnPlayerInput;
             InputSignals.Instance.onInputTaken += OnActivateMovement;
             InputSignals.Instance.onInputReleased += OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController += OnGetAmmoStackController;
             PlayerSignals.Instance.onPlayerMovement += OnPlayerMovement;
             PlayerSignals.Instance.onPlayerOnTurretAnimation += OnPlayerOnTurretAnimation;
             PlayerSignals.Instance.onGetPlayerParent += OnGetPlayerParent;
+            PlayerSignals.Instance.onGetIsBattleMode += OnGetIsBattleMode;
+            PlayerSignals.Instance.onGetIsIdleMode += OnGetIsIdleMode;
+            PlayerSignals.Instance.onGetIsTurretMode += OnGetIsTurretMode;
+            PlayerSignals.Instance.onEnemyAddTargetList += OnEnemyAddTargetList;
+            PlayerSignals.Instance.onEnemyRemoveTargetList += OnEnemyRemoveTargetList;
         }
 
 
 
         private void UnsubscribeEvents()
         {
-            CoreGameSignals.Instance.onPlay += OnPlay;
-            CoreGameSignals.Instance.onReset += OnReset;
-            InputSignals.Instance.onInputDragged -= OnGetInputValues;
+            CoreGameSignals.Instance.onPlay -= OnPlay;
+            CoreGameSignals.Instance.onReset -= OnReset;
+            InputSignals.Instance.onInputDragged -= OnPlayerInput;
             InputSignals.Instance.onInputTaken -= OnActivateMovement;
             InputSignals.Instance.onInputReleased -= OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController -= OnGetAmmoStackController;
             PlayerSignals.Instance.onPlayerMovement -= OnPlayerMovement;
             PlayerSignals.Instance.onPlayerOnTurretAnimation -= OnPlayerOnTurretAnimation;
             PlayerSignals.Instance.onGetPlayerParent -= OnGetPlayerParent;
+            PlayerSignals.Instance.onGetIsBattleMode -= OnGetIsBattleMode;
+            PlayerSignals.Instance.onGetIsIdleMode -= OnGetIsIdleMode;
+            PlayerSignals.Instance.onGetIsTurretMode -= OnGetIsTurretMode;
+            PlayerSignals.Instance.onEnemyAddTargetList -= OnEnemyAddTargetList;
+            PlayerSignals.Instance.onEnemyRemoveTargetList -= OnEnemyRemoveTargetList;
         }
 
         private void OnDisable()
@@ -118,11 +136,6 @@ namespace Managers
 
         #endregion
 
-        private void OnGetInputValues(InputParams inputParams)
-        {
-            movementController.UpdateInputValue(inputParams);
-        }
-
         private void OnActivateMovement()
         {
             movementController.EnableMovement();
@@ -130,48 +143,119 @@ namespace Managers
 
         private void OnDeactiveMovement()
         {
-            movementController.DeactiveMovement();
+            movementController.DisableMovement();
+            var inputparams = new InputParams()
+            {
+                InputValues = Vector3.zero
+            };
+            animationController.ChangeVelocity(inputparams);
         }
 
-        public void ChangePlayerAnimation(PlayerAnimTypes animType)
+        public void SetPlayerStateTypes(PlayerStateTypes types)
         {
-            animationController.ChangeAnimationState(animType);
+            playerTypes = types;
+            switch (playerTypes)
+            {
+                case PlayerStateTypes.Idle:
+                    animationController.ChangeAnimationState(PlayerAnimTypes.IdleMode);
+                    break;
+                case PlayerStateTypes.Battle:
+                    animationController.ChangeAnimationState(PlayerAnimTypes.BattleMode);
+                    break;
+                case PlayerStateTypes.Target:
+                    animationController.ChangeAnimationState(PlayerAnimTypes.TargetMode);
+                    break;
+                case PlayerStateTypes.Turret:
+                    animationController.ChangeAnimationState(PlayerAnimTypes.TurretMode);
+                    break;
+            }
+        }
+
+
+        private void OnPlayerInput(InputParams inputParams)
+        {
+            switch (playerTypes)
+            {
+                case PlayerStateTypes.Idle:
+                    movementController.UpdateInputValue(inputParams);
+                    animationController.ChangeVelocity(inputParams);
+                    break;
+                case PlayerStateTypes.Battle:
+                    movementController.UpdateInputValue(inputParams);
+                    animationController.ChangeVelocity(inputParams);
+                    break;
+                case PlayerStateTypes.Target:
+                    movementController.UpdateInputValue(inputParams);
+                    animationController.ChangeVelocity(inputParams);
+                    break;
+                case PlayerStateTypes.Turret:
+                    movementController.UpdateInputValue(inputParams);
+                    break;
+            }
         }
 
         public void MoneyAddStack(GameObject obj)
         {
             moneyStackController.AddStack(obj);
-        } 
-        public GameObject MoneyDecreaseStack()
+        }
+
+        public void MoneyDecreaseStack()
         {
-           return moneyStackController.DecreaseStack();
-        } 
-        
+            moneyStackController.DecreaseStack();
+        }
+
         public void AmmoAddStack()
         {
             ammoStackController.OnGetAmmo();
         }
-        public GameObject AmmoDecreaseStack()
+
+        public void AmmoDecreaseStack()
         {
-            return ammoStackController.DecreaseStack();
+            ammoStackController.DecreaseStack();
         }
+        private void OnEnemyAddTargetList(GameObject obj)
+        {
+            playerTargetController.OnAddTargetList(obj);
+        }
+        private void OnEnemyRemoveTargetList(GameObject obj)
+        {
+            playerTargetController.OnRemoveTargetList(obj);
+        }
+        
+
         private GameObject OnPlayerMovement()
         {
             return movementController.gameObject;
         }
 
-        private void OnPlay() => movementController.IsReadyToPlay(true);
-        
-        private void OnPlayerOnTurretAnimation(PlayerAnimTypes animtypes)
+        private bool OnGetIsTurretMode() => TurretMode;
+
+
+        private bool OnGetIsIdleMode() => IdleMode;
+
+        private bool OnGetIsBattleMode() => BattleMode;
+
+        private void OnPlay()
         {
-            movementController.IsOnTurret(true);
+            movementController.IsReadyToPlay(true);
+            animationController.ChangeAnimationState(PlayerAnimTypes.IdleMode);
+        }
+
+        public void IsTurretState()
+        {
+            playerTypes = PlayerStateTypes.Turret;
+        }
+
+        private void OnPlayerOnTurretAnimation()
+        {
+            movementController.IsOnTurret();
         }
 
         private void OnReset()
         {
             gameObject.SetActive(false);
         }
-        
+
         private AmmoStackController OnGetAmmoStackController() => ammoStackController;
         private GameObject OnGetPlayerParent() => playerHolder;
     }

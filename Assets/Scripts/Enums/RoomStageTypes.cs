@@ -2,7 +2,7 @@
 {
     public enum RoomStageTypes
     {
-        Complete,
-        Uncomplete
+        UnComplete,
+        Complete
     }
 }

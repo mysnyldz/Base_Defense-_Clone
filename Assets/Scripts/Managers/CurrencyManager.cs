@@ -1,5 +1,6 @@
 ﻿using System;
 using Abstract;
+using Data.UnityObject;
 using Data.ValueObject;
 using Keys;
 using Signals;
@@ -23,14 +24,15 @@ namespace Managers
 
         #region Private Variables
         
-        private float _money; 
-        private float _gem;
+        private int _money; 
+        private int _gem;
         private int _uniqueID;
         private CurrencyIdData _currencyIdData;
 
         #endregion
 
         #endregion
+        
 
         private void OnEnable()
         {
@@ -69,6 +71,7 @@ namespace Managers
         }
         private void Start()
         {
+            _currencyIdData = GetCurrencyData();
             Load();
             GetReferences();
             SetMoneyText();
@@ -82,32 +85,34 @@ namespace Managers
             _gem = _currencyIdData.Gem;
         }
 
+        private CurrencyIdData GetCurrencyData() => Resources.Load<CD_Currency>("Data/CD_Currency").currencyIdData;
 
-        private float OnGetMoney() => _currencyIdData.Money;
-        private float OnGetGem() => _currencyIdData.Gem;
 
-        private void OnAddMoney(float value)
+        private int OnGetMoney() => _currencyIdData.Money;
+        private int OnGetGem() => _currencyIdData.Gem;
+
+        private void OnAddMoney(int value)
         {
             _money += value;
             SetMoneyText();
             Save();
         }
 
-        private void OnReduceMoney(float value)
+        private void OnReduceMoney(int value)
         {
             _money -= value;
             SetMoneyText();
             Save();
         }
 
-        private void OnAddGem(float value)
+        private void OnAddGem(int value)
         {
             _gem += value;
             SetGemText();
             Save();
         }
 
-        private void OnReduceGem(float value)
+        private void OnReduceGem(int value)
         {
             _gem -= value;
             SetGemText();
@@ -137,7 +142,7 @@ namespace Managers
 
         public void Load()
         {
-            _currencyIdData = SaveLoadSignals.Instance.onLoadCurrencyData(CurrencyIdData.CurrencyKey, _uniqueID);
+            CurrencyIdData currencyIdData = SaveLoadSignals.Instance.onLoadCurrencyData(CurrencyIdData.CurrencyKey, _uniqueID);
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Managers
             }
 
             Load();
-            BaseData = GetBaseData();
+           // BaseData = GetBaseData();
         }
         
 

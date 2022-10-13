@@ -7,7 +7,7 @@ using Signals;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Managers
+namespace Managers.Pool
 {
     public class ObjectPoolCreator : MonoBehaviour
     {
@@ -85,6 +85,7 @@ namespace Managers
         private void OnReleasePoolObject(string poolType, GameObject obj)
         {
             _objTypeCache = poolType;
+            _listCache = (PoolType)Enum.Parse(typeof(PoolType), _objTypeCache);
             ObjectPoolManager.Instance.ReturnObject(obj,poolType);
         }
         

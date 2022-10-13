@@ -16,7 +16,8 @@ namespace States.EnemyStates
 
         private EnemyManager _manager;
         private NavMeshAgent _agent;
-        private EnemyTypesData _data;
+        private EnemyData _data;
+        private EnemyTypes _types;
         private bool _isAttacked;
         private float _timer = 0;
         private float _delayTime = 1;
@@ -25,7 +26,7 @@ namespace States.EnemyStates
 
         #endregion
 
-        public EnemyAttackState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyTypesData data)
+        public EnemyAttackState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data)
         {
             _manager = manager;
             _agent = agent;
@@ -61,6 +62,7 @@ namespace States.EnemyStates
 
             if (other.CompareTag("PlayerSphere"))
             {
+                PlayerSignals.Instance.onEnemyAddTargetList.Invoke(_agent.gameObject);
                 _manager.Player = other.transform.parent.gameObject;
                 _manager.SwitchState(EnemyStatesTypes.MovePlayer);
                 _isAttacked = false;
@@ -72,6 +74,7 @@ namespace States.EnemyStates
         {
             if (other.CompareTag("PlayerSphere"))
             {
+                PlayerSignals.Instance.onEnemyRemoveTargetList.Invoke(_agent.gameObject);
                 _manager.SwitchState(EnemyStatesTypes.MoveBase);
             }
 

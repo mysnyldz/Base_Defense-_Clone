@@ -6,8 +6,5 @@ namespace Data.ValueObject
     public class TurretData
     {
         public TurretDepotAmmoData DepotAmmoData;
-        public int FireRate;
-        public int Damage;
-
     }
 }

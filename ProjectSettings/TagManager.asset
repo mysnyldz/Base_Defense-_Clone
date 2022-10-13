@@ -22,6 +22,7 @@ TagManager:
   - MineTnt
   - Turret
   - TurretRange
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -1,11 +1,12 @@
-﻿using Data.ValueObject.PlayerData;
+﻿using System;
+using Data.ValueObject.PlayerData;
 using Enums;
 using Keys;
 using Managers;
 using Signals;
 using UnityEngine;
 
-namespace Controllers
+namespace Controllers.Player
 {
     public class PlayerMovementController : MonoBehaviour
     {
@@ -18,9 +19,11 @@ namespace Controllers
         #region Serialized Variables,
 
         [SerializeField] private PlayerManager playerManager;
+        [SerializeField] private PlayerTargetController targetController;
+
 
         [SerializeField] private new Rigidbody rigidbody;
-        [SerializeField] private bool isReadyToMove, isReadyToPlay, isOnTurret;
+        [SerializeField] private bool isReadyToMove, isReadyToPlay, TurretMode, BattleMode, IdleMode, TargetMode;
 
         #endregion
 
@@ -49,24 +52,27 @@ namespace Controllers
             isReadyToMove = true;
         }
 
-        public void DeactiveMovement()
+        public void DisableMovement()
         {
             isReadyToMove = false;
         }
 
         public void IsReadyToPlay(bool state) => isReadyToPlay = state;
 
-        public void IsOnTurret(bool state) => isOnTurret = state;
+        public void IsOnTurret() => TurretMode = PlayerSignals.Instance.onGetIsTurretMode.Invoke();
+        public void IsOnIdle() => IdleMode = PlayerSignals.Instance.onGetIsIdleMode.Invoke();
+        public void IsOnBattle() => BattleMode = PlayerSignals.Instance.onGetIsBattleMode.Invoke();
+
 
         private void FixedUpdate()
         {
             if (isReadyToPlay)
             {
-                if (isReadyToMove && isOnTurret != true )
+                if (isReadyToMove)
                 {
                     Move();
                 }
-                else if (isOnTurret)
+                else if (playerManager.playerTypes == PlayerStateTypes.Turret)
                 {
                     Turret();
                 }
@@ -81,15 +87,22 @@ namespace Controllers
             }
         }
 
+        // private void Update()
+        // {
+        //     BattleMode = playerManager.BattleMode;
+        //     IdleMode = playerManager.IdleMode;
+        //     TurretMode = playerManager.TurretMode;
+        //     TargetMode = playerManager.TargetMode;
+        // }
+
         private void Turret()
         {
-            if (_movementDirection.z * _movementData.PlayerJoystickSpeed <= -2f)
+            Debug.Log(_movementDirection.z);
+            if (_movementDirection.z <= -0.3f)
             {
-                isOnTurret = false;
                 PlayerSignals.Instance.onPlayerOutTurret?.Invoke(playerManager.gameObject);
+                playerManager.playerTypes = PlayerStateTypes.Idle;
             }
-            
-            playerManager.ChangePlayerAnimation(PlayerAnimTypes.Turret);
         }
 
         private void Move()
@@ -104,7 +117,6 @@ namespace Controllers
             position = new Vector3(rigidbody.position.x, (position = rigidbody.position).y, position.z);
             rigidbody.position = position;
 
-            playerManager.ChangePlayerAnimation(PlayerAnimTypes.Run);
 
             if (_movementDirection != Vector3.zero)
             {
@@ -114,11 +126,12 @@ namespace Controllers
             }
         }
 
+
         private void Stop()
         {
-            playerManager.ChangePlayerAnimation(PlayerAnimTypes.Idle);
             rigidbody.velocity = Vector3.zero;
             rigidbody.angularVelocity = Vector3.zero;
+            isReadyToMove = false;
         }
 
         public void MoveReset()

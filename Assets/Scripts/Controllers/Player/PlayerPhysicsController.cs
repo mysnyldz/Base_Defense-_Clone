@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Enums;
 using Managers;
 using Signals;
 using UnityEngine;
@@ -12,8 +13,8 @@ namespace Controllers.PlayerControllers
 
         #region Serialized Variables
 
-        [SerializeField] private PlayerManager _manager;
-        [SerializeField] private GameObject _playerSphere;
+        [SerializeField] private PlayerManager manager;
+        [SerializeField] private GameObject playerSphere;
 
         #endregion
 
@@ -33,9 +34,9 @@ namespace Controllers.PlayerControllers
         {
             if (other.CompareTag("Money"))
             {
-                if (_maxMoneyCount < _manager.MoneyStackData.MaxMoneyCount)
+                if (_maxMoneyCount < manager.MoneyStackData.MaxMoneyCount)
                 {
-                    _manager.MoneyAddStack(other.gameObject);
+                    manager.MoneyAddStack(other.gameObject);
                     _maxMoneyCount++;
                     other.GetComponent<Rigidbody>().useGravity = false;
                     other.GetComponent<Rigidbody>().isKinematic = true;
@@ -47,61 +48,74 @@ namespace Controllers.PlayerControllers
             {
                 if (_maxMoneyCount >= 1)
                 {
-                    _manager.MoneyDecreaseStack();
+                    manager.MoneyDecreaseStack();
                     _maxMoneyCount = 0;
                 }
 
                 if (_maxAmmoCount >= 1)
                 {
-                    _manager.AmmoDecreaseStack();
+                    manager.AmmoDecreaseStack();
                     _maxAmmoCount = 0;
                 }
             }
 
             if (other.CompareTag("GateOutside"))
             {
-                _playerSphere.transform.DOScale(new Vector3(2.5f, 2.5f, 2.5f), 1f).SetEase(Ease.OutFlash);
+                playerSphere.transform.DOScale(new Vector3(2.5f, 2.5f, 2.5f), 1f).SetEase(Ease.OutFlash);
+                manager.SetPlayerStateTypes(PlayerStateTypes.Battle);
             }
 
             if (other.CompareTag("GateInside"))
             {
-                _playerSphere.transform.DOScale(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutFlash);
+                playerSphere.transform.DOScale(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutFlash);
+                manager.SetPlayerStateTypes(PlayerStateTypes.Idle);
             }
 
             if (other.CompareTag("GemDepot"))
             {
                 IdleSignals.Instance.onPlayerEnterGemDepot?.Invoke(gameObject);
             }
-
             if (other.CompareTag("Turret"))
             {
-                PlayerSignals.Instance.onPlayerOnTurret?.Invoke(gameObject);
+                 manager.IsTurretState();
+                 PlayerSignals.Instance.onPlayerOnTurret?.Invoke(manager.gameObject);
             }
+
+            if (other.CompareTag("Enemy"))
+            {
+                manager.SetPlayerStateTypes(PlayerStateTypes.Target);
+            }
+
         }
 
         private void OnTriggerStay(Collider other)
         {
+            if (other.CompareTag("Turret"))
+            {
+                PlayerSignals.Instance.onPlayerReadyForShoot?.Invoke(gameObject);
+            }
+            
             if (other.CompareTag("AmmoWarehouse"))
             {
                 _timer += (Time.fixedDeltaTime) * 3;
-                if (_timer >= _spendTime && _maxAmmoCount <= _manager.AmmoStackData.MaxAmmoCount)
+                if (_timer >= _spendTime && _maxAmmoCount <= manager.AmmoStackData.MaxAmmoCount)
                 {
                     _timer = 0;
-                    _manager.AmmoAddStack();
+                    manager.AmmoAddStack();
                     _maxAmmoCount++;
                 }
             }
 
-            if (other.CompareTag("TurretDepot"))
-            {
-                _timer += (Time.fixedDeltaTime) * 1.5f;
-                if (_timer >= _spendTime && _maxTurretAmmoCount < _manager.TurretData.DepotAmmoData.MaxAmmoCapacity )
-                {
-                    _timer = 0;
-                    IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);
-                    _maxTurretAmmoCount++;
-                }
-            }
+            // if (other.CompareTag("TurretDepot"))
+            // {
+            //     _timer += (Time.fixedDeltaTime) * 2.5f;
+            //     if (_timer >= _spendTime && _maxTurretAmmoCount < manager.TurretData.DepotAmmoData.MaxAmmoCapacity )
+            //     {
+            //         _timer = 0;
+            //         IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);
+            //         _maxTurretAmmoCount++;
+            //     }
+            // }
         }
     }
 }

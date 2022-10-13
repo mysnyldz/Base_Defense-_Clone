@@ -16,13 +16,14 @@ namespace States.EnemyStates
 
         private EnemyManager _manager;
         private NavMeshAgent _agent;
-        private EnemyTypesData _data;
+        private EnemyData _data;
+        private EnemyTypes types;
 
         #endregion
 
         #endregion
 
-        public EnemyMoveBaseState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyTypesData data)
+        public EnemyMoveBaseState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data)
         {
             _manager = manager;
             _agent = agent;
@@ -30,7 +31,7 @@ namespace States.EnemyStates
         }
         public override void EnterState()
         {
-            _agent.speed = _data.MoveSpeed;
+            _agent.speed = _data.EnemyTypeDatas[types].MoveSpeed;
             _manager.SetTriggerAnim(EnemyAnimTypes.Walk);
             _agent.SetDestination(_manager.BasePoints.transform.position);
         }

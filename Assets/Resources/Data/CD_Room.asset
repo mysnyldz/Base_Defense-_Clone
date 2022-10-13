@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18839be459684f798516618fc5b46737, type: 3}
+  m_Name: CD_Room
+  m_EditorClassIdentifier: 
+  Data:
+    RoomIDList:
+    - RoomTypes: 0
+      RoomTurret:
+        TurretPrice: 200
+        PayedValue: 0
+        TurretId: 0
+        roomStageTypes: 0
+      RoomPrice: 200
+      PayedAmount: 0
+      RoomID: 0
+      RoomStageType: 0
+    - RoomTypes: 1
+      RoomTurret:
+        TurretPrice: 200
+        PayedValue: 0
+        TurretId: 1
+        roomStageTypes: 0
+      RoomPrice: 300
+      PayedAmount: 0
+      RoomID: 1
+      RoomStageType: 0
+    - RoomTypes: 2
+      RoomTurret:
+        TurretPrice: 200
+        PayedValue: 0
+        TurretId: 2
+        roomStageTypes: 0
+      RoomPrice: 400
+      PayedAmount: 0
+      RoomID: 2
+      RoomStageType: 0
+    - RoomTypes: 3
+      RoomTurret:
+        TurretPrice: 200
+        PayedValue: 0
+        TurretId: 3
+        roomStageTypes: 0
+      RoomPrice: 500
+      PayedAmount: 0
+      RoomID: 3
+      RoomStageType: 0

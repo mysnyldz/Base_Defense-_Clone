@@ -17,12 +17,13 @@ namespace States.EnemyStates
 
         private EnemyManager _manager;
         private NavMeshAgent _agent;
-        private EnemyTypesData _data;
+        private EnemyData _data;
+        private EnemyTypes _types;
         #endregion
 
         #endregion
 
-        public EnemyMovePlayerState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyTypesData data)
+        public EnemyMovePlayerState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data)
         {
             _manager = manager;
             _agent = agent;
@@ -31,7 +32,7 @@ namespace States.EnemyStates
         public override void EnterState()
         {
             _agent.SetDestination(_manager.Player.transform.position);
-            _agent.speed = _data.RunSpeed;
+            _agent.speed = _data.EnemyTypeDatas[_types].RunSpeed;
             _manager.SetTriggerAnim(EnemyAnimTypes.Run);
             
         }
@@ -39,7 +40,7 @@ namespace States.EnemyStates
         public override void UpdateState()
         {
             _agent.destination = _manager.Player.transform.position;
-            if (_data.AttackRange > _agent.remainingDistance)
+            if (_data.EnemyTypeDatas[_types].AttackRange > _agent.remainingDistance)
             {
                 _manager.SwitchState(EnemyStatesTypes.Attack);
             }

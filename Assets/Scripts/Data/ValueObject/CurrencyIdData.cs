@@ -7,14 +7,14 @@ namespace Data.ValueObject
     public class CurrencyIdData : SaveableEntity
     {
         public static string CurrencyKey = "Currency";
+        
+        public int Money;
+        public int Gem;
 
-        public float Money;
-        public float Gem;
-
-        public CurrencyIdData(float _money, float _gem)
+        public CurrencyIdData(int money, int gem)
         {
-            Money = _money;
-            Gem = _gem;
+            Money = money;
+            Gem = gem;
         }
 
         public CurrencyIdData()

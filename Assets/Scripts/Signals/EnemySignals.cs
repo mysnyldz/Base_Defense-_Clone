@@ -1,6 +1,7 @@
 ﻿using System;
 using Extentions;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Signals
 {
@@ -9,5 +10,7 @@ namespace Signals
         public Func<GameObject> onGetBasePoints = delegate { return default;};
         public Func<GameObject> onGetPlayerPoints = delegate { return default;};
         public Func<GameObject> onGetMineTntPoints = delegate { return default;};
+        public UnityAction<bool> onEnemyDeathStatus= delegate {};
+
     }
 }

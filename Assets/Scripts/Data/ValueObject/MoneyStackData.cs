@@ -14,5 +14,7 @@ namespace Data.ValueObject
         [Range(0, 5)] public float OffsetFactorX;
         [Range(0, 5)] public float OffsetFactorY;
         [Range(0, 5)] public float OffsetFactorZ;
+
+        [Header("Supporter"),Space(10)]public int SupporterMaxMoneyCount;
     }
 }

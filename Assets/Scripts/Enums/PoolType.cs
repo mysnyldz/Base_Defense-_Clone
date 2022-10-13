@@ -3,11 +3,12 @@
     public enum PoolType
     {
         Gem,
-        Ammo,
+        AmmoBox,
         Money,
         EnemyNormal,
         EnemySpeed,
-        EnemyTank
+        EnemyTank,
+        Bullet
         //Miner,
     }
 }

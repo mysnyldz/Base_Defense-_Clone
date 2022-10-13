@@ -28,6 +28,7 @@ namespace Managers
         [SerializeField] private GameObject playerFiringPosition;
         [SerializeField] private TurretDepotController turretDepotController;
         [SerializeField] private TurretMovementController turretMovementController;
+        [SerializeField] private TurretShootController turretShootController;
         [SerializeField] private GameObject oldParent;
 
         #endregion
@@ -62,8 +63,11 @@ namespace Managers
             IdleSignals.Instance.onPlayerEnterTurretDepot += OnPlayerEnterAmmoDepot;
             PlayerSignals.Instance.onPlayerOnTurret += OnPlayerOnTurret;
             PlayerSignals.Instance.onPlayerOutTurret += OnPlayerOutTurret;
+            PlayerSignals.Instance.onPlayerReadyForShoot += OnPlayerReadyForShoot;
+            PlayerSignals.Instance.onGetDepotAmmoBox += OnGetDepotAmmoBox;
             InputSignals.Instance.onInputDragged += OnInputDragged;
         }
+
 
 
         private void UnsubscribeEvents()
@@ -72,6 +76,8 @@ namespace Managers
             IdleSignals.Instance.onPlayerEnterTurretDepot -= OnPlayerEnterAmmoDepot;
             PlayerSignals.Instance.onPlayerOnTurret -= OnPlayerOnTurret;
             PlayerSignals.Instance.onPlayerOutTurret -= OnPlayerOutTurret;
+            PlayerSignals.Instance.onPlayerReadyForShoot -= OnPlayerReadyForShoot;
+            PlayerSignals.Instance.onGetDepotAmmoBox -= OnGetDepotAmmoBox;
             InputSignals.Instance.onInputDragged -= OnInputDragged;
         }
 
@@ -88,6 +94,11 @@ namespace Managers
             turretDepotController.OnDepotAmmo(obj);
         }
 
+        private List<GameObject> OnGetDepotAmmoBox()
+        {
+            return turretDepotController._ammoList;
+        }
+
         private void OnPlayerOnTurret(GameObject player)
         {
             _rb = player.GetComponent<Rigidbody>();
@@ -97,21 +108,29 @@ namespace Managers
                 player.transform.position = playerFiringPosition.transform.position;
                 player.transform.SetParent(playerFiringPosition.transform);
                 _rb.constraints = RigidbodyConstraints.FreezePosition;
-                PlayerSignals.Instance.onPlayerOnTurretAnimation?.Invoke(PlayerAnimTypes.Turret);
-                player.transform.DOLocalRotate(new Vector3(gameObject.transform.rotation.x,gameObject.transform.rotation.y,gameObject.transform.rotation.z),0.1f);
             }
+
+        }
+        private void OnPlayerReadyForShoot(GameObject player)
+        {
+            if (TurretStates == TurretStates.PlayerOnTurret)
+            {
+                turretShootController.TurretShoot();
+            }
+            
         }
 
-        private void OnPlayerOutTurret(GameObject player)
+        public void OnPlayerOutTurret(GameObject player)
         {
+            Debug.Log("oldParent: "+oldParent);
             _rb = player.GetComponent<Rigidbody>();
             if (TurretStates == TurretStates.PlayerOnTurret)
             {
                 TurretStates = TurretStates.Empty;
                 _rb.constraints = ~RigidbodyConstraints.FreezePosition;
                 player.transform.SetParent(oldParent.transform);
-                player.transform.DORotate(new Vector3(0, 0, 0), 0.2f);
                 gameObject.transform.DORotate(new Vector3(0, 0, 0), 0.2f);
+                Debug.Log("After if OldParent: "+oldParent);
             }
         }
 

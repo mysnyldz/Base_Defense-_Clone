@@ -33,7 +33,7 @@ namespace Controllers
         private Rigidbody _rb;
         private BulletTypesData _data;
         private bool _isDeath;
-        private int _fireRate;
+        private float _fireRate;
         private float _timer;
 
         #endregion
@@ -101,10 +101,10 @@ namespace Controllers
         {
             if (Targets.Count >= 1)
             {
-                _timer += Time.deltaTime * (_fireRate * 0.5f);
+                _timer += Time.deltaTime * (_fireRate);
                 if (_timer >= _fireRate && _ammolist.Count >=1)
                 {
-                    var bullet = PoolSignals.Instance.onGetPoolObject(PoolType.Bullet.ToString(), transform);
+                    var bullet = PoolSignals.Instance.onGetPoolObject(PoolType.TurretBullet.ToString(), transform);
                     _timer = 0;
                     BulletPosition(bullet);
                     _rb = bullet.GetComponent<Rigidbody>();

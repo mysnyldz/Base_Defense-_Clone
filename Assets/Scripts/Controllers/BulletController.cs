@@ -51,7 +51,8 @@ namespace Controllers
         {
             if (other.CompareTag("Enemy"))
             {
-                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Bullet.ToString(), gameObject);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.TurretBullet.ToString(), gameObject);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.PistolBullet.ToString(), gameObject);
                 other.GetComponent<EnemyManager>().TakeDamage(_data.Damage);
             }
         }
@@ -60,7 +61,11 @@ namespace Controllers
         {
             if (other.CompareTag("TurretRange"))
             {
-                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Bullet.ToString(), gameObject);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.TurretBullet.ToString(), gameObject);
+            }
+            if (other.CompareTag("PlayerSphere"))
+            {
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.PistolBullet.ToString(), gameObject);
             }
         }
         

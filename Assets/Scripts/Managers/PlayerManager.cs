@@ -26,33 +26,25 @@ namespace Managers
         [Header("Data")] public TurretData TurretData;
         public bool TurretMode, BattleMode, IdleMode, TargetMode;
         public PlayerStateTypes playerTypes;
+        public GameObject Target;
 
         #endregion
 
         #region Serialized Variables
 
         [SerializeField] private PlayerMovementController movementController;
-
         [SerializeField] private PlayerAnimationController animationController;
-
         [SerializeField] private PlayerPhysicsController physicsController;
-
         [SerializeField] private AmmoStackController ammoStackController;
-
         [SerializeField] private MoneyStackController moneyStackController;
-
-        [SerializeField] private PlayerTargetController playerTargetController;
-
+        [SerializeField] private PlayerTargetManager playerTargetManager;
         [SerializeField] private GameObject playerHolder;
-        
-        [SerializeField] private List<GameObject> targets;
 
         #endregion
 
         #region Private Variables
 
         [SerializeField] private Rigidbody playerRigidbody;
-
         [SerializeField] private CapsuleCollider playerCollider;
 
         #endregion
@@ -65,7 +57,6 @@ namespace Managers
             MoneyStackData = GetMoneyStackData();
             AmmoStackData = GetAmmoStackData();
             TurretData = GetTurretData();
-            playerTypes = PlayerStateTypes.Idle;
             Init();
         }
 
@@ -100,7 +91,6 @@ namespace Managers
             InputSignals.Instance.onInputReleased += OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController += OnGetAmmoStackController;
             PlayerSignals.Instance.onPlayerMovement += OnPlayerMovement;
-            PlayerSignals.Instance.onPlayerOnTurretAnimation += OnPlayerOnTurretAnimation;
             PlayerSignals.Instance.onGetPlayerParent += OnGetPlayerParent;
             PlayerSignals.Instance.onGetIsBattleMode += OnGetIsBattleMode;
             PlayerSignals.Instance.onGetIsIdleMode += OnGetIsIdleMode;
@@ -108,7 +98,6 @@ namespace Managers
             PlayerSignals.Instance.onEnemyAddTargetList += OnEnemyAddTargetList;
             PlayerSignals.Instance.onEnemyRemoveTargetList += OnEnemyRemoveTargetList;
         }
-
 
 
         private void UnsubscribeEvents()
@@ -120,7 +109,6 @@ namespace Managers
             InputSignals.Instance.onInputReleased -= OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController -= OnGetAmmoStackController;
             PlayerSignals.Instance.onPlayerMovement -= OnPlayerMovement;
-            PlayerSignals.Instance.onPlayerOnTurretAnimation -= OnPlayerOnTurretAnimation;
             PlayerSignals.Instance.onGetPlayerParent -= OnGetPlayerParent;
             PlayerSignals.Instance.onGetIsBattleMode -= OnGetIsBattleMode;
             PlayerSignals.Instance.onGetIsIdleMode -= OnGetIsIdleMode;
@@ -151,24 +139,11 @@ namespace Managers
             animationController.ChangeVelocity(inputparams);
         }
 
-        public void SetPlayerStateTypes(PlayerStateTypes types)
+        public void ChangeState(PlayerStateTypes types)
         {
             playerTypes = types;
-            switch (playerTypes)
-            {
-                case PlayerStateTypes.Idle:
-                    animationController.ChangeAnimationState(PlayerAnimTypes.IdleMode);
-                    break;
-                case PlayerStateTypes.Battle:
-                    animationController.ChangeAnimationState(PlayerAnimTypes.BattleMode);
-                    break;
-                case PlayerStateTypes.Target:
-                    animationController.ChangeAnimationState(PlayerAnimTypes.TargetMode);
-                    break;
-                case PlayerStateTypes.Turret:
-                    animationController.ChangeAnimationState(PlayerAnimTypes.TurretMode);
-                    break;
-            }
+            animationController.SetPlayerAnimationStateTypes(types);
+            playerTargetManager.SetPlayerTargetStateTypes(types);
         }
 
 
@@ -176,24 +151,16 @@ namespace Managers
         {
             switch (playerTypes)
             {
-                case PlayerStateTypes.Idle:
-                    movementController.UpdateInputValue(inputParams);
-                    animationController.ChangeVelocity(inputParams);
-                    break;
-                case PlayerStateTypes.Battle:
-                    movementController.UpdateInputValue(inputParams);
-                    animationController.ChangeVelocity(inputParams);
-                    break;
-                case PlayerStateTypes.Target:
-                    movementController.UpdateInputValue(inputParams);
-                    animationController.ChangeVelocity(inputParams);
-                    break;
                 case PlayerStateTypes.Turret:
                     movementController.UpdateInputValue(inputParams);
                     break;
+                default:
+                    movementController.UpdateInputValue(inputParams);
+                    animationController.ChangeVelocity(inputParams);
+                    break;
             }
         }
-
+        
         public void MoneyAddStack(GameObject obj)
         {
             moneyStackController.AddStack(obj);
@@ -213,24 +180,24 @@ namespace Managers
         {
             ammoStackController.DecreaseStack();
         }
+
         private void OnEnemyAddTargetList(GameObject obj)
         {
-            playerTargetController.OnAddTargetList(obj);
+            playerTargetManager.OnAddTargetList(obj);
         }
+
         private void OnEnemyRemoveTargetList(GameObject obj)
         {
-            playerTargetController.OnRemoveTargetList(obj);
+            playerTargetManager.OnRemoveTargetList(obj);
         }
         
-
         private GameObject OnPlayerMovement()
         {
             return movementController.gameObject;
         }
 
         private bool OnGetIsTurretMode() => TurretMode;
-
-
+        
         private bool OnGetIsIdleMode() => IdleMode;
 
         private bool OnGetIsBattleMode() => BattleMode;
@@ -238,17 +205,7 @@ namespace Managers
         private void OnPlay()
         {
             movementController.IsReadyToPlay(true);
-            animationController.ChangeAnimationState(PlayerAnimTypes.IdleMode);
-        }
-
-        public void IsTurretState()
-        {
-            playerTypes = PlayerStateTypes.Turret;
-        }
-
-        private void OnPlayerOnTurretAnimation()
-        {
-            movementController.IsOnTurret();
+            ChangeState(PlayerStateTypes.Idle);
         }
 
         private void OnReset()

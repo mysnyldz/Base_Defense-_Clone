@@ -6,33 +6,36 @@ using Data.ValueObject;
 using Enums;
 using Managers;
 using Signals;
+using Sirenix.OdinInspector;
 using States.EnemyStates;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Controllers.Player
 {
-    public class PlayerTargetController : MonoBehaviour
+    public class PlayerTargetRadius : MonoBehaviour
     {
         #region Self Variables
 
         #region Public Variables
 
         public List<GameObject> TargetList = new List<GameObject>();
-        public int Damage;
-        public int FireRate;
 
         #endregion
 
         #region Serializefield Variables
 
+        [SerializeField] private PlayerManager playerManager;
+        [ShowInInspector] private BulletData _data;
+
         #endregion
 
         #region Private Variables
 
-        private GameObject _enemy;
-        private BulletTypesData _data;
+        private float _damage;
+        private float _fireRate;
         private BulletTypes _types;
-        private Coroutine AttackCorotuine;
+        protected Coroutine AttackCoroutine;
 
         #endregion
 
@@ -43,13 +46,12 @@ namespace Controllers.Player
             _data = GetBulletData();
         }
 
-        private BulletTypesData GetBulletData() =>
-            Resources.Load<CD_BulletData>("Data/CD_BulletData").Data.BulletTypeDatas[_types];
+        private BulletData GetBulletData() => Resources.Load<CD_BulletData>("Data/CD_BulletData").Data;
 
-        private void Start()
+        protected virtual void Start()
         {
-            Damage = _data.Damage;
-            FireRate = _data.FireRate;
+            _damage = _data.BulletTypeDatas[BulletTypes.Pistol].Damage;
+            _fireRate = _data.BulletTypeDatas[BulletTypes.Pistol].FireRate;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -57,9 +59,9 @@ namespace Controllers.Player
             if (other.CompareTag("Enemy"))
             {
                 OnAddTargetList(other.gameObject);
-                if (AttackCorotuine == null)
+                if (TargetList.Count >= 1 && AttackCoroutine == null)
                 {
-                    AttackCorotuine = StartCoroutine(Attack());
+                    AttackCoroutine = StartCoroutine(Attack());
                 }
             }
         }
@@ -69,15 +71,8 @@ namespace Controllers.Player
             if (other.CompareTag("Enemy"))
             {
                 OnRemoveTargetList(other.gameObject);
-                if (TargetList.Count == 0)
-                {
-                    StopFire();
-                    StopCoroutine(AttackCorotuine);
-                    AttackCorotuine = null;
-                }
             }
         }
-
 
         public void OnAddTargetList(GameObject obj)
         {
@@ -86,15 +81,22 @@ namespace Controllers.Player
 
         public void OnRemoveTargetList(GameObject obj)
         {
+            if (TargetList[0] == obj)
+            {
+                playerManager.Target = null;
+                StopFire();
+                StopCoroutine(AttackCoroutine);
+                AttackCoroutine = null;
+                TargetList.Remove(obj);
+            }
+
             TargetList.Remove(obj);
             TargetList.TrimExcess();
         }
 
-        private IEnumerator Attack()
+        IEnumerator Attack()
         {
-            WaitForSeconds Wait = new WaitForSeconds(FireRate);
-            yield return Wait;
-
+            WaitForSeconds waiter = new WaitForSeconds(_fireRate);
             float closestdistance = float.MaxValue;
 
             while (TargetList.Count >= 1)
@@ -106,22 +108,28 @@ namespace Controllers.Player
                     if (distance < closestdistance)
                     {
                         closestdistance = distance;
-                        _enemy = TargetList[i];
+                        playerManager.Target = TargetList[i];
                     }
                 }
 
-                if (_enemy != null)
+                if (playerManager.Target == null)
+                {
+                    playerManager.Target = TargetList[0];
+                }
+
+                TargetInSight();
+                if (playerManager.Target != null)
                 {
                     Fire();
                 }
-                
-                _enemy = null;
+
+                yield return waiter;
+                playerManager.Target = null;
                 closestdistance = float.MaxValue;
-                yield return Wait;
-                
-                
+                StopFire();
             }
-            
+
+            playerManager.Target = null;
         }
 
         protected virtual void Fire()
@@ -129,6 +137,10 @@ namespace Controllers.Player
         }
 
         protected virtual void StopFire()
+        {
+        }
+
+        protected virtual void TargetInSight()
         {
         }
 

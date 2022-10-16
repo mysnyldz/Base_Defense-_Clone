@@ -61,31 +61,31 @@ namespace Controllers.PlayerControllers
 
             if (other.CompareTag("GateOutside"))
             {
-                playerSphere.transform.DOScale(new Vector3(2.5f, 2.5f, 2.5f), 1f).SetEase(Ease.OutFlash);
-                manager.SetPlayerStateTypes(PlayerStateTypes.Battle);
+                playerSphere.transform.DOScale(new Vector3(3f, 3f, 3f), 1f).SetEase(Ease.OutFlash);
+                manager.ChangeState(PlayerStateTypes.Battle);
             }
 
             if (other.CompareTag("GateInside"))
             {
                 playerSphere.transform.DOScale(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutFlash);
-                manager.SetPlayerStateTypes(PlayerStateTypes.Idle);
+                manager.ChangeState(PlayerStateTypes.Idle);
             }
 
             if (other.CompareTag("GemDepot"))
             {
                 IdleSignals.Instance.onPlayerEnterGemDepot?.Invoke(gameObject);
             }
+
             if (other.CompareTag("Turret"))
             {
-                 manager.IsTurretState();
-                 PlayerSignals.Instance.onPlayerOnTurret?.Invoke(manager.gameObject);
+                manager.ChangeState(PlayerStateTypes.Turret);
+                PlayerSignals.Instance.onPlayerOnTurret?.Invoke(manager.gameObject);
             }
 
             if (other.CompareTag("Enemy"))
             {
-                manager.SetPlayerStateTypes(PlayerStateTypes.Target);
+                manager.ChangeState(PlayerStateTypes.Target);
             }
-
         }
 
         private void OnTriggerStay(Collider other)
@@ -94,7 +94,7 @@ namespace Controllers.PlayerControllers
             {
                 PlayerSignals.Instance.onPlayerReadyForShoot?.Invoke(gameObject);
             }
-            
+
             if (other.CompareTag("AmmoWarehouse"))
             {
                 _timer += (Time.fixedDeltaTime) * 3;
@@ -106,16 +106,16 @@ namespace Controllers.PlayerControllers
                 }
             }
 
-            // if (other.CompareTag("TurretDepot"))
-            // {
-            //     _timer += (Time.fixedDeltaTime) * 2.5f;
-            //     if (_timer >= _spendTime && _maxTurretAmmoCount < manager.TurretData.DepotAmmoData.MaxAmmoCapacity )
-            //     {
-            //         _timer = 0;
-            //         IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);
-            //         _maxTurretAmmoCount++;
-            //     }
-            // }
+            if (other.CompareTag("TurretDepot"))
+            {
+                _timer += (Time.fixedDeltaTime) * 2.5f;
+                if (_timer >= _spendTime && _maxTurretAmmoCount < manager.TurretData.DepotAmmoData.MaxAmmoCapacity)
+                {
+                    _timer = 0;
+                    IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);
+                    _maxTurretAmmoCount++;
+                }
+            }
         }
     }
 }

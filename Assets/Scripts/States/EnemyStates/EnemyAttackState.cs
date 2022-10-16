@@ -45,7 +45,14 @@ namespace States.EnemyStates
             {
                 Attacked();
             }
-
+            else if (_isAttacked == false && _manager.Player != null)
+            {
+                _manager.SwitchState(EnemyStatesTypes.MovePlayer);
+            }
+            else if (_isAttacked == false && _manager.Player == null)
+            {
+                _manager.SwitchState(EnemyStatesTypes.MoveBase);
+            }
             if (_manager.Health())
             {
                 _isAttacked = false;
@@ -98,6 +105,7 @@ namespace States.EnemyStates
             {
                 _timer = 0;
                 _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
+               
             }
         }
     }

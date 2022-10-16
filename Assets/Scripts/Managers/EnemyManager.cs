@@ -22,7 +22,6 @@ namespace Managers
         public GameObject BasePoints;
         public GameObject Player;
         public GameObject MineTnt;
-        public bool _isDeath;
 
         #endregion
 
@@ -54,8 +53,7 @@ namespace Managers
         {
             GetReferences();
         }
-
-
+        
         private void OnEnable()
         {
             _health = _data.EnemyTypeDatas[types].Health;
@@ -64,6 +62,7 @@ namespace Managers
             MineTnt = EnemySignals.Instance.onGetMineTntPoints?.Invoke();
             _currentEnemyBaseState = _enemyMoveBaseState;
             _currentEnemyBaseState.EnterState();
+            
             SubscribeEvents();
         }
 
@@ -90,6 +89,7 @@ namespace Managers
 
         private void GetReferences()
         {
+            agent.enabled = true;
             var manager = this;
             _data = Resources.Load<CD_Enemy>("Data/CD_Enemy").EnemyData;
             _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _data);
@@ -125,20 +125,10 @@ namespace Managers
         {
             return _health <= 0;
         }
-
-        public void DeathStatus()
+        
+        public void TakeDamage(float damage)
         {
-           _isDeath = _enemyDeathState.IsDeath;
-        }
-
-       // private void OnGetDeathStatus(bool value)
-       // {
-       //     _isDeath = value;
-       // }
-
-        public void TakeDamage(int damage)
-        {
-            _health -= damage;
+            _health -= (int)damage;
         }
 
 

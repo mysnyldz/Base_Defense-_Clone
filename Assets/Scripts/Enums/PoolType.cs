@@ -8,7 +8,8 @@
         EnemyNormal,
         EnemySpeed,
         EnemyTank,
-        Bullet
+        TurretBullet,
+        PistolBullet,
         //Miner,
     }
 }

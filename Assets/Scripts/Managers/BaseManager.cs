@@ -69,7 +69,6 @@ namespace Managers
                     Save();
                 }
             }
-
             Load();
            // BaseData = GetBaseData();
         }

@@ -122,7 +122,6 @@ namespace Managers
 
         public void OnPlayerOutTurret(GameObject player)
         {
-            Debug.Log("oldParent: "+oldParent);
             _rb = player.GetComponent<Rigidbody>();
             if (TurretStates == TurretStates.PlayerOnTurret)
             {
@@ -130,7 +129,6 @@ namespace Managers
                 _rb.constraints = ~RigidbodyConstraints.FreezePosition;
                 player.transform.SetParent(oldParent.transform);
                 gameObject.transform.DORotate(new Vector3(0, 0, 0), 0.2f);
-                Debug.Log("After if OldParent: "+oldParent);
             }
         }
 

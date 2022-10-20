@@ -25,6 +25,7 @@ namespace Controllers
         #region Serialized Variables
 
         [SerializeField] private GameObject moneyTakenPoint;
+        [SerializeField] private MoneyStackTypes types;
 
         #endregion
 
@@ -35,6 +36,8 @@ namespace Controllers
         private float _directy;
         private float _directz;
         private int _maxMoneyCount = 0;
+        private Rigidbody _moneyRb;
+        private Collider _moneyCollider;
 
         #endregion
 
@@ -44,17 +47,46 @@ namespace Controllers
         {
             _data = Resources.Load<CD_MoneyStackData>("Data/CD_MoneyStackData").Data;
         }
+        
+
 
         public void AddStack(GameObject obj)
         {
-            StackList.Capacity = _data.MaxMoneyCount;
-            if (_maxMoneyCount < StackList.Capacity)
+            _moneyRb = obj.GetComponent<Rigidbody>();
+            _moneyCollider = obj.GetComponent<Collider>();
+            switch (types)
             {
-                obj.transform.SetParent(transform);
-                ObjPosition(obj);
-                StackList.Add(obj);
+                case MoneyStackTypes.Player:
+                    StackList.Capacity = _data.PlayerMaxMoneyCount;
+                    if (_maxMoneyCount < StackList.Capacity)
+                    {
+                        obj.transform.SetParent(transform);
+                        ObjPosition(obj);
+                        StackList.Add(obj);
+                        IdleSignals.Instance.onRemoveMoneyList?.Invoke(obj);
+                        _moneyRb.useGravity = false;
+                        _moneyRb.isKinematic = true;
+                        _moneyCollider.enabled = false;
+                    }
+
+                    break;
+                case MoneyStackTypes.Supporter:
+                    StackList.Capacity = _data.SupporterMaxMoneyCount;
+                    if (_maxMoneyCount < StackList.Capacity)
+                    {
+                        obj.transform.SetParent(transform);
+                        ObjPosition(obj);
+                        StackList.Add(obj);
+                        IdleSignals.Instance.onRemoveMoneyList?.Invoke(obj);
+                        _moneyRb.useGravity = false;
+                        _moneyRb.isKinematic = true;
+                        _moneyCollider.enabled = false;
+                    }
+
+                    break;
             }
         }
+
         private void ObjPosition(GameObject obj)
         {
             _directx = 0;
@@ -66,11 +98,11 @@ namespace Controllers
             _maxMoneyCount++;
         }
 
-        public GameObject DecreaseStack()
+        public void DecreaseStack()
         {
             if (StackList.Count >= 1)
             {
-                int limit = StackList.Count;
+                int limit = StackList.Count-1;
                 for (int i = 0; i <= limit; i++)
                 {
                     var obj = StackList[0];
@@ -82,15 +114,14 @@ namespace Controllers
                     obj.transform.DOLocalMove(new Vector3(0, 0.05f, 0), 2f).SetDelay(1f).OnComplete(() =>
                     {
                         PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Money.ToString(), obj);
+                        _moneyRb.useGravity = true;
+                        _moneyRb.isKinematic = false;
+                        _moneyCollider.enabled = true;
                     });
                     CurrencySignals.Instance.onAddMoney?.Invoke(1);
                     _maxMoneyCount--;
                 }
-
             }
-            return null;
         }
-
-
     }
 }

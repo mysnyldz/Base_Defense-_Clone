@@ -574,6 +574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StackList: []
   moneyTakenPoint: {fileID: 0}
+  types: 0
 --- !u!1 &6308944633039555673
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,7 +968,7 @@ MonoBehaviour:
     OffsetFactorZ: 0
   MoneyStackData:
     MoneyInitPoint: {x: 0, y: 0, z: 0}
-    MaxMoneyCount: 0
+    PlayerMaxMoneyCount: 0
     MoneyCountX: 0
     MoneyCountY: 0
     MoneyCountZ: 0
@@ -1043,15 +1044,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 8749271068158686688}
-  targetRadius: {fileID: 7764309255590701426}
   rigidbody: {fileID: 7384829007680550716}
   isReadyToMove: 0
   isReadyToPlay: 0
-  TurretMode: 0
-  BattleMode: 0
-  IdleMode: 0
-  TargetMode: 0
-  _lockTarget: 0
 --- !u!1 &7440960988815601288
 GameObject:
   m_ObjectHideFlags: 0

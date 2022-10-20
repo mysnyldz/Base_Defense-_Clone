@@ -19,10 +19,15 @@ TagManager:
   - CostArea
   - PlayerSphere
   - EnemyBasePoints
-  - MineTnt
   - Turret
   - TurretRange
   - Enemy
+  - MineBuy
+  - MineTargetSphere
+  - MoneySupporter
+  - MoneySafe
+  - MoneySupporterBuyArea
+  - AmmoSupporterBuyArea
   layers:
   - Default
   - TransparentFX

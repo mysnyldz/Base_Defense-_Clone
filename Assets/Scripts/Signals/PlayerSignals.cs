@@ -24,6 +24,13 @@ namespace Signals
         public UnityAction<bool> onTargetInSight = delegate { };
 
         #endregion
+
+        #region MineSignals
+
+        public UnityAction<GameObject> onPlayerOnMineExplosion = delegate {  };
+        public UnityAction<GameObject> onPlayerOffMineExplosion = delegate {  };
+
+        #endregion
         
         #region TurretSignals
         
@@ -31,11 +38,12 @@ namespace Signals
         public UnityAction<GameObject> onPlayerOutTurret = delegate { };
         public UnityAction<GameObject> onPlayerReadyForShoot = delegate { };
 
-        public UnityAction onPlayerOnTurretAnimation = delegate { };
+        public UnityAction onAiTurretArea = delegate { };
         public Func<GameObject> onPlayerMovement = delegate { return default; };
         public Func<GameObject> onGetPlayerParent = delegate { return default; };
         public Func<List<GameObject>> onGetDepotAmmoBox = delegate { return default; };
-        
+        public UnityAction<int> onDecreaseBullet = delegate {};
+
         #endregion
     }
 }

@@ -22,11 +22,13 @@ namespace States.EnemyStates
 
         #endregion
 
-        public EnemyMoveMineTnt(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data)
+        public EnemyMoveMineTnt(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data,
+            ref EnemyTypes enemyTypes)
         {
             _manager = manager;
             _agent = agent;
             _data = data;
+            _types = enemyTypes;
         }
         public override void EnterState()
         {

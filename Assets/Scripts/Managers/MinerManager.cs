@@ -4,6 +4,7 @@ using Enums;
 using Signals;
 using Sirenix.OdinInspector;
 using States.MinerStates;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 

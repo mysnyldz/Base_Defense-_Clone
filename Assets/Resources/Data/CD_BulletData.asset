@@ -17,7 +17,7 @@ MonoBehaviour:
       m_Keys: 000000000100000002000000
       m_Values:
       - Damage: 50
-        FireRate: 2
+        FireRate: 0.5
       - Damage: 5
         FireRate: 2
       - Damage: 7

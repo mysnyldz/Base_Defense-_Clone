@@ -71,8 +71,17 @@ namespace States.EnemyStates
             {
                 PlayerSignals.Instance.onEnemyAddTargetList.Invoke(_agent.gameObject);
                 _manager.Player = other.transform.parent.gameObject;
-                _manager.SwitchState(EnemyStatesTypes.MovePlayer);
                 _isAttacked = false;
+            }
+            if (other.CompareTag("MineTargetSphere"))
+            {
+                _manager.MineTnt = other.transform.parent.gameObject;
+                _manager.SwitchState(EnemyStatesTypes.MoveMineTnt);
+                
+            }
+            if (other.CompareTag("EnemyBasePoints"))
+            {
+                _isAttacked = true;
             }
             
         }
@@ -82,14 +91,13 @@ namespace States.EnemyStates
             if (other.CompareTag("PlayerSphere"))
             {
                 PlayerSignals.Instance.onEnemyRemoveTargetList.Invoke(_agent.gameObject);
-                _manager.SwitchState(EnemyStatesTypes.MoveBase);
+                _manager.Player = null;
+                _isAttacked = false;
             }
 
             if (other.CompareTag("Player"))
             {
                 _isAttacked = false;
-                _manager.SwitchState(EnemyStatesTypes.MovePlayer);
-                
             }
 
             if (other.CompareTag("EnemyBasePoints"))
@@ -103,8 +111,8 @@ namespace States.EnemyStates
             _timer += (Time.fixedDeltaTime) * 0.4f;
             if (_timer >= _delayTime)
             {
-                _timer = 0;
                 _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
+                _timer = 0;
                
             }
         }

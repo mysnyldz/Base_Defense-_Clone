@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     MaxGemCapacity: 20
-    GemInitPoint: {x: 2.4, y: -0.599, z: -4.78}
+    GemInitPoint: {x: 7.5, y: -0.599, z: -4.78}
     GemCountX: 3
     GemCountZ: 3
     OffsetFactorX: 1.8

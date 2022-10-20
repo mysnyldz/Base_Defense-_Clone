@@ -97,6 +97,7 @@ namespace Managers
             BaseSignals.Instance.onGetBaseCount += OnGetBaseCount;
         }
 
+
         private void UnsubscribeEvents()
         {
             CoreGameSignals.Instance.onBaseInitialize -= OnInitializeBase;

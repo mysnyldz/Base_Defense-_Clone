@@ -48,7 +48,6 @@ namespace States.EnemyStates
                 1, 2f);
             _agent.enabled = false;
             PlayerSignals.Instance.onEnemyRemoveTargetList?.Invoke(_agent.gameObject);
-
         }
 
         public override void UpdateState()
@@ -60,7 +59,6 @@ namespace States.EnemyStates
                 DropMoney();
                 PoolSignals.Instance.onReleasePoolObject?.Invoke(_types.ToString(), _agent.gameObject);
             }
-            
         }
 
         public override void OnTriggerEnter(Collider other)
@@ -80,10 +78,11 @@ namespace States.EnemyStates
                 obj.transform.DOJump(
                     new Vector3(obj.transform.position.x + Random.Range(-1, 1),
                         obj.transform.position.y + Random.Range(0.5f, 2),
-                        obj.transform.position.z + Random.Range(-1, 1)), 
+                        obj.transform.position.z + Random.Range(-1, 1)),
                     2, 1, 0.5f);
             }
-            
+
+            _agent.enabled = true;
         }
     }
 }

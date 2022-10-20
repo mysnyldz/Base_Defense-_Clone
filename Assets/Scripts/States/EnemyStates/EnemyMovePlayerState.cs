@@ -23,11 +23,13 @@ namespace States.EnemyStates
 
         #endregion
 
-        public EnemyMovePlayerState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data)
+        public EnemyMovePlayerState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data,
+            ref EnemyTypes enemyTypes)
         {
             _manager = manager;
             _agent = agent;
             _data = data;
+            _types = enemyTypes;
         }
         public override void EnterState()
         {
@@ -56,6 +58,11 @@ namespace States.EnemyStates
             if (other.CompareTag("Player"))
             {
                 _manager.SwitchState(EnemyStatesTypes.Attack);
+            }
+            if (other.CompareTag("MineTargetSphere"))
+            {
+                _manager.MineTnt = other.transform.parent.gameObject;
+                _manager.SwitchState(EnemyStatesTypes.MoveMineTnt);
             }
         }
 

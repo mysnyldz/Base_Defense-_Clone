@@ -62,7 +62,6 @@ namespace Managers
             MineTnt = EnemySignals.Instance.onGetMineTntPoints?.Invoke();
             _currentEnemyBaseState = _enemyMoveBaseState;
             _currentEnemyBaseState.EnterState();
-            
             SubscribeEvents();
         }
 
@@ -89,14 +88,13 @@ namespace Managers
 
         private void GetReferences()
         {
-            agent.enabled = true;
             var manager = this;
             _data = Resources.Load<CD_Enemy>("Data/CD_Enemy").EnemyData;
-            _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _data);
-            _enemyMovePlayerState = new EnemyMovePlayerState(ref manager, ref agent, ref _data);
+            _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _data,ref types);
+            _enemyMovePlayerState = new EnemyMovePlayerState(ref manager, ref agent, ref _data, ref types);
             _enemyAttackState = new EnemyAttackState(ref manager, ref agent, ref _data);
             _enemyDeathState = new EnemyDeathState(ref manager, ref agent, ref _data,ref types);
-            _enemyMoveMineTnt = new EnemyMoveMineTnt(ref manager, ref agent, ref _data);
+            _enemyMoveMineTnt = new EnemyMoveMineTnt(ref manager, ref agent, ref _data,ref types);
         }
 
         private void Update()

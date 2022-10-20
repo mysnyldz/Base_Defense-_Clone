@@ -88,8 +88,8 @@ namespace Managers
         private CurrencyIdData GetCurrencyData() => Resources.Load<CD_Currency>("Data/CD_Currency").currencyIdData;
 
 
-        private int OnGetMoney() => _currencyIdData.Money;
-        private int OnGetGem() => _currencyIdData.Gem;
+        private int OnGetMoney() => _money;
+        private int OnGetGem() => _gem;
 
         private void OnAddMoney(int value)
         {

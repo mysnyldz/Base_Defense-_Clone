@@ -13,22 +13,22 @@ namespace States.MinerStates
             minerManager.agent.SetDestination(minerManager.GemVeins.transform.position);
             minerManager.SetTriggerAnim(MinerAnimTypes.Run);
         }
-        
 
-        public override void OnTriggerEnter(MinerManager minerManager,Collider other)
+
+        public override void OnTriggerEnter(MinerManager minerManager, Collider other)
         {
             if (other.CompareTag("Mine"))
             {
-                minerManager.SetTriggerAnim(MinerAnimTypes.Dig); 
+                minerManager.agent.transform.LookAt(other.transform.position);
+                minerManager.SetTriggerAnim(MinerAnimTypes.Dig);
                 minerManager.SwitchState(MinerStatesType.Dig);
             }
             else if (other.CompareTag("MineCart"))
             {
-                minerManager.SetTriggerAnim(MinerAnimTypes.Gather); 
+                minerManager.SetTriggerAnim(MinerAnimTypes.Gather);
+                minerManager.agent.transform.LookAt(other.transform.position);
                 minerManager.SwitchState(MinerStatesType.Gather);
             }
-            
         }
-        
     }
 }

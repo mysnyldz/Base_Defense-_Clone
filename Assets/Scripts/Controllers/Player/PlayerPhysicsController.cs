@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Enums;
 using Managers;
 using Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Controllers.PlayerControllers
@@ -34,13 +36,9 @@ namespace Controllers.PlayerControllers
         {
             if (other.CompareTag("Money"))
             {
-                if (_maxMoneyCount < manager.MoneyStackData.MaxMoneyCount)
                 {
                     manager.MoneyAddStack(other.gameObject);
                     _maxMoneyCount++;
-                    other.GetComponent<Rigidbody>().useGravity = false;
-                    other.GetComponent<Rigidbody>().isKinematic = true;
-                    other.GetComponent<Collider>().enabled = false;
                 }
             }
 
@@ -68,6 +66,7 @@ namespace Controllers.PlayerControllers
             if (other.CompareTag("GateInside"))
             {
                 playerSphere.transform.DOScale(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutFlash);
+                manager.Target = null;
                 manager.ChangeState(PlayerStateTypes.Idle);
             }
 
@@ -82,9 +81,20 @@ namespace Controllers.PlayerControllers
                 PlayerSignals.Instance.onPlayerOnTurret?.Invoke(manager.gameObject);
             }
 
+            if (other.CompareTag("TurretOperatorArea"))
+            {
+                PlayerSignals.Instance.onAiTurretArea?.Invoke();
+                //other.gameObject.SetActive(false);
+            }
+
             if (other.CompareTag("Enemy"))
             {
                 manager.ChangeState(PlayerStateTypes.Target);
+            }
+
+            if (other.CompareTag("MoneySupporterBuyArea"))
+            {
+                IdleSignals.Instance.onMoneySupporterBuyArea?.Invoke(1);
             }
         }
 
@@ -109,11 +119,10 @@ namespace Controllers.PlayerControllers
             if (other.CompareTag("TurretDepot"))
             {
                 _timer += (Time.fixedDeltaTime) * 2.5f;
-                if (_timer >= _spendTime && _maxTurretAmmoCount < manager.TurretData.DepotAmmoData.MaxAmmoCapacity)
+                if (_timer >= _spendTime)
                 {
                     _timer = 0;
                     IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);
-                    _maxTurretAmmoCount++;
                 }
             }
         }

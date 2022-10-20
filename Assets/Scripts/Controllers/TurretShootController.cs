@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Data.UnityObject;
 using Data.ValueObject;
 using Enums;
+using Keys;
 using Managers;
 using Signals;
 using Sirenix.OdinInspector;
@@ -22,7 +23,10 @@ namespace Controllers
 
         #region Serializefield Variables
 
-        [SerializeField] private GameObject FirePoint;
+        [SerializeField] private TurretManager manager;
+        [SerializeField] private GameObject firePoint;
+        [SerializeField] private TurretMovementController turretMovementController;
+        
 
         #endregion
 
@@ -31,9 +35,9 @@ namespace Controllers
         [ShowInInspector] private List<GameObject> _ammolist;
         private BulletTypes bulletTypes = BulletTypes.Turret;
         private Rigidbody _rb;
-        private BulletTypesData _data;
+        [ShowInInspector] private BulletTypesData _data;
         private bool _isDeath;
-        private float _fireRate;
+        [ShowInInspector] private float _fireRate;
         private float _timer;
 
         #endregion
@@ -74,6 +78,11 @@ namespace Controllers
                 {
                     TargetRemoveList(other.gameObject);
                 }
+
+                if (manager.TurretStates == TurretStates.AiOnTurret)
+                {
+                    manager.AiReadyForShoot();
+                }
             }
         }
 
@@ -92,8 +101,8 @@ namespace Controllers
         private void BulletPosition(GameObject bullet)
         {
             var parent = bullet.transform.parent.rotation;
-            bullet.transform.position = FirePoint.transform.position;
-            bullet.transform.rotation = FirePoint.transform.rotation;
+            bullet.transform.position = firePoint.transform.position;
+            bullet.transform.rotation = firePoint.transform.rotation;
             
         }
 
@@ -108,10 +117,11 @@ namespace Controllers
                     _timer = 0;
                     BulletPosition(bullet);
                     _rb = bullet.GetComponent<Rigidbody>();
-                    _rb.AddForce(FirePoint.transform.forward * 5f, ForceMode.VelocityChange);
-                    
+                    _rb.AddForce(firePoint.transform.forward * 5f, ForceMode.VelocityChange);
+                    PlayerSignals.Instance.onDecreaseBullet?.Invoke(1);
                 }
             }
         }
+        
     }
 }

@@ -8,6 +8,7 @@ using Enums;
 using Keys;
 using Signals;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 
 namespace Managers
@@ -18,7 +19,7 @@ namespace Managers
 
         #region Public Variables
 
-        public TurretStates TurretStates = TurretStates.Empty;
+        public TurretStates TurretStates;
 
         #endregion
 
@@ -29,6 +30,8 @@ namespace Managers
         [SerializeField] private TurretDepotController turretDepotController;
         [SerializeField] private TurretMovementController turretMovementController;
         [SerializeField] private TurretShootController turretShootController;
+        [SerializeField] private GameObject turretOperator;
+        [SerializeField] private TextMeshPro turretOperatorText;
         [SerializeField] private GameObject oldParent;
 
         #endregion
@@ -37,6 +40,7 @@ namespace Managers
 
         private TurretData _data;
         private Rigidbody _rb;
+        private Collider _collider;
 
         #endregion
 
@@ -48,6 +52,7 @@ namespace Managers
         {
             _data = GetTurretData();
             oldParent = PlayerSignals.Instance.onGetPlayerParent?.Invoke();
+            turretOperatorText.text = "Operator Area : \t Off";
         }
 
         private void OnEnable()
@@ -66,8 +71,9 @@ namespace Managers
             PlayerSignals.Instance.onPlayerReadyForShoot += OnPlayerReadyForShoot;
             PlayerSignals.Instance.onGetDepotAmmoBox += OnGetDepotAmmoBox;
             InputSignals.Instance.onInputDragged += OnInputDragged;
+            PlayerSignals.Instance.onDecreaseBullet += OnDecreaseBullet;
+            PlayerSignals.Instance.onAiTurretArea += OnAiTurretArea;
         }
-
 
 
         private void UnsubscribeEvents()
@@ -79,6 +85,8 @@ namespace Managers
             PlayerSignals.Instance.onPlayerReadyForShoot -= OnPlayerReadyForShoot;
             PlayerSignals.Instance.onGetDepotAmmoBox -= OnGetDepotAmmoBox;
             InputSignals.Instance.onInputDragged -= OnInputDragged;
+            PlayerSignals.Instance.onDecreaseBullet -= OnDecreaseBullet;
+            PlayerSignals.Instance.onAiTurretArea -= OnAiTurretArea;
         }
 
 
@@ -109,15 +117,45 @@ namespace Managers
                 player.transform.SetParent(playerFiringPosition.transform);
                 _rb.constraints = RigidbodyConstraints.FreezePosition;
             }
-
+            else if (TurretStates == TurretStates.AiOnTurret)
+            {
+            }
         }
+
+
         private void OnPlayerReadyForShoot(GameObject player)
         {
             if (TurretStates == TurretStates.PlayerOnTurret)
             {
                 turretShootController.TurretShoot();
             }
-            
+        }
+
+        private void OnAiTurretArea()
+        {
+            _collider = gameObject.GetComponent<Collider>();
+            if (TurretStates == TurretStates.Empty)
+            {
+                turretOperatorText.text = "Operator : \t On"; 
+                TurretStates = TurretStates.AiOnTurret;
+                turretOperator.SetActive(true);
+                _collider.enabled = false;
+            }
+            else if (TurretStates == TurretStates.AiOnTurret)
+            {
+                turretOperatorText.text = "Operator : \t Off";
+                TurretStates = TurretStates.Empty;
+                turretOperator.SetActive(false);
+                _collider.enabled = true;
+            }
+
+        }
+
+
+        public void AiReadyForShoot()
+        {
+            turretMovementController.AITurretRotation();
+            turretShootController.TurretShoot();
         }
 
         public void OnPlayerOutTurret(GameObject player)
@@ -132,6 +170,11 @@ namespace Managers
             }
         }
 
+        private void OnDecreaseBullet(int value)
+        {
+            turretDepotController.AmmoDecreaseDepot(1);
+        }
+
         public GameObject OnGetAmmoDepotTarget()
         {
             return turretDepot;
@@ -139,7 +182,7 @@ namespace Managers
 
         private void OnInputDragged(InputParams data)
         {
-            turretMovementController.TurretRotation(data);
+            turretMovementController.PlayerTurretRotation(data);
         }
     }
 }

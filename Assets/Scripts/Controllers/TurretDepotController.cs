@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Data.UnityObject;
 using Data.ValueObject;
 using DG.Tweening;
+using Enums;
 using Managers;
 using Signals;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Controllers
 {
@@ -16,7 +18,7 @@ namespace Controllers
         #region Public Variables
 
         public List<GameObject> _ammoList = new List<GameObject>();
-        
+
         #endregion
 
         #region Serializefield Variables
@@ -34,6 +36,7 @@ namespace Controllers
         private int _ammoDistance;
         private Vector3 _direct = Vector3.zero;
         private GameObject turretDepot;
+        private int newValue;
 
         #endregion
 
@@ -41,7 +44,7 @@ namespace Controllers
 
         private void Awake()
         {
-            _zoneData = GetTurretData() ;
+            _zoneData = GetTurretData();
             ammoStackController = IdleSignals.Instance.onGetAmmoStackController?.Invoke();
         }
 
@@ -54,13 +57,15 @@ namespace Controllers
 
         public void OnDepotAmmo(GameObject obj)
         {
-            if (_ammoStackList.Count >= 1)
+            if (_ammoStackList.Count >= 1 && _ammoList.Count < _zoneData.MaxAmmoCapacity)
             {
                 DepotAddAmmo(obj);
             }
         }
         
-        private TurretDepotAmmoData GetTurretData() => Resources.Load<CD_TurretData>("Data/CD_TurretData").Data.DepotAmmoData;
+
+        private TurretDepotAmmoData GetTurretData() =>
+            Resources.Load<CD_TurretData>("Data/CD_TurretData").Data.DepotAmmoData;
 
         private void DepotAddAmmo(GameObject obj)
         {
@@ -83,10 +88,18 @@ namespace Controllers
             obj.transform.DOLocalRotate(new Vector3(0, 0, 0), 1).SetEase(Ease.OutQuad);
             obj.transform.DOLocalMove(new Vector3(_direct.x, _direct.y, _direct.z), 0.5f).SetEase(Ease.OutQuad);
         }
-        
-        public void AmmoDecreaseDepot(GameObject obj)
+
+        public void AmmoDecreaseDepot(int value)
         {
-            
+            var ammo = _ammoList[_ammoList.Count - 1];
+            newValue += value;
+            if (newValue >= 4)
+            {
+                _ammoList.RemoveAt(_ammoList.Count - 1);
+                _ammoList.TrimExcess();
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.AmmoBox.ToString(),ammo);
+                newValue = 0;
+            }
         }
     }
 }

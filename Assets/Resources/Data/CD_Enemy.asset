@@ -17,7 +17,7 @@ MonoBehaviour:
       m_Keys: 000000000100000002000000
       m_Values:
       - Health: 15
-        MoveSpeed: 1
+        MoveSpeed: 2
         RunSpeed: 1.5
         Damage: 10
         AttackRange: 2

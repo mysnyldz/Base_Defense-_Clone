@@ -81,17 +81,21 @@ namespace Controllers.Player
 
         public void OnRemoveTargetList(GameObject obj)
         {
-            if (TargetList[0] == obj)
+            if (TargetList.Count > 0)
             {
-                playerManager.Target = null;
-                StopFire();
-                StopCoroutine(AttackCoroutine);
-                AttackCoroutine = null;
-                TargetList.Remove(obj);
-            }
+                if (TargetList[0] == obj)
+                {
+                    playerManager.Target = null;
+                    StopFire();
+                    StopCoroutine(AttackCoroutine);
+                    AttackCoroutine = null;
+                    TargetList.Remove(obj);
+                }
 
-            TargetList.Remove(obj);
-            TargetList.TrimExcess();
+                TargetList.Remove(obj);
+                TargetList.TrimExcess();
+                
+            }
         }
 
         IEnumerator Attack()

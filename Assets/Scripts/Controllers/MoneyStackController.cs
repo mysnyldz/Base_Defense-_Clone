@@ -60,13 +60,13 @@ namespace Controllers
                     StackList.Capacity = _data.PlayerMaxMoneyCount;
                     if (_maxMoneyCount < StackList.Capacity)
                     {
+                        _moneyRb.useGravity = false;
+                        _moneyRb.isKinematic = true;
+                        _moneyCollider.enabled = false;
                         obj.transform.SetParent(transform);
                         ObjPosition(obj);
                         StackList.Add(obj);
                         IdleSignals.Instance.onRemoveMoneyList?.Invoke(obj);
-                        _moneyRb.useGravity = false;
-                        _moneyRb.isKinematic = true;
-                        _moneyCollider.enabled = false;
                     }
 
                     break;
@@ -74,13 +74,14 @@ namespace Controllers
                     StackList.Capacity = _data.SupporterMaxMoneyCount;
                     if (_maxMoneyCount < StackList.Capacity)
                     {
+                        moneyTakenPoint = IdleSignals.Instance.onMoneyGetTakenPoints?.Invoke();
+                        _moneyRb.useGravity = false;
+                        _moneyRb.isKinematic = true;
+                        _moneyCollider.enabled = false;
                         obj.transform.SetParent(transform);
                         ObjPosition(obj);
                         StackList.Add(obj);
                         IdleSignals.Instance.onRemoveMoneyList?.Invoke(obj);
-                        _moneyRb.useGravity = false;
-                        _moneyRb.isKinematic = true;
-                        _moneyCollider.enabled = false;
                     }
 
                     break;

@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using System.Collections.Generic;
+using Enums;
 using Signals;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace Managers
         #region Public Variables
 
         public GameObject MoneySupporterBasePoint;
+        public List<GameObject> MoneyList = new List<GameObject>();
+        public GameObject MoneyTakenPoint;
 
         #endregion
 
@@ -40,12 +43,18 @@ namespace Managers
         {
             IdleSignals.Instance.onMoneySupporterBasePoints += OnMoneySupporterBasePoints;
             IdleSignals.Instance.onMoneySupporterBuyArea += OnMoneySupporterBuyArea;
+            IdleSignals.Instance.onGetSupporterAreaManager += OnGetSupporterAreaManager;
+            IdleSignals.Instance.onMoneyGetTakenPoints += OnMoneyGetTakenPoints;
         }
+
 
 
         private void UnsubscribeEvents()
         {
             IdleSignals.Instance.onMoneySupporterBasePoints -= OnMoneySupporterBasePoints;
+            IdleSignals.Instance.onMoneySupporterBuyArea -= OnMoneySupporterBuyArea;
+            IdleSignals.Instance.onGetSupporterAreaManager -= OnGetSupporterAreaManager;
+            IdleSignals.Instance.onMoneyGetTakenPoints -= OnMoneyGetTakenPoints;
         }
 
         private void OnDisable()
@@ -62,14 +71,20 @@ namespace Managers
 
         private void OnMoneySupporterBuyArea(int value)
         {
-            Debug.Log("once" + _newValue);
             _newValue += value;
-            Debug.Log("sonra" + _newValue);
             if (_newValue <= 1)
             {
                 PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.MoneySupporter.ToString(),
                     moneyWorkerButton.transform);
             }
+        }
+        private SupporterAreaManager OnGetSupporterAreaManager()
+        {
+            return this;
+        }
+        private GameObject OnMoneyGetTakenPoints()
+        {
+            return MoneyTakenPoint;
         }
     }
 }

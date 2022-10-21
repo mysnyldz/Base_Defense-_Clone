@@ -45,7 +45,7 @@ namespace States.SupporterMoneyStates
 
         public override void UpdateState()
         {
-            if (_manager.MoneyList.Count >= 1)
+            if (_manager.SupporterAreaBuyManager.MoneyList.Count >= 1)
             {
                 _manager.SwitchState(SupporterMoneyStateTypes.MoveMoney);
             }

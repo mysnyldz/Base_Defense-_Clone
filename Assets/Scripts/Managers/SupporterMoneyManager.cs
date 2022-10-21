@@ -21,8 +21,11 @@ namespace Managers
         #region Public Variables
 
         public GameObject BasePoint;
-        public List<GameObject> MoneyList = new List<GameObject>();
         public MoneyStackController MoneyStackController;
+        [ShowInInspector] public List<GameObject> StackList = new List<GameObject>();
+        public bool IsInSafe = false;
+        public int MaxMoney;
+        public SupporterAreaManager SupporterAreaBuyManager;
 
         #endregion
 
@@ -30,6 +33,8 @@ namespace Managers
 
         [SerializeField] private NavMeshAgent agent;
         [SerializeField] private SupporterMoneyAnimationController animationController;
+        
+        
 
         #endregion
 
@@ -70,6 +75,7 @@ namespace Managers
             IdleSignals.Instance.onRemoveMoneyList += OnRemoveMoneyList;
         }
 
+
         private void UnsubscribeEvents()
         {
             IdleSignals.Instance.onAddMoneyList -= OnAddMoneyList;
@@ -90,11 +96,19 @@ namespace Managers
             _moneyMoveCollectState = new MoneyMoveCollectState(ref manager, ref agent, ref _data);
             _moneyWaitState = new MoneyWaitState(ref manager, ref agent, ref _data);
             _data = GetSupporterData();
+            MaxMoney = _data.SupporterMaxMoneyCount;
+            GetSupporterAreaManager();
         }
         
         private void Update()
         {
             _currentMoneyBaseState.UpdateState();
+            StackList = MoneyStackController.StackList;
+        }
+
+        private void GetSupporterAreaManager()
+        {
+            SupporterAreaBuyManager = IdleSignals.Instance.onGetSupporterAreaManager?.Invoke();
         }
         
 
@@ -118,13 +132,13 @@ namespace Managers
 
         private void OnAddMoneyList(GameObject money)
         {
-            MoneyList.Add(money);
+            SupporterAreaBuyManager.MoneyList.Add(money);
         }
 
         private void OnRemoveMoneyList(GameObject money)
         {
-            MoneyList.Remove(money);
-            MoneyList.TrimExcess();
+            SupporterAreaBuyManager.MoneyList.Remove(money);
+            SupporterAreaBuyManager.MoneyList.TrimExcess();
         }
 
         private void OnTriggerEnter(Collider other)

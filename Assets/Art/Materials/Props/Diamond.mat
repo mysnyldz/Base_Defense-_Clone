@@ -22,9 +22,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Diamond
   m_Shader: {fileID: 4800000, guid: f67804e22f42e8441879353a5604515d, type: 3}
-  m_ShaderKeywords: _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_BLEND_PREMULTIPLY _MK_ENVIRONMENT_REFLECTIONS_AMBIENT
-    _MK_IRIDESCENCE_DEFAULT _MK_LIGHT_CEL _MK_RECEIVE_SHADOWS _MK_RIM_SPLIT _MK_SURFACE_TYPE_TRANSPARENT
-    _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
+  m_ShaderKeywords: _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_ENVIRONMENT_REFLECTIONS_AMBIENT
+    _MK_IRIDESCENCE_DEFAULT _MK_RECEIVE_SHADOWS _MK_SURFACE_TYPE_TRANSPARENT _MK_WRAPPED_DIFFUSE
+    _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -169,9 +169,9 @@ Material:
     - _Artistic: 0
     - _ArtisticFrequency: 1
     - _ArtisticProjection: 1
-    - _Blend: 1
+    - _Blend: 0
     - _BlendDst: 10
-    - _BlendSrc: 1
+    - _BlendSrc: 5
     - _Brightness: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -202,10 +202,10 @@ Material:
     - _Initialized: 1
     - _InputTab: 1
     - _Iridescence: 1
-    - _IridescenceSize: 0.57
+    - _IridescenceSize: 1.59
     - _IridescenceSmoothness: 0.5
     - _IridescenceThresholdOffset: 0
-    - _Light: 1
+    - _Light: 0
     - _LightBands: 4
     - _LightBandsScale: 0.5
     - _LightThreshold: 0.199
@@ -219,11 +219,11 @@ Material:
     - _RefractionDistortion: 0.1
     - _RefractionDistortionFade: 0.114
     - _RefractionDistortionMapScale: 1
-    - _RefractionTab: 0
+    - _RefractionTab: 1
     - _RenderFace: 2
     - _RenderPriority: 0
-    - _Rim: 2
-    - _RimSize: 3
+    - _Rim: 0
+    - _RimSize: 2.64
     - _RimSmoothness: 0.5
     - _RimThresholdOffset: 0.25
     - _Saturation: 1
@@ -261,9 +261,9 @@ Material:
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GoochBrightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GoochDarkColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
-    - _IridescenceColor: {r: 1, g: 1, b: 1, a: 0.5}
-    - _RimBrightColor: {r: 0.56102854, g: 0, b: 0.5660378, a: 1}
+    - _GoochDarkColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
+    - _IridescenceColor: {r: 1, g: 0.6179246, b: 0.95149285, a: 1}
+    - _RimBrightColor: {r: 0.5902121, g: 0, b: 0.5943396, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimDarkColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}

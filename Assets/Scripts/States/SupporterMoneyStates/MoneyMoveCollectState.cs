@@ -3,6 +3,7 @@ using Data.ValueObject;
 using Enums;
 using Managers;
 using Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.ResourceManagement.Diagnostics;
@@ -23,10 +24,11 @@ namespace States.SupporterMoneyStates
 
         #region Private Variables
 
+        private GameObject _target;
         private SupporterMoneyManager _manager;
         private NavMeshAgent _agent;
         private MoneyStackData _data;
-        private GameObject _target;
+        private int _stackListCount;
 
         #endregion
 
@@ -47,20 +49,22 @@ namespace States.SupporterMoneyStates
 
         public override void UpdateState()
         {
-            if (_manager.MoneyList != null)
+            _stackListCount = _manager.StackList.Count;
+            if (_manager.SupporterAreaBuyManager.MoneyList != null)
             {
-                _target = _manager.MoneyList[0];
-                _manager.SetTriggerAnim(SupporterAnimTypes.Walk);
-                _agent.SetDestination(_target.transform.position);
-                if (_manager.MoneyStackController.StackList.Count >= _data.SupporterMaxMoneyCount)
+                if (_stackListCount >= _manager.MaxMoney)
                 {
+                    _target = null;
                     _manager.SwitchState(SupporterMoneyStateTypes.MoveBase);
                 }
+
+                _target = _manager.SupporterAreaBuyManager.MoneyList[0];
+                _agent.SetDestination(_target.transform.position);
             }
-            else if (_manager.MoneyList == null)
+            else if (_manager.SupporterAreaBuyManager.MoneyList.Count < 1)
             {
                 _target = null;
-                _manager.SetTriggerAnim(SupporterAnimTypes.Idle);
+                _manager.SwitchState(SupporterMoneyStateTypes.MoveBase);
             }
         }
 

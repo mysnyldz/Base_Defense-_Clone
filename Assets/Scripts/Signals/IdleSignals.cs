@@ -3,6 +3,7 @@ using Controllers;
 using Data.UnityObject;
 using Data.ValueObject;
 using Extentions;
+using Managers;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -39,6 +40,9 @@ namespace Signals
         public UnityAction<GameObject> onRemoveMoneyList = delegate { };
         public Func<GameObject> onMoneySupporterBasePoints = delegate { return default; };
         public UnityAction<int> onMoneySupporterBuyArea = delegate { };
+        public Func<SupporterAreaManager> onGetSupporterAreaManager = delegate { return default;};
+        public Func<GameObject> onMoneyGetTakenPoints = delegate { return default; };
+        
 
         #endregion
     }

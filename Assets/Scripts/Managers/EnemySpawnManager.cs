@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public class SpawnManager : MonoBehaviour
+    public class EnemySpawnManager : MonoBehaviour
     {
         #region Self Variables
 
@@ -111,7 +111,6 @@ namespace Managers
                     };
                     _spawnDatasCache.Add(_spawnDataCache);
                 }
-
                 _baseSpawnDatas.Add(VARIABLE, _spawnDatasCache);
             }
         }

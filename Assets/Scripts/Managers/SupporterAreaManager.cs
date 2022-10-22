@@ -45,6 +45,8 @@ namespace Managers
             IdleSignals.Instance.onMoneySupporterBuyArea += OnMoneySupporterBuyArea;
             IdleSignals.Instance.onGetSupporterAreaManager += OnGetSupporterAreaManager;
             IdleSignals.Instance.onMoneyGetTakenPoints += OnMoneyGetTakenPoints;
+            IdleSignals.Instance.onAddMoneyList += OnAddMoneyList;
+            IdleSignals.Instance.onRemoveMoneyList += OnRemoveMoneyList;
         }
 
 
@@ -55,6 +57,8 @@ namespace Managers
             IdleSignals.Instance.onMoneySupporterBuyArea -= OnMoneySupporterBuyArea;
             IdleSignals.Instance.onGetSupporterAreaManager -= OnGetSupporterAreaManager;
             IdleSignals.Instance.onMoneyGetTakenPoints -= OnMoneyGetTakenPoints;
+            IdleSignals.Instance.onAddMoneyList -= OnAddMoneyList;
+            IdleSignals.Instance.onRemoveMoneyList -= OnRemoveMoneyList;
         }
 
         private void OnDisable()
@@ -85,6 +89,17 @@ namespace Managers
         private GameObject OnMoneyGetTakenPoints()
         {
             return MoneyTakenPoint;
+        }
+        
+        private void OnAddMoneyList(GameObject money)
+        {
+            MoneyList.Add(money);
+        }
+
+        private void OnRemoveMoneyList(GameObject money)
+        {
+            MoneyList.Remove(money);
+            MoneyList.TrimExcess();
         }
     }
 }

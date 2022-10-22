@@ -89,7 +89,7 @@ namespace Controllers.PlayerControllers
 
             if (other.CompareTag("Enemy"))
             {
-                manager.ChangeState(PlayerStateTypes.Target);
+                manager.ChangeState(PlayerStateTypes.Battle);
             }
 
             if (other.CompareTag("MoneySupporterBuyArea"))

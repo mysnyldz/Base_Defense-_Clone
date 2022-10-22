@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Controllers;
 using Data.UnityObject;
 using Data.ValueObject;
@@ -43,6 +44,13 @@ namespace Signals
         public Func<SupporterAreaManager> onGetSupporterAreaManager = delegate { return default;};
         public Func<GameObject> onMoneyGetTakenPoints = delegate { return default; };
         
+
+        #endregion
+
+
+        #region Hostage Signals
+
+        public UnityAction<GameObject> onRemoveHostageSpawnPoint=delegate {  };
 
         #endregion
     }

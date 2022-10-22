@@ -136,14 +136,14 @@ namespace Managers
             _collider = gameObject.GetComponent<Collider>();
             if (TurretStates == TurretStates.Empty)
             {
-                turretOperatorText.text = "Operator : \t On"; 
+                turretOperatorText.text = "Operator: \t On"; 
                 TurretStates = TurretStates.AiOnTurret;
                 turretOperator.SetActive(true);
                 _collider.enabled = false;
             }
             else if (TurretStates == TurretStates.AiOnTurret)
             {
-                turretOperatorText.text = "Operator : \t Off";
+                turretOperatorText.text = "Operator: \t Off";
                 TurretStates = TurretStates.Empty;
                 turretOperator.SetActive(false);
                 _collider.enabled = true;

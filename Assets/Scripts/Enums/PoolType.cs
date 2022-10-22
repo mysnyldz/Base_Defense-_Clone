@@ -10,7 +10,8 @@
         EnemyTank,
         TurretBullet,
         PistolBullet,
-        MoneySupporter
+        MoneySupporter,
+        Hostage
         //AmmoSupporter
         //Miner,
     }

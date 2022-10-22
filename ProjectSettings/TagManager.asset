@@ -28,6 +28,8 @@ TagManager:
   - MoneySafe
   - MoneySupporterBuyArea
   - AmmoSupporterBuyArea
+  - Hostage
+  - MinerTent
   layers:
   - Default
   - TransparentFX

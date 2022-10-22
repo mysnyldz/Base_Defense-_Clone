@@ -408,13 +408,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2195467734429946794}
-  m_LocalRotation: {x: -0, y: -0.70710677, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.051713947, y: 1.0437744, z: 0.47283354}
   m_LocalScale: {x: 0.01247021, y: 0.026894372, z: 0.015529592}
   m_Children: []
   m_Father: {fileID: 659369185091990262}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &9049586714296226596
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -606,6 +606,7 @@ MonoBehaviour:
   manager: {fileID: 2033817518301902623}
   firePoint: {fileID: 1249728886231734812}
   turretMovementController: {fileID: 3618312870184967526}
+  turretBarel: {fileID: 2195467734429946794}
 --- !u!1 &4910566907109939272
 GameObject:
   m_ObjectHideFlags: 0

@@ -71,15 +71,13 @@ namespace Managers
 
         private void SubscribeEvents()
         {
-            IdleSignals.Instance.onAddMoneyList += OnAddMoneyList;
-            IdleSignals.Instance.onRemoveMoneyList += OnRemoveMoneyList;
+            
         }
 
 
         private void UnsubscribeEvents()
         {
-            IdleSignals.Instance.onAddMoneyList -= OnAddMoneyList;
-            IdleSignals.Instance.onRemoveMoneyList -= OnRemoveMoneyList;
+            
         }
 
         private void OnDisable()
@@ -128,17 +126,6 @@ namespace Managers
             }
 
             _currentMoneyBaseState.EnterState();
-        }
-
-        private void OnAddMoneyList(GameObject money)
-        {
-            SupporterAreaBuyManager.MoneyList.Add(money);
-        }
-
-        private void OnRemoveMoneyList(GameObject money)
-        {
-            SupporterAreaBuyManager.MoneyList.Remove(money);
-            SupporterAreaBuyManager.MoneyList.TrimExcess();
         }
 
         private void OnTriggerEnter(Collider other)

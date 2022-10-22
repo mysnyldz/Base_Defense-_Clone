@@ -10,8 +10,8 @@ Material:
   m_Name: Player
   m_Shader: {fileID: 4800000, guid: 6c046203321edf34fb092959a05e5b4a, type: 3}
   m_ShaderKeywords: _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_COLOR_GRADING_ALBEDO
-    _MK_ENVIRONMENT_REFLECTIONS_AMBIENT _MK_IRIDESCENCE_DEFAULT _MK_RECEIVE_SHADOWS
-    _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
+    _MK_ENVIRONMENT_REFLECTIONS_AMBIENT _MK_IRIDESCENCE_DEFAULT _MK_OUTLINE_HULL_CLIP
+    _MK_RECEIVE_SHADOWS _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -198,12 +198,12 @@ Material:
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
     - _OptionsTab: 1
-    - _Outline: 1
+    - _Outline: 3
     - _OutlineData: 0
     - _OutlineFadeMax: 2
     - _OutlineFadeMin: 0.25
     - _OutlineNoise: 0
-    - _OutlineSize: 15
+    - _OutlineSize: 10
     - _OutlineTab: 1
     - _Parallax: 0.005
     - _QueueOffset: 0

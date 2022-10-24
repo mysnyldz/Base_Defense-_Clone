@@ -47,7 +47,6 @@ namespace States.EnemyStates
                 1,
                 1, 2f);
             _agent.enabled = false;
-            PlayerSignals.Instance.onEnemyRemoveTargetList?.Invoke(_agent.gameObject);
         }
 
         public override void UpdateState()
@@ -82,6 +81,7 @@ namespace States.EnemyStates
                     2, 1, 0.5f);
             }
 
+            PlayerSignals.Instance.onEnemyRemoveTargetList?.Invoke(_agent.gameObject);
             _agent.enabled = true;
         }
     }

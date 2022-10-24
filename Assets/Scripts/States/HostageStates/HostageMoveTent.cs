@@ -1,4 +1,6 @@
-﻿using Abstract;
+﻿using System.Threading.Tasks;
+using Abstract;
+using Data.ValueObject;
 using Enums;
 using Managers;
 using Signals;
@@ -26,19 +28,14 @@ namespace States.HostageStates
             _agent = agent;
         }
 
+
         public override void EnterState()
         {
-            _manager.SwitchState(HostageStatesTypes.Tent);
-            _agent.SetDestination(_manager.Tent.transform.position);
+            TentController();
         }
 
         public override void UpdateState()
         {
-            if (_agent.transform.position == _manager.Tent.transform.position)
-            {
-                PoolSignals.Instance.onReleasePoolObject.Invoke(PoolType.Hostage.ToString(), _manager.gameObject);
-                
-            }
         }
 
         public override void OnTriggerEnter(Collider other)
@@ -47,6 +44,15 @@ namespace States.HostageStates
 
         public override void OnTriggerExit(Collider other)
         {
+        }
+
+        private void TentController()
+        {
+            if (_manager.CurrentMinerAmount < _manager.MaxMinerCount)
+            {
+                _manager.HostageController.TurnToMiner();
+            }
+            _manager.SwitchState(HostageStatesTypes.Follow);
         }
     }
 }

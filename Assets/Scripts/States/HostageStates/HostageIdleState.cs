@@ -8,7 +8,6 @@ namespace States.HostageStates
 {
     public class HostageIdleState : HostageBaseState
     {
-        
         #region Self Variables
 
         #region Private Variables
@@ -25,15 +24,15 @@ namespace States.HostageStates
             _manager = manager;
             _agent = agent;
         }
-        
+
         public override void EnterState()
         {
-            _manager.SwitchState(HostageStatesTypes.Idle);
+            _manager.Player = null;
+            _manager.SetTriggerAnimation(HostageAnimTypes.Scared);
         }
 
         public override void UpdateState()
         {
-            
         }
 
         public override void OnTriggerEnter(Collider other)
@@ -47,7 +46,6 @@ namespace States.HostageStates
 
         public override void OnTriggerExit(Collider other)
         {
-            
         }
     }
 }

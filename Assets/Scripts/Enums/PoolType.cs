@@ -11,8 +11,8 @@
         TurretBullet,
         PistolBullet,
         MoneySupporter,
-        Hostage
+        Hostage,
+        Miner
         //AmmoSupporter
-        //Miner,
     }
 }

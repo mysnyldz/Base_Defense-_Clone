@@ -28,14 +28,13 @@ namespace States.HostageStates
 
         public override void EnterState()
         {
+            _manager.SetTriggerAnimation(HostageAnimTypes.Idle);
             IdleSignals.Instance.onRemoveHostageSpawnPoint.Invoke(_manager.gameObject);
-            _manager.SwitchState(HostageStatesTypes.Follow);
         }
 
         public override void UpdateState()
         {
-            _agent.SetDestination(_manager.Player.transform.position);
-            
+            Follow();
         }
 
         public override void OnTriggerEnter(Collider other)
@@ -49,6 +48,17 @@ namespace States.HostageStates
 
         public override void OnTriggerExit(Collider other)
         {
+        }
+
+        private void Follow()
+        {
+            _agent.SetDestination(_manager.Player.transform.position);
+            if (_agent.remainingDistance <= _agent.stoppingDistance)
+            {
+                _manager.SetBoolAnimation(HostageAnimTypes.Walk,false);
+                return;
+            }
+            _manager.SetBoolAnimation(HostageAnimTypes.Walk,true);
         }
     }
 }

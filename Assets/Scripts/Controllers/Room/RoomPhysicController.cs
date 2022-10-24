@@ -28,7 +28,7 @@ namespace Controllers.Room
         {
             if (other.CompareTag("Player"))
             {
-                _timer += (Time.fixedDeltaTime)*20;
+                _timer += (Time.fixedDeltaTime)*100;
                 if (_timer >= _spendTime)
                 {
                     roomManager.OnBuyRoomArea();

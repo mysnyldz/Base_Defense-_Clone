@@ -176,6 +176,11 @@ namespace Managers
             ammoStackController.OnGetAmmo();
         }
 
+        public void AmmoSendAmmoWareHouse()
+        {
+            ammoStackController.SendAmmoWareHouse();
+        }
+
         public void AmmoDecreaseStack()
         {
             ammoStackController.DecreaseStack();

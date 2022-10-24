@@ -15,8 +15,4 @@ MonoBehaviour:
   PlayerData:
     PlayerHealth: 100
     MovementData:
-      PlayerJoystickSpeed: 3
-    PlayerStackData:
-      StackSize: 20
-      ZAxis: 4
-      YAxis: 0.5
+      PlayerJoystickSpeed: 4

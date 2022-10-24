@@ -52,7 +52,7 @@ namespace Controllers.PlayerControllers
 
                 if (_maxAmmoCount >= 1)
                 {
-                    manager.AmmoDecreaseStack();
+                    manager.AmmoSendAmmoWareHouse();
                     _maxAmmoCount = 0;
                 }
             }
@@ -78,12 +78,12 @@ namespace Controllers.PlayerControllers
             if (other.CompareTag("Turret"))
             {
                 manager.ChangeState(PlayerStateTypes.Turret);
-                PlayerSignals.Instance.onPlayerOnTurret?.Invoke(manager.gameObject);
+                PlayerSignals.Instance.onPlayerOnTurret?.Invoke(manager.gameObject,other.gameObject);
             }
 
             if (other.CompareTag("TurretOperatorArea"))
             {
-                PlayerSignals.Instance.onAiTurretArea?.Invoke();
+                PlayerSignals.Instance.onAiTurretArea?.Invoke(other.gameObject);
                 //other.gameObject.SetActive(false);
             }
 
@@ -108,7 +108,7 @@ namespace Controllers.PlayerControllers
             if (other.CompareTag("AmmoWarehouse"))
             {
                 _timer += (Time.fixedDeltaTime) * 3;
-                if (_timer >= _spendTime && _maxAmmoCount <= manager.AmmoStackData.MaxAmmoCount)
+                if (_timer >= _spendTime && _maxAmmoCount < manager.AmmoStackData.MaxAmmoCount)
                 {
                     _timer = 0;
                     manager.AmmoAddStack();
@@ -121,8 +121,10 @@ namespace Controllers.PlayerControllers
                 _timer += (Time.fixedDeltaTime) * 2.5f;
                 if (_timer >= _spendTime)
                 {
+                    IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(other.gameObject);
+                    manager.AmmoDecreaseStack();
+                    _maxAmmoCount--;
                     _timer = 0;
-                    IdleSignals.Instance.onPlayerEnterTurretDepot?.Invoke(gameObject);
                 }
             }
         }

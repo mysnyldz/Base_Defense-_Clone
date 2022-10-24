@@ -28,7 +28,7 @@ namespace Managers
         #region Private Variables
 
         private float _buyTimer;
-        private float _waitToEnabledMine = 50;
+        private float _waitToEnabledMine;
         [ShowInInspector]private MineExplosionTypes _mineExplosionTypes = MineExplosionTypes.Uncomplete;
         private int _gem;
 
@@ -65,13 +65,13 @@ namespace Managers
             mineCollider.transform.localScale = Vector3.zero;
         }
 
-        //private void OnTriggerStay(Collider other)
-        //{
-        //    if (other.CompareTag("Player"))
-        //    {
-        //        StateControll(_mineExplosionTypes);
-        //    }
-        //}
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                StateControll(_mineExplosionTypes);
+            }
+        }
         
         private void OnPlayerOnMineExplosion(GameObject player)
         {
@@ -103,13 +103,13 @@ namespace Managers
 
         private void WaitToEnabledMine()
         {
-            _waitToEnabledMine -= Time.deltaTime;
+            _waitToEnabledMine += Time.deltaTime;
             SetMineText();
-            if (_waitToEnabledMine <= 0)
+            if (_waitToEnabledMine >= 50)
             {
                 _mineExplosionTypes = MineExplosionTypes.Uncomplete;
                 mineCollider.transform.DOScale(new Vector3(0f, 0f, 0f), 0f).SetEase(Ease.OutFlash);
-                _waitToEnabledMine = 50;
+                _waitToEnabledMine = 0;
             }
         }
 

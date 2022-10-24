@@ -65,6 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TurretStates: 2
   turretDepot: {fileID: 8224836445198028008}
+  AiCollider: {fileID: 383984065693619569}
   playerFiringPosition: {fileID: 3867808170119023907}
   turretDepotController: {fileID: 9095298029542794087}
   turretMovementController: {fileID: 3618312870184967526}
@@ -606,7 +607,7 @@ MonoBehaviour:
   manager: {fileID: 2033817518301902623}
   firePoint: {fileID: 1249728886231734812}
   turretMovementController: {fileID: 3618312870184967526}
-  turretBarel: {fileID: 2195467734429946794}
+  turretDepotController: {fileID: 9095298029542794087}
 --- !u!1 &4910566907109939272
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,6 +832,7 @@ MonoBehaviour:
   _ammoList: []
   manager: {fileID: 2033817518301902623}
   ammoStackController: {fileID: 0}
+  turretShootController: {fileID: 4611301593064396031}
 --- !u!1001 &812527477700732763
 PrefabInstance:
   m_ObjectHideFlags: 0

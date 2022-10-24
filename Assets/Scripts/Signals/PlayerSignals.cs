@@ -34,15 +34,15 @@ namespace Signals
         
         #region TurretSignals
         
-        public UnityAction<GameObject> onPlayerOnTurret = delegate { };
+        public UnityAction<GameObject,GameObject> onPlayerOnTurret = delegate { };
         public UnityAction<GameObject> onPlayerOutTurret = delegate { };
         public UnityAction<GameObject> onPlayerReadyForShoot = delegate { };
 
-        public UnityAction onAiTurretArea = delegate { };
+        public UnityAction<GameObject> onAiTurretArea = delegate { };
         public Func<GameObject> onPlayerMovement = delegate { return default; };
         public Func<GameObject> onGetPlayerParent = delegate { return default; };
         public Func<List<GameObject>> onGetDepotAmmoBox = delegate { return default; };
-        public UnityAction<int> onDecreaseBullet = delegate {};
+        public UnityAction<int,GameObject> onDecreaseBullet = delegate {};
 
         #endregion
     }

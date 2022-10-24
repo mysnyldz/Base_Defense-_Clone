@@ -70,6 +70,7 @@ namespace States.EnemyStates
         {
             if (other.CompareTag("PlayerSphere"))
             {
+                _manager.Player = null;
                 _manager.SwitchState(EnemyStatesTypes.MoveBase);
             }
         }

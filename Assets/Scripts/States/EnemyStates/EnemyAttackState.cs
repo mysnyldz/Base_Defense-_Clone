@@ -20,7 +20,7 @@ namespace States.EnemyStates
         private EnemyTypes _types;
         private bool _isAttacked;
         private float _timer = 0;
-        private float _delayTime = 1;
+        private float _delayTime = 4;
 
         #endregion
 
@@ -108,12 +108,12 @@ namespace States.EnemyStates
 
         private void Attacked()
         {
-            _timer += (Time.fixedDeltaTime) * 0.4f;
+            _timer += Time.deltaTime;
             if (_timer >= _delayTime)
             {
                 _manager.SetTriggerAnim(EnemyAnimTypes.Attack);
                 _timer = 0;
-               
+
             }
         }
     }

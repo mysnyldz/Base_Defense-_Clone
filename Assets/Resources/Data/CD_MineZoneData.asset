@@ -20,6 +20,6 @@ MonoBehaviour:
     OffsetFactorX: 1.8
     OffsetFactorY: 1.9
     OffsetFactorZ: 3.5
-    MaxMinerCapacity: 10
-    CurrentMinerAmount: 0
+    MaxMinerCapacity: 5
+    CurrentMinerAmount: 4
     MineCartCapacity: 1

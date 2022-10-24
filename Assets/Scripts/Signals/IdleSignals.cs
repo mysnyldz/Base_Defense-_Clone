@@ -19,6 +19,7 @@ namespace Signals
         public Func<CD_MineZoneData> onGetMineZoneData = delegate { return default; };
         public UnityAction<GameObject> onDepotAddGem = delegate { };
         public UnityAction<GameObject> onPlayerEnterGemDepot = delegate { };
+        public UnityAction onMineZoneAddMiner = delegate { };
 
         #endregion
 

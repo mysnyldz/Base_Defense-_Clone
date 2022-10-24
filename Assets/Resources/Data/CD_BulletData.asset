@@ -16,9 +16,12 @@ MonoBehaviour:
     BulletTypeDatas:
       m_Keys: 000000000100000002000000
       m_Values:
-      - Damage: 50
+      - Damage: 20
         FireRate: 0.5
+        BulletSpeed: 12
       - Damage: 5
         FireRate: 2
+        BulletSpeed: 7.5
       - Damage: 7
         FireRate: 1.5
+        BulletSpeed: 15

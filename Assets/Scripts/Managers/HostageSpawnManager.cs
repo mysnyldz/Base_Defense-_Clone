@@ -85,6 +85,7 @@ namespace Managers
 
         private void RemoveHostageList(int i)
         {
+            _hostageControllList[i] = null;
             hostageList[i] = null;
             SpawnController();
         }

@@ -28,6 +28,7 @@ namespace Signals
         public UnityAction onApplicationQuit = delegate { };
 
         public UnityAction onEnterTurret = delegate {  };
+        public UnityAction onExitTurret = delegate {  };
         public UnityAction onEnterDrone = delegate {  };
     }
 }

@@ -27,17 +27,19 @@ namespace Controllers
         [SerializeField] private TurretManager manager;
         [SerializeField] private GameObject firePoint;
         [SerializeField] private TurretMovementController turretMovementController;
+        [SerializeField] private TurretDepotController turretDepotController;
 
         #endregion
 
         #region Private Variables
 
-        [ShowInInspector] private List<GameObject> _ammolist;
+        //[ShowInInspector] private List<GameObject> _ammolist;
         private BulletTypes bulletTypes = BulletTypes.Turret;
         private Rigidbody _rb;
         [ShowInInspector] private BulletTypesData _data;
         private bool _isDeath;
         [ShowInInspector] private float _fireRate;
+        [ShowInInspector] private float _bulletSpeed;
         private float _timer;
 
         #endregion
@@ -46,9 +48,9 @@ namespace Controllers
 
         private void Start()
         {
-            _ammolist = PlayerSignals.Instance.onGetDepotAmmoBox?.Invoke();
             _data = GetFireRateData();
             _fireRate = _data.FireRate;
+            _bulletSpeed = _data.BulletSpeed;
         }
 
         private BulletTypesData GetFireRateData() =>
@@ -100,24 +102,24 @@ namespace Controllers
 
         private void BulletPosition(GameObject bullet)
         {
-            var parent = bullet.transform.parent.rotation;
             bullet.transform.position = firePoint.transform.position;
             bullet.transform.rotation = firePoint.transform.rotation;
         }
 
         public void TurretShoot()
         {
+            _fireRate = _data.FireRate;
             if (Targets.Count >= 1)
             {
-                _timer += Time.deltaTime * (_fireRate);
-                if (_timer >= _fireRate && _ammolist.Count >= 1)
+                _timer += Time.deltaTime;
+                if (_timer >= _fireRate && turretDepotController._ammoList.Count >= 1)
                 {
                     var bullet = PoolSignals.Instance.onGetPoolObject(PoolType.TurretBullet.ToString(), transform);
-                    _timer = 0;
                     BulletPosition(bullet);
                     _rb = bullet.GetComponent<Rigidbody>();
-                    _rb.AddForce(firePoint.transform.forward * 7.5f, ForceMode.VelocityChange);
-                    PlayerSignals.Instance.onDecreaseBullet?.Invoke(1);
+                    _rb.AddForce(firePoint.transform.forward * _bulletSpeed, ForceMode.VelocityChange);
+                    PlayerSignals.Instance.onDecreaseBullet?.Invoke(1,gameObject);
+                    _timer = 0;
                 }
             }
         }

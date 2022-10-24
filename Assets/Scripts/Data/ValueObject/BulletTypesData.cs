@@ -7,5 +7,6 @@ namespace Data.ValueObject
     {
         public float Damage;
         public float FireRate;
+        public float BulletSpeed;
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Abstract;
 using Controllers;
+using Data.UnityObject;
+using Data.ValueObject;
 using Enums;
 using Signals;
 using States.HostageStates;
@@ -19,12 +21,15 @@ namespace Managers
         public GameObject Player;
         public GameObject Tent;
         public HostageStatesTypes HostageStateTypes;
+        public HostageController HostageController;
+        public int CurrentMinerAmount;
+        public int MaxMinerCount;
+        public NavMeshAgent agent;
 
         #endregion
 
         #region Serializefield Variables
 
-        [SerializeField] private NavMeshAgent agent;
         [SerializeField] private HostageAnimationController animationController;
 
         #endregion
@@ -45,29 +50,26 @@ namespace Managers
 
         private void Awake()
         {
+            Getdata();
             GetReferences();
+        }
+
+        private void Getdata()
+        {
+           CurrentMinerAmount = Resources.Load<CD_MineZoneData>("Data/CD_MineZoneData").Data.CurrentMinerAmount;
+           MaxMinerCount = Resources.Load<CD_MineZoneData>("Data/CD_MineZoneData").Data.MaxMinerCapacity;
         }
 
 
         private void OnEnable()
         {
-            _currentHostageBaseState = _hostageIdleState;
             _currentHostageBaseState.EnterState();
-            SubscribeEvents();
         }
 
-        private void SubscribeEvents()
-        {
-        }
-
-
-        private void UnsubscribeEvents()
-        {
-        }
 
         private void OnDisable()
         {
-            UnsubscribeEvents();
+            _currentHostageBaseState = _hostageIdleState;
         }
 
         #endregion
@@ -78,20 +80,24 @@ namespace Managers
             _hostageFollowState = new HostageFollowState(ref manager, ref agent);
             _hostageIdleState = new HostageIdleState(ref manager, ref agent);
             _hostageMoveTent = new HostageMoveTent(ref manager, ref agent);
-
+            _currentHostageBaseState = _hostageIdleState;
         }
-
 
         private void Update()
         {
             _currentHostageBaseState.UpdateState();
         }
-        
-        private void ChangeState(HostageStatesTypes types)
+
+        public void SetBoolAnimation(HostageAnimTypes types, bool isfollow)
         {
-            HostageStateTypes = types;
-            animationController.SetPlayerAnimationStateTypes(types);
+            animationController.SetBoolAnimation(types, isfollow);
         }
+
+        public void SetTriggerAnimation(HostageAnimTypes types)
+        {
+            animationController.SetTriggerAnimation(types);
+        }
+
 
         public void SwitchState(HostageStatesTypes state)
         {
@@ -99,15 +105,12 @@ namespace Managers
             {
                 case HostageStatesTypes.Idle:
                     _currentHostageBaseState = _hostageIdleState;
-                    ChangeState(state);
                     break;
                 case HostageStatesTypes.Follow:
                     _currentHostageBaseState = _hostageFollowState;
-                    ChangeState(state);
                     break;
                 case HostageStatesTypes.Tent:
                     _currentHostageBaseState = _hostageMoveTent;
-                    ChangeState(state);
                     break;
             }
 

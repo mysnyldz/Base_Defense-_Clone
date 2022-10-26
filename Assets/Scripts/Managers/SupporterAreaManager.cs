@@ -80,6 +80,7 @@ namespace Managers
             {
                 PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.MoneySupporter.ToString(),
                     moneyWorkerButton.transform);
+                moneyWorkerButton.SetActive(false);
             }
         }
         private SupporterAreaManager OnGetSupporterAreaManager()

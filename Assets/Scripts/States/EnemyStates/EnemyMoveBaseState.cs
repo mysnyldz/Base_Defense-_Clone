@@ -70,7 +70,11 @@ namespace States.EnemyStates
 
         public override void OnTriggerExit(Collider other)
         {
-            
+            if (other.CompareTag("PlayerSphere"))
+            {
+                _manager.Player = null;
+
+            }
         }
     }
 }

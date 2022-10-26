@@ -16,7 +16,7 @@ namespace Controllers.PlayerControllers
         #region Serialized Variables
 
         [SerializeField] private PlayerManager manager;
-        [SerializeField] private GameObject playerSphere;
+        
 
         #endregion
 
@@ -59,13 +59,13 @@ namespace Controllers.PlayerControllers
 
             if (other.CompareTag("GateOutside"))
             {
-                playerSphere.transform.DOScale(new Vector3(3f, 3f, 3f), 1f).SetEase(Ease.OutFlash);
+                manager.playerSphere.transform.DOScale(new Vector3(3f, 3f, 3f), 1f).SetEase(Ease.OutFlash);
                 manager.ChangeState(PlayerStateTypes.Battle);
             }
 
             if (other.CompareTag("GateInside"))
             {
-                playerSphere.transform.DOScale(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutFlash);
+                manager.playerSphere.transform.DOScale(new Vector3(0, 0, 0), 2f).SetEase(Ease.OutFlash);
                 manager.Target = null;
                 manager.ChangeState(PlayerStateTypes.Idle);
             }

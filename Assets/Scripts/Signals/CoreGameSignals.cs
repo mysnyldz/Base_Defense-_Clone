@@ -14,6 +14,8 @@ namespace Signals
         public UnityAction onClearActiveBase = delegate { };
 
         public UnityAction onFailed = delegate { };
+        
+        public UnityAction onTryAgain = delegate {  };
 
         public UnityAction onNextBase = delegate { };
         

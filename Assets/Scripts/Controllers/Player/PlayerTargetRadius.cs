@@ -75,7 +75,6 @@ namespace Controllers.Player
             if (other.CompareTag("Enemy"))
             {
                 OnRemoveTargetList(other.gameObject);
-                Debug.Log("girdi");
             }
         }
 
@@ -90,7 +89,6 @@ namespace Controllers.Player
             {
                 if (TargetList.IndexOf(obj) == 0)
                 {
-                    Debug.Log("target index: " + TargetList.IndexOf(obj));
                     playerManager.Target = null;
                 }
 
@@ -120,7 +118,6 @@ namespace Controllers.Player
 
             while (TargetList.Count >= 1)
             {
-                Debug.Log("while");
                 if (playerManager.Target == null)
                 {
                     SetTarget();
@@ -128,7 +125,6 @@ namespace Controllers.Player
 
                 if(playerManager.Target != null)
                 {
-                    Debug.Log("Ates");
                     Fire();
                 }
 

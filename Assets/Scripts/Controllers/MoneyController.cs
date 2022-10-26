@@ -7,9 +7,15 @@ namespace Controllers
 {
     public class MoneyController : MonoBehaviour
     {
+        [SerializeField] private GameObject oldParent;
+        
         private void OnEnable()
         {
+            oldParent = gameObject.transform.parent.gameObject;
+            
             IdleSignals.Instance.onAddMoneyList?.Invoke(gameObject);
         }
+        
+        
     }
 }

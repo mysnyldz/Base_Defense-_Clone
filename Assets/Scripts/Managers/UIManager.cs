@@ -29,6 +29,8 @@ namespace Managers
             UISignals.Instance.onOpenPanel += OnOpenPanel;
             UISignals.Instance.onClosePanel += OnClosePanel;
             CoreGameSignals.Instance.onPlay += OnPlay;
+            CoreGameSignals.Instance.onTryAgain += OnTryAgain;
+            CoreGameSignals.Instance.onFailed += OnFailed;
             UISignals.Instance.onSetMoneyText += OnReadMoneyText;
             UISignals.Instance.onSetGemText += OnReadGemText;
         }
@@ -39,6 +41,10 @@ namespace Managers
             UISignals.Instance.onOpenPanel -= OnOpenPanel;
             UISignals.Instance.onClosePanel -= OnClosePanel;
             CoreGameSignals.Instance.onPlay -= OnPlay;
+            CoreGameSignals.Instance.onTryAgain -= OnTryAgain;
+            CoreGameSignals.Instance.onFailed -= OnFailed;
+            UISignals.Instance.onSetMoneyText -= OnReadMoneyText;
+            UISignals.Instance.onSetGemText -= OnReadGemText;
         }
 
         private void OnDisable() => UnsubscribeEvents();
@@ -65,11 +71,24 @@ namespace Managers
         {
             CoreGameSignals.Instance.onPlay?.Invoke();
         }
+        
+        public void OnTryAgain()
+        {
+            UISignals.Instance.onClosePanel?.Invoke(UIPanels.TryPanel);
+            UISignals.Instance.onOpenPanel?.Invoke(UIPanels.PlayPanel);
+        }
+        
 
         public void TryAgain()
         {
-            UISignals.Instance.onOpenPanel?.Invoke(UIPanels.StartPanel);
-            CoreGameSignals.Instance.onReset?.Invoke();
+            CoreGameSignals.Instance.onTryAgain?.Invoke();
+        } 
+
+        public void OnFailed()
+        {
+            UISignals.Instance.onOpenPanel?.Invoke(UIPanels.TryPanel);
+            UISignals.Instance.onClosePanel?.Invoke(UIPanels.PlayPanel);
+            
         }
 
         private void OnReadMoneyText(float score)

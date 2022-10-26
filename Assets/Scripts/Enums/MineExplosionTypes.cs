@@ -3,6 +3,7 @@
     public enum MineExplosionTypes
     {
         Uncomplete,
-        Complete
+        Complete,
+        Explossion
     }
 }

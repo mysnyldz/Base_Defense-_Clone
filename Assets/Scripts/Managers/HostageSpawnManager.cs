@@ -83,10 +83,10 @@ namespace Managers
             _hostageControllList[i] = hostageList[i];
         }
 
-        private void RemoveHostageList(int i)
+        private void RemoveHostageList(int index)
         {
-            _hostageControllList[i] = null;
-            hostageList[i] = null;
+            _hostageControllList[index] = null;
+            hostageList.RemoveAt(index);
             SpawnController();
         }
     }

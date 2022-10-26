@@ -23,8 +23,7 @@ namespace States.SupporterMoneyStates
         #endregion
 
         #region Private Variables
-
-        private GameObject _target;
+        
         private SupporterMoneyManager _manager;
         private NavMeshAgent _agent;
         private MoneyStackData _data;
@@ -50,20 +49,22 @@ namespace States.SupporterMoneyStates
         public override void UpdateState()
         {
             _stackListCount = _manager.StackList.Count;
-            if (_manager.SupporterAreaBuyManager.MoneyList != null)
+            if (_manager.SupporterAreaBuyManager.MoneyList.Count >= 1)
             {
+                Debug.Log("update if ");
                 if (_stackListCount >= _manager.MaxMoney)
                 {
-                    _target = null;
+                    _manager.Target = null;
                     _manager.SwitchState(SupporterMoneyStateTypes.MoveBase);
                 }
 
-                _target = _manager.SupporterAreaBuyManager.MoneyList[0];
-                _agent.SetDestination(_target.transform.position);
+                _manager.Target = _manager.SupporterAreaBuyManager.MoneyList[0];
+                _agent.SetDestination(_manager.Target.transform.position);
             }
-            else if (_manager.SupporterAreaBuyManager.MoneyList.Count < 1)
+            else
             {
-                _target = null;
+                Debug.Log("update else");
+                _manager.Target = null;
                 _manager.SwitchState(SupporterMoneyStateTypes.MoveBase);
             }
         }
@@ -73,6 +74,7 @@ namespace States.SupporterMoneyStates
             if (other.CompareTag("Money"))
             {
                 _manager.MoneyStackController.AddStack(other.gameObject);
+                _manager.SupporterAreaBuyManager.MoneyList.Remove(other.gameObject);
             }
         }
 

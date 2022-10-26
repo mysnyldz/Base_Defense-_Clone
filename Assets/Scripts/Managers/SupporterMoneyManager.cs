@@ -21,6 +21,7 @@ namespace Managers
         #region Public Variables
 
         public GameObject BasePoint;
+        public GameObject Target;
         public MoneyStackController MoneyStackController;
         [ShowInInspector] public List<GameObject> StackList = new List<GameObject>();
         public bool IsInSafe = false;

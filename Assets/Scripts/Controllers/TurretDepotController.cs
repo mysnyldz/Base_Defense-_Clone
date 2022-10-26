@@ -97,7 +97,6 @@ namespace Controllers
         {
             if (obj == turretShootController)
             {
-                Debug.Log("girdi");
                 var ammo = _ammoList[_ammoList.Count - 1];
                 newValue += value;
                 if (newValue >= 4)

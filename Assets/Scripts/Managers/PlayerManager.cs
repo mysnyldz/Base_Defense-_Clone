@@ -24,7 +24,7 @@ namespace Managers
         [Header("Data")] public AmmoStackData AmmoStackData;
         [Header("Data")] public MoneyStackData MoneyStackData;
         [Header("Data")] public TurretData TurretData;
-        public bool TurretMode, BattleMode, IdleMode, TargetMode;
+        public bool TurretMode, BattleMode, IdleMode, TargetMode, DeathMode;
         public PlayerStateTypes playerTypes;
         public GameObject Target;
 
@@ -35,10 +35,12 @@ namespace Managers
         [SerializeField] private PlayerMovementController movementController;
         [SerializeField] private PlayerAnimationController animationController;
         [SerializeField] private PlayerPhysicsController physicsController;
+        [SerializeField] private PlayerHealthController healthController;
         [SerializeField] private AmmoStackController ammoStackController;
         [SerializeField] private MoneyStackController moneyStackController;
         [SerializeField] private PlayerTargetManager playerTargetManager;
         [SerializeField] private GameObject playerHolder;
+        [SerializeField] public GameObject playerSphere;
 
         #endregion
 
@@ -86,17 +88,19 @@ namespace Managers
         {
             CoreGameSignals.Instance.onPlay += OnPlay;
             CoreGameSignals.Instance.onReset += OnReset;
+            CoreGameSignals.Instance.onFailed += OnFailed;
+            CoreGameSignals.Instance.onTryAgain += OnTryAgain;
             InputSignals.Instance.onInputDragged += OnPlayerInput;
             InputSignals.Instance.onInputTaken += OnActivateMovement;
             InputSignals.Instance.onInputReleased += OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController += OnGetAmmoStackController;
-            PlayerSignals.Instance.onPlayerMovement += OnPlayerMovement;
+            // PlayerSignals.Instance.onPlayerMovement += OnPlayerMovement;
             PlayerSignals.Instance.onGetPlayerParent += OnGetPlayerParent;
-            PlayerSignals.Instance.onGetIsBattleMode += OnGetIsBattleMode;
-            PlayerSignals.Instance.onGetIsIdleMode += OnGetIsIdleMode;
-            PlayerSignals.Instance.onGetIsTurretMode += OnGetIsTurretMode;
+            PlayerSignals.Instance.onGetMoneyOldParent += OnGetMoneyOldParent;
             PlayerSignals.Instance.onEnemyAddTargetList += OnEnemyAddTargetList;
             PlayerSignals.Instance.onEnemyRemoveTargetList += OnEnemyRemoveTargetList;
+            PlayerSignals.Instance.onHealthUpdate += OnHealthUpdate;
+            PlayerSignals.Instance.onHealtBarRotationZero += OnHealtBarRotationZero;
         }
 
 
@@ -104,18 +108,21 @@ namespace Managers
         {
             CoreGameSignals.Instance.onPlay -= OnPlay;
             CoreGameSignals.Instance.onReset -= OnReset;
+            CoreGameSignals.Instance.onFailed -= OnFailed;
+            CoreGameSignals.Instance.onTryAgain -= OnTryAgain;
             InputSignals.Instance.onInputDragged -= OnPlayerInput;
             InputSignals.Instance.onInputTaken -= OnActivateMovement;
             InputSignals.Instance.onInputReleased -= OnDeactiveMovement;
             IdleSignals.Instance.onGetAmmoStackController -= OnGetAmmoStackController;
-            PlayerSignals.Instance.onPlayerMovement -= OnPlayerMovement;
+            // PlayerSignals.Instance.onPlayerMovement -= OnPlayerMovement;
             PlayerSignals.Instance.onGetPlayerParent -= OnGetPlayerParent;
-            PlayerSignals.Instance.onGetIsBattleMode -= OnGetIsBattleMode;
-            PlayerSignals.Instance.onGetIsIdleMode -= OnGetIsIdleMode;
-            PlayerSignals.Instance.onGetIsTurretMode -= OnGetIsTurretMode;
+            PlayerSignals.Instance.onGetMoneyOldParent -= OnGetMoneyOldParent;
             PlayerSignals.Instance.onEnemyAddTargetList -= OnEnemyAddTargetList;
             PlayerSignals.Instance.onEnemyRemoveTargetList -= OnEnemyRemoveTargetList;
+            PlayerSignals.Instance.onHealthUpdate -= OnHealthUpdate;
+            PlayerSignals.Instance.onHealtBarRotationZero -= OnHealtBarRotationZero;
         }
+
 
         private void OnDisable()
         {
@@ -144,6 +151,11 @@ namespace Managers
             playerTypes = types;
             animationController.SetPlayerAnimationStateTypes(types);
             playerTargetManager.SetPlayerTargetStateTypes(types);
+            healthController.HealthBarVisibles(types);
+            if (types == PlayerStateTypes.Death)
+            {
+                moneyStackController.DeathDecreaseStack();
+            }
         }
 
 
@@ -154,13 +166,16 @@ namespace Managers
                 case PlayerStateTypes.Turret:
                     movementController.UpdateInputValue(inputParams);
                     break;
+                case PlayerStateTypes.Death:
+                    movementController.DisableMovement();
+                    break;
                 default:
                     movementController.UpdateInputValue(inputParams);
                     animationController.ChangeVelocity(inputParams);
                     break;
             }
         }
-        
+
         public void MoneyAddStack(GameObject obj)
         {
             moneyStackController.AddStack(obj);
@@ -169,6 +184,16 @@ namespace Managers
         public void MoneyDecreaseStack()
         {
             moneyStackController.DecreaseStack();
+        }
+
+        private void OnHealthUpdate(int health)
+        {
+            healthController.DecreaseHealth(health);
+        }
+
+        private void OnHealtBarRotationZero()
+        {
+            healthController.HealtBarRotation();
         }
 
         public void AmmoAddStack()
@@ -195,22 +220,28 @@ namespace Managers
         {
             playerTargetManager.OnRemoveTargetList(obj);
         }
-        
-        private GameObject OnPlayerMovement()
+
+        private void OnGetMoneyOldParent(GameObject parent)
         {
-            return movementController.gameObject;
+            moneyStackController.OldParent = parent;
         }
-
-        private bool OnGetIsTurretMode() => TurretMode;
-        
-        private bool OnGetIsIdleMode() => IdleMode;
-
-        private bool OnGetIsBattleMode() => BattleMode;
 
         private void OnPlay()
         {
             movementController.IsReadyToPlay(true);
             ChangeState(PlayerStateTypes.Idle);
+        }
+
+        private void OnTryAgain()
+        {
+            gameObject.transform.localPosition = Vector3.zero;
+            movementController.IsReadyToPlay(true);
+            ChangeState(PlayerStateTypes.Idle);
+        }
+
+        private void OnFailed()
+        {
+            movementController.IsReadyToPlay(false);
         }
 
         private void OnReset()

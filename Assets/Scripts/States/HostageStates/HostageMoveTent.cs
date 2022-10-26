@@ -52,7 +52,10 @@ namespace States.HostageStates
             {
                 _manager.HostageController.TurnToMiner();
             }
-            _manager.SwitchState(HostageStatesTypes.Follow);
+            else
+            {
+                _manager.SwitchState(HostageStatesTypes.Follow);
+            }
         }
     }
 }

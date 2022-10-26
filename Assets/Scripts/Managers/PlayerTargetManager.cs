@@ -2,6 +2,7 @@
 using Controllers.Player;
 using Data.UnityObject;
 using Data.ValueObject;
+using DG.Tweening;
 using Enums;
 using Signals;
 using Sirenix.OdinInspector;
@@ -33,7 +34,7 @@ namespace Managers
 
         #region Private Variables
 
-        private CD_BulletData _data;
+        private BulletTypesData _data;
         private GameObject _enemy;
         private BulletTypes _bulletTypes = BulletTypes.Pistol;
         private Rigidbody _rb;
@@ -76,8 +77,8 @@ namespace Managers
             _data = GetBulletData();
         }
 
-        private CD_BulletData GetBulletData() =>
-            Resources.Load<CD_BulletData>("Data/CD_Bullet");
+        private BulletTypesData GetBulletData() =>
+            Resources.Load<CD_BulletData>("Data/CD_BulletData").Data.BulletTypeDatas[_bulletTypes];
 
 
         public void PlayerInBase()
@@ -97,6 +98,20 @@ namespace Managers
             if (manager.IdleMode) return;
             pistol.SetActive(true);
         }
+
+        public void PlayerIsDie()
+        {
+            if (manager.BattleMode) return;
+            pistol.SetActive(false);
+            manager.Target = null;
+            manager.playerSphere.transform.DOScale(new Vector3(0, 0, 0), 1f).SetEase(Ease.OutFlash);
+            if (AttackCoroutine != null)
+            {
+                StopCoroutine(AttackCoroutine);
+                AttackCoroutine = null;
+                TargetList.Clear();
+            }
+        }
         
 
         public void SetPlayerTargetStateTypes(PlayerStateTypes types)
@@ -109,6 +124,10 @@ namespace Managers
                 case PlayerStateTypes.Battle:
                     PlayerInBattle();
                     break;
+                case PlayerStateTypes.Death:
+                    PlayerIsDie();
+                    break;
+                    
             }
         }
 
@@ -119,7 +138,7 @@ namespace Managers
             _rb = bullet.GetComponent<Rigidbody>();
             bullet.transform.position = bulletFirePoint.transform.position;
             bullet.transform.rotation = bulletFirePoint.transform.rotation;
-            _rb.AddForce(bulletFirePoint.transform.forward * 7.5f, ForceMode.VelocityChange);
+            _rb.AddForce(bulletFirePoint.transform.forward * _data.BulletSpeed, ForceMode.VelocityChange);
         }
 
         protected override void StopFire()

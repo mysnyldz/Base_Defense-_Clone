@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 733fefdcde0d35f4b822d2935d5a22f4, type: 3}
   m_ShaderKeywords: _FRESNELHIGHLIGHTS_ON _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_DETAIL_BLEND_MIX
     _MK_EMISSION _MK_EMISSION_MAP _MK_ENVIRONMENT_REFLECTIONS_AMBIENT _MK_FRESNEL_HIGHLIGHTS
-    _MK_RECEIVE_SHADOWS _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
+    _MK_LIGHT_CEL _MK_RECEIVE_SHADOWS _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -209,7 +209,7 @@ Material:
     - _DetailNormalMapIntensity: 1
     - _DetailNormalMapScale: 1
     - _Diffuse: 0
-    - _DiffuseSmoothness: 1
+    - _DiffuseSmoothness: 0.626
     - _DiffuseThresholdOffset: 0.25
     - _Dissolve: 0
     - _DissolveAmount: 0.5
@@ -233,10 +233,10 @@ Material:
     - _IridescenceSize: 1
     - _IridescenceSmoothness: 0.5
     - _IridescenceThresholdOffset: 0
-    - _Light: 0
+    - _Light: 1
     - _LightBands: 4
     - _LightBandsScale: 0.5
-    - _LightThreshold: 1
+    - _LightThreshold: 0.221
     - _LightTransmission: 0
     - _LightTransmissionDistortion: 0.25
     - _LightTransmissionIntensity: 1
@@ -298,7 +298,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.5507513, g: 0.6698113, b: 0.2938323, a: 1}
+    - _AlbedoColor: {r: 0.6415706, g: 0.7924528, b: 0.3252047, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}

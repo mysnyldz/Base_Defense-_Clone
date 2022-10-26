@@ -11,6 +11,7 @@ namespace Signals
         public Func<GameObject> onGetPlayerPoints = delegate { return default;};
         public Func<GameObject> onGetMineTntPoints = delegate { return default;};
         public UnityAction<bool> onEnemyDeathStatus= delegate {};
-
+        public UnityAction<int,GameObject> onTakeDamage = delegate {  };
+        
     }
 }

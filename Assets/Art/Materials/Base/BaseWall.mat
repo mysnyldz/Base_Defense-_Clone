@@ -23,7 +23,7 @@ Material:
   m_Name: BaseWall
   m_Shader: {fileID: 4800000, guid: 733fefdcde0d35f4b822d2935d5a22f4, type: 3}
   m_ShaderKeywords: _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_ENVIRONMENT_REFLECTIONS_AMBIENT
-    _MK_RECEIVE_SHADOWS _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
+    _MK_LIGHT_CEL _MK_RECEIVE_SHADOWS _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -180,7 +180,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseSmoothness: 1
+    - _DiffuseSmoothness: 0.466
     - _DiffuseThresholdOffset: 0.25
     - _Dissolve: 0
     - _DissolveAmount: 0.5
@@ -202,10 +202,10 @@ Material:
     - _IridescenceSize: 1
     - _IridescenceSmoothness: 0.5
     - _IridescenceThresholdOffset: 0
-    - _Light: 0
+    - _Light: 1
     - _LightBands: 4
     - _LightBandsScale: 0.5
-    - _LightThreshold: 0.29
+    - _LightThreshold: 0.386
     - _Metallic: 0
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1

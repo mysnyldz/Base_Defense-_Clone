@@ -110,7 +110,7 @@ namespace Managers
 
         private void OnMineZoneAddMiner()
         {
-            if (_zoneData.CurrentMinerAmount <= _zoneData.MaxMinerCapacity)
+            if (_zoneData.CurrentMinerAmount < _zoneData.MaxMinerCapacity)
             {
                 _zoneData.CurrentMinerAmount++;
                 PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Miner.ToString(), tent.transform);

@@ -18,10 +18,10 @@ MonoBehaviour:
       m_Values:
       - Damage: 20
         FireRate: 0.5
-        BulletSpeed: 12
+        BulletSpeed: 20
       - Damage: 5
-        FireRate: 2
-        BulletSpeed: 7.5
+        FireRate: 1
+        BulletSpeed: 15
       - Damage: 7
-        FireRate: 1.5
+        FireRate: 0.75
         BulletSpeed: 15

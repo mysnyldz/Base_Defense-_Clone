@@ -5,6 +5,7 @@
         Idle,
         Battle,
         Target,
-        Turret
+        Turret,
+        Death
     }
 }

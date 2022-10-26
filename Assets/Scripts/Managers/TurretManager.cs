@@ -70,7 +70,7 @@ namespace Managers
             PlayerSignals.Instance.onPlayerOnTurret += OnPlayerOnTurret;
             PlayerSignals.Instance.onPlayerOutTurret += OnPlayerOutTurret;
             PlayerSignals.Instance.onPlayerReadyForShoot += OnPlayerReadyForShoot;
-            PlayerSignals.Instance.onGetDepotAmmoBox += OnGetDepotAmmoBox;
+          //  PlayerSignals.Instance.onGetDepotAmmoBox += OnGetDepotAmmoBox;
             InputSignals.Instance.onInputDragged += OnInputDragged;
             PlayerSignals.Instance.onDecreaseBullet += OnDecreaseBullet;
             PlayerSignals.Instance.onAiTurretArea += OnAiTurretArea;
@@ -84,7 +84,7 @@ namespace Managers
             PlayerSignals.Instance.onPlayerOnTurret -= OnPlayerOnTurret;
             PlayerSignals.Instance.onPlayerOutTurret -= OnPlayerOutTurret;
             PlayerSignals.Instance.onPlayerReadyForShoot -= OnPlayerReadyForShoot;
-            PlayerSignals.Instance.onGetDepotAmmoBox -= OnGetDepotAmmoBox;
+         //   PlayerSignals.Instance.onGetDepotAmmoBox -= OnGetDepotAmmoBox;
             InputSignals.Instance.onInputDragged -= OnInputDragged;
             PlayerSignals.Instance.onDecreaseBullet -= OnDecreaseBullet;
             PlayerSignals.Instance.onAiTurretArea -= OnAiTurretArea;

@@ -36,6 +36,7 @@ namespace Controllers.Player
             ChangeAnimationState(PlayerAnimTypes.BattleMode, false);
             ChangeAnimationState(PlayerAnimTypes.TargetMode, false);
             ChangeAnimationState(PlayerAnimTypes.TurretMode, false);
+            ChangeAnimationState(PlayerAnimTypes.DeathMode, false);
             switch (types)
             {
                 case PlayerStateTypes.Idle:
@@ -52,6 +53,9 @@ namespace Controllers.Player
                 case PlayerStateTypes.Turret:
                     ChangeAnimationState(PlayerAnimTypes.TurretMode, true);
                     playerAnimator.SetLayerWeight(1,0);
+                    break;
+                case PlayerStateTypes.Death:
+                    ChangeAnimationState(PlayerAnimTypes.DeathMode,true);
                     break;
             }
         }

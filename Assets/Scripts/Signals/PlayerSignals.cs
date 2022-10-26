@@ -9,11 +9,17 @@ namespace Signals
 {
     public class PlayerSignals : MonoSingleton<PlayerSignals>
     {
-        #region AnimStateSignals
+        #region HealthSignals
 
-        public Func<bool> onGetIsBattleMode = delegate { return default; };
-        public Func<bool> onGetIsIdleMode = delegate { return default; };
-        public Func<bool> onGetIsTurretMode = delegate { return default; };
+        public UnityAction<int> onHealthUpdate = delegate { };
+        public UnityAction onHealtBarRotationZero = delegate { };
+
+        #endregion
+
+
+        #region MoneySignals
+
+        public UnityAction<GameObject> onGetMoneyOldParent = delegate { };
 
         #endregion
 
@@ -27,22 +33,24 @@ namespace Signals
 
         #region MineSignals
 
-        public UnityAction<GameObject> onPlayerOnMineExplosion = delegate {  };
-        public UnityAction<GameObject> onPlayerOffMineExplosion = delegate {  };
+        public UnityAction<GameObject> onPlayerOnMineExplosion = delegate { };
+        public UnityAction<GameObject> onPlayerOffMineExplosion = delegate { };
 
         #endregion
-        
+
         #region TurretSignals
-        
-        public UnityAction<GameObject,GameObject> onPlayerOnTurret = delegate { };
+
+        public UnityAction<GameObject, GameObject> onPlayerOnTurret = delegate { };
         public UnityAction<GameObject> onPlayerOutTurret = delegate { };
         public UnityAction<GameObject> onPlayerReadyForShoot = delegate { };
 
         public UnityAction<GameObject> onAiTurretArea = delegate { };
-        public Func<GameObject> onPlayerMovement = delegate { return default; };
+
+        //public Func<GameObject> onPlayerMovement = delegate { return default; };
         public Func<GameObject> onGetPlayerParent = delegate { return default; };
-        public Func<List<GameObject>> onGetDepotAmmoBox = delegate { return default; };
-        public UnityAction<int,GameObject> onDecreaseBullet = delegate {};
+
+        //public Func<List<GameObject>> onGetDepotAmmoBox = delegate { return default; };
+        public UnityAction<int, GameObject> onDecreaseBullet = delegate { };
 
         #endregion
     }

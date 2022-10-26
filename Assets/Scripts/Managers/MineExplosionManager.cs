@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Enums;
 using Signals;
@@ -14,6 +15,8 @@ namespace Managers
 
         #region Public Variables
 
+        public List<GameObject> EnemyList = new List<GameObject>();
+
         #endregion
 
         #region Serializefield Variables
@@ -21,43 +24,46 @@ namespace Managers
         [SerializeField] private int minePrice;
         [SerializeField] private SphereCollider mineCollider;
         [SerializeField] private TextMeshPro textMesh;
-        [ShowInInspector] private GameObject playerManager;
+        [SerializeField] private TextMeshPro buyTextMesh;
+        [SerializeField] private GameObject buyZone;
+        [SerializeField] private GameObject explosionZone;
 
         #endregion
 
         #region Private Variables
 
         private float _buyTimer;
-        private float _waitToEnabledMine;
-        [ShowInInspector]private MineExplosionTypes _mineExplosionTypes = MineExplosionTypes.Uncomplete;
+        private float _enabledMineTimer = 50;
+        private float _explosionTimer = 10;
+
+        [ShowInInspector] private MineExplosionTypes _mineExplosionTypes = MineExplosionTypes.Uncomplete;
         private int _gem;
 
         #endregion
 
         #endregion
 
-         #region Event Subscription
+        #region Event Subscription
 
         private void OnEnable()
         {
             SubscribeEvents();
         }
+
         private void SubscribeEvents()
         {
-            PlayerSignals.Instance.onPlayerOnMineExplosion += OnPlayerOnMineExplosion;
-            PlayerSignals.Instance.onPlayerOffMineExplosion += OnPlayerOfMineExplosion;
         }
-
 
 
         private void UnsubscribeEvents()
         {
-            PlayerSignals.Instance.onPlayerOnMineExplosion -= OnPlayerOnMineExplosion;
         }
+
         private void OnDisable()
         {
             UnsubscribeEvents();
         }
+
         #endregion
 
         private void Start()
@@ -69,47 +75,66 @@ namespace Managers
         {
             if (other.CompareTag("Player"))
             {
-                StateControll(_mineExplosionTypes);
-            }
-        }
-        
-        private void OnPlayerOnMineExplosion(GameObject player)
-        {
-            playerManager = player;
-            if (playerManager != null)
-            {
-                StateControll(MineExplosionTypes.Uncomplete);
-            }
-        }
-        private void OnPlayerOfMineExplosion(GameObject player)
-        {
-            playerManager = null;
-        }
-
-        private void StateControll(MineExplosionTypes types)
-        {
-            switch (types)
-            {
-                case MineExplosionTypes.Uncomplete:
+                if (_mineExplosionTypes == MineExplosionTypes.Uncomplete)
+                {
                     BuyMine();
                     SetMineText();
-                    break;
-                case MineExplosionTypes.Complete:
-                    WaitToEnabledMine();
-                    SetMineText();
-                    break;
+                }
+            }
+        }
+
+        private void Update()
+        {
+            if (_mineExplosionTypes == MineExplosionTypes.Explossion)
+            {
+                Explosion();
+                SetMineText();
+            }
+            else if (_mineExplosionTypes == MineExplosionTypes.Complete)
+            {
+                WaitToEnabledMine();
+                SetMineText();
+            }
+            
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                EnemyList.Add(other.gameObject);
             }
         }
 
         private void WaitToEnabledMine()
         {
-            _waitToEnabledMine += Time.deltaTime;
-            SetMineText();
-            if (_waitToEnabledMine >= 50)
+            _enabledMineTimer -= Time.deltaTime;
+            if (_enabledMineTimer <= 0)
             {
                 _mineExplosionTypes = MineExplosionTypes.Uncomplete;
+                buyZone.SetActive(true);
+                minePrice = 10;
+                _enabledMineTimer = 50;
+                textMesh.text = "";
+            }
+            
+        }
+
+        private void Explosion()
+        {
+            _explosionTimer -= Time.deltaTime;
+            if (_explosionTimer <= 0)
+            {
+                for (int i = 0; i < EnemyList.Count - 1; i++)
+                {
+                    EnemySignals.Instance.onTakeDamage?.Invoke(50, EnemyList[0]);
+                    EnemyList.RemoveAt(0);
+                    EnemyList.TrimExcess();
+                }
                 mineCollider.transform.DOScale(new Vector3(0f, 0f, 0f), 0f).SetEase(Ease.OutFlash);
-                _waitToEnabledMine = 0;
+                explosionZone.transform.DOScale(new Vector3(0, 0, 0), 0.3f).SetEase(Ease.Flash);
+                _explosionTimer = 10;
+                _mineExplosionTypes = MineExplosionTypes.Complete;
             }
         }
 
@@ -128,8 +153,10 @@ namespace Managers
                         SetMineText();
                         if (minePrice <= 0)
                         {
-                            mineCollider.transform.DOScale(new Vector3(15f, 15f, 15f), 1f).SetEase(Ease.OutFlash);
-                            _mineExplosionTypes = MineExplosionTypes.Complete;
+                            mineCollider.transform.DOScale(new Vector3(7f, 7f, 7f), 1f).SetEase(Ease.OutFlash);
+                            explosionZone.transform.DOScale(new Vector3(1.35f, 1.35f, 1), 1f).SetEase(Ease.Flash);
+                            _mineExplosionTypes = MineExplosionTypes.Explossion;
+                            buyZone.SetActive(false);
                         }
                     }
                 }
@@ -142,12 +169,15 @@ namespace Managers
         {
             if (_mineExplosionTypes == MineExplosionTypes.Uncomplete)
             {
-                textMesh.text = minePrice.ToString();
+                buyTextMesh.text = minePrice.ToString();
             }
-            else if(_mineExplosionTypes == MineExplosionTypes.Complete)
+            else if (_mineExplosionTypes == MineExplosionTypes.Complete)
             {
-                var localTimer = (int)_waitToEnabledMine;
-                textMesh.text = localTimer.ToString();
+                textMesh.text = ((int)_enabledMineTimer).ToString();
+            }
+            else if (_mineExplosionTypes == MineExplosionTypes.Explossion)
+            {
+                textMesh.text = ((int)_explosionTimer).ToString();
             }
         }
     }

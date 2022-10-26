@@ -38,16 +38,12 @@ namespace Controllers
 
         public async void TurnToMiner()
         {
-            if (_currentMinerCount < _maxMinerCapacity)
-            {
-                manager.SetBoolAnimation(HostageAnimTypes.Walk, true);
-                manager.agent.SetDestination(manager.Tent.transform.position);
-                await Task.Delay(3000);
-                manager.SwitchState(HostageStatesTypes.Idle);
-                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Hostage.ToString(), manager.gameObject);
-                IdleSignals.Instance.onMineZoneAddMiner?.Invoke();
-            }
-            
+            manager.SetBoolAnimation(HostageAnimTypes.Walk, true);
+            manager.agent.SetDestination(manager.Tent.transform.position);
+            await Task.Delay(3000);
+            manager.SwitchState(HostageStatesTypes.Idle);
+            PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Hostage.ToString(), manager.gameObject);
+            IdleSignals.Instance.onMineZoneAddMiner?.Invoke();
         }
     }
 }

@@ -86,6 +86,7 @@ namespace Controllers.Player
             if (_movementDirection.z <= -0.8f)
             {
                 PlayerSignals.Instance.onPlayerOutTurret?.Invoke(playerManager.gameObject);
+                PlayerSignals.Instance.onHealtBarRotationZero?.Invoke();
                 playerManager.ChangeState(PlayerStateTypes.Idle);
             }
         }

@@ -53,7 +53,7 @@ namespace States.HostageStates
         private void Follow()
         {
             _agent.SetDestination(_manager.Player.transform.position);
-            if (_agent.remainingDistance <= _agent.stoppingDistance)
+            if ((_manager.transform.position-_manager.Player.transform.position).sqrMagnitude <= _agent.stoppingDistance)
             {
                 _manager.SetBoolAnimation(HostageAnimTypes.Walk,false);
                 return;

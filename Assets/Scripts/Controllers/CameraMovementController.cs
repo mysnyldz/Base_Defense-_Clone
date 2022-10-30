@@ -6,7 +6,7 @@ namespace Controllers
     public class CameraMovementController : MonoBehaviour
     {
         [SerializeField] Animator camAnimator;
-        public void GameStart() { changeCam(CameraStates.Idle); } 
+        public void EnterIdle() { changeCam(CameraStates.Idle); } 
 
         public void EnterDrone() { changeCam(CameraStates.Drone);}
 

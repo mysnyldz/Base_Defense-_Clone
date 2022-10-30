@@ -22,7 +22,6 @@ namespace Managers
         public GameObject BasePoints;
         public GameObject Player;
         public GameObject MineTnt;
-        public bool _isDeath;
 
         #endregion
 
@@ -36,7 +35,7 @@ namespace Managers
 
         #region Private Variables
 
-        [ShowInInspector]private int _health;
+        [ShowInInspector] private int _health;
         [ShowInInspector] private EnemyAnimTypes _enemyAnimTypes;
         private EnemyBaseState _currentEnemyBaseState;
         private EnemyMoveBaseState _enemyMoveBaseState;
@@ -55,7 +54,6 @@ namespace Managers
             GetReferences();
         }
 
-
         private void OnEnable()
         {
             _health = _data.EnemyTypeDatas[types].Health;
@@ -68,16 +66,15 @@ namespace Managers
         }
 
         #region Event Subscription
-        
 
         private void SubscribeEvents()
         {
-           // EnemySignals.Instance.onEnemyDeathStatus += OnDeathStatus;
+            EnemySignals.Instance.onTakeDamage += OnTakeDamage;
         }
 
         private void UnsubscribeEvents()
         {
-          //  EnemySignals.Instance.onEnemyDeathStatus -= OnDeathStatus;
+            EnemySignals.Instance.onTakeDamage -= OnTakeDamage;
         }
 
         private void OnDisable()
@@ -86,17 +83,17 @@ namespace Managers
         }
 
         #endregion
-        
+
 
         private void GetReferences()
         {
             var manager = this;
             _data = Resources.Load<CD_Enemy>("Data/CD_Enemy").EnemyData;
-            _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _data);
-            _enemyMovePlayerState = new EnemyMovePlayerState(ref manager, ref agent, ref _data);
-            _enemyAttackState = new EnemyAttackState(ref manager, ref agent, ref _data);
-            _enemyDeathState = new EnemyDeathState(ref manager, ref agent, ref _data,ref types);
-            _enemyMoveMineTnt = new EnemyMoveMineTnt(ref manager, ref agent, ref _data);
+            _enemyMoveBaseState = new EnemyMoveBaseState(ref manager, ref agent, ref _data, ref types);
+            _enemyMovePlayerState = new EnemyMovePlayerState(ref manager, ref agent, ref _data, ref types);
+            _enemyAttackState = new EnemyAttackState(ref manager, ref agent, ref _data, ref types);
+            _enemyDeathState = new EnemyDeathState(ref manager, ref agent, ref _data, ref types);
+            _enemyMoveMineTnt = new EnemyMoveMineTnt(ref manager, ref agent, ref _data, ref types);
         }
 
         private void Update()
@@ -126,19 +123,12 @@ namespace Managers
             return _health <= 0;
         }
 
-        public void DeathStatus()
+        public void OnTakeDamage(int damage, GameObject obj)
         {
-           _isDeath = _enemyDeathState.IsDeath;
-        }
-
-       // private void OnGetDeathStatus(bool value)
-       // {
-       //     _isDeath = value;
-       // }
-
-        public void TakeDamage(int damage)
-        {
-            _health -= damage;
+            if (gameObject == obj)
+            {
+                _health -= damage;
+            }
         }
 
 

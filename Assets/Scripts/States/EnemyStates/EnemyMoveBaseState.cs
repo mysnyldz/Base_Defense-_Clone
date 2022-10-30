@@ -17,21 +17,24 @@ namespace States.EnemyStates
         private EnemyManager _manager;
         private NavMeshAgent _agent;
         private EnemyData _data;
-        private EnemyTypes types;
+        private EnemyTypes _types;
 
         #endregion
 
         #endregion
 
-        public EnemyMoveBaseState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data)
+        public EnemyMoveBaseState(ref EnemyManager manager, ref NavMeshAgent agent, ref EnemyData data,
+            ref EnemyTypes enemyTypes)
         {
             _manager = manager;
             _agent = agent;
             _data = data;
+            _types = enemyTypes;
+
         }
         public override void EnterState()
         {
-            _agent.speed = _data.EnemyTypeDatas[types].MoveSpeed;
+            _agent.speed = _data.EnemyTypeDatas[_types].MoveSpeed;
             _manager.SetTriggerAnim(EnemyAnimTypes.Walk);
             _agent.SetDestination(_manager.BasePoints.transform.position);
         }
@@ -58,7 +61,7 @@ namespace States.EnemyStates
                 _manager.SwitchState(EnemyStatesTypes.MovePlayer);
             }
 
-            if (other.CompareTag("MineTnt"))
+            if (other.CompareTag("MineTargetSphere"))
             {
                 _manager.MineTnt = other.transform.parent.gameObject;
                 _manager.SwitchState(EnemyStatesTypes.MoveMineTnt);
@@ -67,7 +70,11 @@ namespace States.EnemyStates
 
         public override void OnTriggerExit(Collider other)
         {
-            
+            if (other.CompareTag("PlayerSphere"))
+            {
+                _manager.Player = null;
+
+            }
         }
     }
 }

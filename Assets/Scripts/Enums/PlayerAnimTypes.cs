@@ -6,5 +6,6 @@
         BattleMode,
         TargetMode,
         TurretMode,
+        DeathMode
     }
 }

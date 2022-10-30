@@ -7,7 +7,7 @@ namespace Data.ValueObject
     [Serializable]
     public class RoomIDData : SaveableEntity
     {
-        public static string Key = "Room";
+        public string Key = "Room";
 
         public RoomTypes RoomTypes;
         

@@ -43,10 +43,10 @@ namespace States.EnemyStates
         public override void EnterState()
         {
             _manager.SetTriggerAnim(EnemyAnimTypes.Death);
-            _manager.transform.DOJump(new Vector3(_agent.transform.position.x, -0.5f, _agent.transform.position.z + 2f),
+            _manager.transform.DOJump(new Vector3(_agent.transform.position.x, -0.5f, _agent.transform.position.z + 2),
                 1,
                 1, 2f);
-            //_manager.transform.DOLocalMove(new Vector3(_agent.transform.position.x, -0.5f, _agent.transform.position.z),2.5f);
+            _agent.enabled = false;
         }
 
         public override void UpdateState()
@@ -56,7 +56,6 @@ namespace States.EnemyStates
             {
                 IsDeath = true;
                 DropMoney();
-                PlayerSignals.Instance.onEnemyRemoveTargetList?.Invoke(_agent.gameObject);
                 PoolSignals.Instance.onReleasePoolObject?.Invoke(_types.ToString(), _agent.gameObject);
             }
         }
@@ -78,9 +77,12 @@ namespace States.EnemyStates
                 obj.transform.DOJump(
                     new Vector3(obj.transform.position.x + Random.Range(-1, 1),
                         obj.transform.position.y + Random.Range(0.5f, 2),
-                        obj.transform.position.z + Random.Range(-1, 1)), 
+                        obj.transform.position.z + Random.Range(-1, 1)),
                     2, 1, 0.5f);
             }
+
+            PlayerSignals.Instance.onEnemyRemoveTargetList?.Invoke(_agent.gameObject);
+            _agent.enabled = true;
         }
     }
 }

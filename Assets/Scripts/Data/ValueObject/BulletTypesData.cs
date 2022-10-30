@@ -5,7 +5,8 @@ namespace Data.ValueObject
     [Serializable]
     public class BulletTypesData
     {
-        public int Damage;
-        public int FireRate;
+        public float Damage;
+        public float FireRate;
+        public float BulletSpeed;
     }
 }

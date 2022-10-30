@@ -19,11 +19,8 @@ namespace Controllers.Player
         #region Serialized Variables,
 
         [SerializeField] private PlayerManager playerManager;
-        [SerializeField] private PlayerTargetController targetController;
-
-
         [SerializeField] private new Rigidbody rigidbody;
-        [SerializeField] private bool isReadyToMove, isReadyToPlay, TurretMode, BattleMode, IdleMode, TargetMode;
+        [SerializeField] private bool isReadyToMove, isReadyToPlay;
 
         #endregion
 
@@ -55,20 +52,17 @@ namespace Controllers.Player
         public void DisableMovement()
         {
             isReadyToMove = false;
+            Stop();
         }
 
         public void IsReadyToPlay(bool state) => isReadyToPlay = state;
-
-        public void IsOnTurret() => TurretMode = PlayerSignals.Instance.onGetIsTurretMode.Invoke();
-        public void IsOnIdle() => IdleMode = PlayerSignals.Instance.onGetIsIdleMode.Invoke();
-        public void IsOnBattle() => BattleMode = PlayerSignals.Instance.onGetIsBattleMode.Invoke();
-
 
         private void FixedUpdate()
         {
             if (isReadyToPlay)
             {
-                if (isReadyToMove)
+                if (isReadyToMove && (playerManager.playerTypes == PlayerStateTypes.Idle ||
+                                      playerManager.playerTypes == PlayerStateTypes.Battle))
                 {
                     Move();
                 }
@@ -87,21 +81,13 @@ namespace Controllers.Player
             }
         }
 
-        // private void Update()
-        // {
-        //     BattleMode = playerManager.BattleMode;
-        //     IdleMode = playerManager.IdleMode;
-        //     TurretMode = playerManager.TurretMode;
-        //     TargetMode = playerManager.TargetMode;
-        // }
-
         private void Turret()
         {
-            Debug.Log(_movementDirection.z);
-            if (_movementDirection.z <= -0.3f)
+            if (_movementDirection.z <= -0.8f)
             {
                 PlayerSignals.Instance.onPlayerOutTurret?.Invoke(playerManager.gameObject);
-                playerManager.playerTypes = PlayerStateTypes.Idle;
+                PlayerSignals.Instance.onHealtBarRotationZero?.Invoke();
+                playerManager.ChangeState(PlayerStateTypes.Idle);
             }
         }
 
@@ -112,20 +98,28 @@ namespace Controllers.Player
                 0,
                 _movementDirection.z * _movementData.PlayerJoystickSpeed);
             rigidbody.velocity = movement;
-
-            Vector3 position;
-            position = new Vector3(rigidbody.position.x, (position = rigidbody.position).y, position.z);
-            rigidbody.position = position;
-
-
-            if (_movementDirection != Vector3.zero)
-            {
-                var _newDirect = Quaternion.LookRotation(_movementDirection);
-                rigidbody.transform.GetChild(0)
-                    .rotation = _newDirect;
-            }
+            SetRotation();
         }
 
+        private void SetRotation()
+        {
+            if (playerManager.Target != null)
+            {
+                rigidbody.transform.GetChild(0).LookAt(playerManager.Target.transform);
+            }
+            else
+            {
+                Vector3 position;
+                position = new Vector3(rigidbody.position.x, (position = rigidbody.position).y, position.z);
+                rigidbody.position = position;
+                if (_movementDirection != Vector3.zero)
+                {
+                    var _newDirect = Quaternion.LookRotation(_movementDirection);
+                    rigidbody.transform.GetChild(0)
+                        .rotation = _newDirect;
+                }
+            }
+        }
 
         private void Stop()
         {
@@ -137,11 +131,8 @@ namespace Controllers.Player
         public void MoveReset()
         {
             Stop();
-
             isReadyToPlay = false;
-
             isReadyToMove = false;
-
             gameObject.transform.position = Vector3.zero;
             gameObject.transform.rotation = Quaternion.identity;
         }

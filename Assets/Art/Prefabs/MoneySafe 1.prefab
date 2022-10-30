@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1491340259684328626}
   - component: {fileID: 8278323822855783569}
   - component: {fileID: 8119213910102102066}
+  - component: {fileID: 5240895175738140193}
   m_Layer: 0
   m_Name: Case
   m_TagString: Untagged
@@ -81,6 +82,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5240895175738140193
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2640928931400470772}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.5, z: 0.50000006}
+  m_Center: {x: 0.0000019073486, y: -0.00000002980232, z: 0.24999908}
 --- !u!1 &4850474457396556240
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +107,7 @@ GameObject:
   - component: {fileID: 3969525782233938884}
   m_Layer: 0
   m_Name: MoneySafe 1
-  m_TagString: Untagged
+  m_TagString: MoneySafe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,11 +141,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4850474457396556240}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6310079, y: 1.257277, z: 0.9087906}
-  m_Center: {x: 0.004099965, y: 0.0025581121, z: 0.45048332}
+  m_Size: {x: 1, y: 1, z: 1.65}
+  m_Center: {x: 0, y: 0, z: 0.75}
 --- !u!1 &6888608435037134444
 GameObject:
   m_ObjectHideFlags: 0

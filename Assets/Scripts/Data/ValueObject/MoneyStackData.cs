@@ -7,7 +7,7 @@ namespace Data.ValueObject
     public class MoneyStackData
     {
         public Vector3 MoneyInitPoint;
-        public int MaxMoneyCount;
+        public int PlayerMaxMoneyCount;
         [Range(0, 10)] public int MoneyCountX;
         [Range(0, 25)] public int MoneyCountY;
         [Range(0, 10)] public int MoneyCountZ;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     DepotAmmoData:
-      MaxAmmoCapacity: 20
+      MaxAmmoCapacity: 16
       AmmoInitPoint: {x: -0.3, y: 0, z: -0.3}
       AmmoCountX: 2
       AmmoCountZ: 2
@@ -22,5 +22,3 @@ MonoBehaviour:
       OffsetFactorX: 2
       OffsetFactorY: 2
       OffsetFactorZ: 2
-    FireRate: 1
-    Damage: 2

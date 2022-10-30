@@ -33,6 +33,7 @@ namespace Managers
             CoreGameSignals.Instance.onPlay += OnPlay;
             CoreGameSignals.Instance.onReset += OnReset;
             CoreGameSignals.Instance.onEnterTurret += OnEnterTurret;
+            CoreGameSignals.Instance.onExitTurret += OnExitTurret;
             CoreGameSignals.Instance.onSetCameraTarget += OnSetCameraTarget;
             CoreGameSignals.Instance.onEnterDrone += OnEnterDrone;
         }
@@ -43,9 +44,11 @@ namespace Managers
             CoreGameSignals.Instance.onPlay -= OnPlay;
             CoreGameSignals.Instance.onReset -= OnReset;
             CoreGameSignals.Instance.onEnterTurret -= OnEnterTurret;
+            CoreGameSignals.Instance.onExitTurret -= OnExitTurret;
             CoreGameSignals.Instance.onSetCameraTarget -= OnSetCameraTarget;
             CoreGameSignals.Instance.onEnterDrone -= OnEnterDrone;
         }
+
 
         private void OnDisable()
         {
@@ -54,13 +57,17 @@ namespace Managers
 
         private void OnPlay()
         {
-            cameraMovementController.GameStart();
+            cameraMovementController.EnterIdle();
             CoreGameSignals.Instance.onSetCameraTarget?.Invoke();
         }
 
         private void OnEnterTurret()
         {
             cameraMovementController.EnterTurret();
+        }
+        private void OnExitTurret()
+        {
+            cameraMovementController.EnterIdle();
         }
 
         private void OnEnterDrone()

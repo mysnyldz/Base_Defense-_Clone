@@ -8,6 +8,8 @@ using Enums;
 using JetBrains.Annotations;
 using Keys;
 using Signals;
+using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
@@ -25,6 +27,8 @@ namespace Managers
         #region SerializeField Variables
 
         [SerializeField] private GameObject gemDepot;
+        [SerializeField] private GameObject tent;
+        [SerializeField] private TextMeshPro minerTextCount;
         [SerializeField] private List<GameObject> veins = new List<GameObject>();
         [SerializeField] private List<GameObject> _gemList = new List<GameObject>();
 
@@ -56,14 +60,17 @@ namespace Managers
             IdleSignals.Instance.onGetMineDepotTarget += OnGetMineDepotTarget;
             IdleSignals.Instance.onDepotAddGem += OnDepotAddGem;
             IdleSignals.Instance.onPlayerEnterGemDepot += OnPlayerEnterDepot;
+            IdleSignals.Instance.onMineZoneAddMiner += OnMineZoneAddMiner;
         }
+
 
         private void UnsubscribeEvents()
         {
             IdleSignals.Instance.onGetMineGemVeinTarget -= OnGetMineGemVeinTarget;
             IdleSignals.Instance.onGetMineDepotTarget -= OnGetMineDepotTarget;
             IdleSignals.Instance.onDepotAddGem -= OnDepotAddGem;
-            IdleSignals.Instance.onPlayerEnterGemDepot += OnPlayerEnterDepot;
+            IdleSignals.Instance.onPlayerEnterGemDepot -= OnPlayerEnterDepot;
+            IdleSignals.Instance.onMineZoneAddMiner -= OnMineZoneAddMiner;
         }
 
         private void OnDisable()
@@ -84,6 +91,7 @@ namespace Managers
         {
             _veinsListCache = new List<int>(new int[veins.Count]);
             _gemDistance = _zoneData.GemCountX * _zoneData.GemCountZ;
+            SpawnMiner();
         }
 
         private GameObject OnGetMineGemVeinTarget()
@@ -101,6 +109,33 @@ namespace Managers
             }
 
             return veins[_rand];
+        }
+
+        private void SetText()
+        {
+            minerTextCount.text = (_zoneData.CurrentMinerAmount+"/"+_zoneData.MaxMinerCapacity);
+        }
+
+        private void OnMineZoneAddMiner()
+        {
+            if (_zoneData.CurrentMinerAmount < _zoneData.MaxMinerCapacity)
+            {
+                _zoneData.CurrentMinerAmount++;
+                PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Miner.ToString(), tent.transform);
+                SetText();
+            }
+        }
+
+        private void SpawnMiner()
+        {
+            if (_zoneData.CurrentMinerAmount != 0)
+            {
+                for (int i = 0; i < _zoneData.CurrentMinerAmount; i++)
+                {
+                    PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Miner.ToString(), tent.transform);
+                    SetText();
+                }
+            }
         }
 
         private GameObject OnGetMineDepotTarget()
@@ -129,21 +164,24 @@ namespace Managers
             gem.transform.DOLocalRotate(new Vector3(-90, 0, 0), 1).SetEase(Ease.OutQuad);
             gem.transform.DOLocalMove(new Vector3(_direct.x, _direct.y, _direct.z), 0.5f);
         }
+
         private void OnPlayerEnterDepot(GameObject obj)
         {
             PlayerEnterDepot(obj.transform);
         }
+
         public void PlayerEnterDepot(Transform other)
         {
             int limit = _gemList.Count;
             for (int i = 0; i < limit; i++)
             {
                 var obj = _gemList[0];
-                
-                obj.transform.DOLocalMove(new Vector3(Random.Range(-2f, 2f), 0.75f, Random.Range(-2f, 2f)), 1f).SetEase(Ease.OutBack);
+
+                obj.transform.DOLocalMove(new Vector3(Random.Range(-1.5f, 1.5f), 0.75f, Random.Range(-1.5f, 1.5f)), 1f)
+                    .SetEase(Ease.OutBack);
                 obj.transform.SetParent(other);
                 obj.transform.DOLocalRotate(Vector3.zero, 0.1f);
-                obj.transform.DOLocalMove(new Vector3(0,0.75f,0), 0.5f).SetDelay(1f).OnComplete(() =>
+                obj.transform.DOLocalMove(new Vector3(0, 0.75f, 0), 0.5f).SetDelay(1f).OnComplete(() =>
                 {
                     PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Gem.ToString(), obj);
                 });

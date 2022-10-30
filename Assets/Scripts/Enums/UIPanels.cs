@@ -3,6 +3,7 @@
     public enum UIPanels
     {
         StartPanel,
-        PlayPanel
+        PlayPanel,
+        TryPanel
     }
 }

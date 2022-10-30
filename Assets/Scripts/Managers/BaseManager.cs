@@ -69,7 +69,6 @@ namespace Managers
                     Save();
                 }
             }
-
             Load();
            // BaseData = GetBaseData();
         }
@@ -97,6 +96,7 @@ namespace Managers
             CoreGameSignals.Instance.onApplicationPause += OnSave;
             BaseSignals.Instance.onGetBaseCount += OnGetBaseCount;
         }
+
 
         private void UnsubscribeEvents()
         {

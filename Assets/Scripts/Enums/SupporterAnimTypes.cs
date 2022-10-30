@@ -3,6 +3,8 @@
     public enum SupporterAnimTypes
     {
         Walk,
-        Idle
+        Idle,
+        Safe,
+        Gather
     }
 }

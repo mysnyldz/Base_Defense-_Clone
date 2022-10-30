@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Data.UnityObject;
 using Data.ValueObject;
 using Enums;
@@ -51,16 +52,23 @@ namespace Controllers
         {
             if (other.CompareTag("Enemy"))
             {
-                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Bullet.ToString(), gameObject);
-                other.GetComponent<EnemyManager>().TakeDamage(_data.Damage);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.TurretBullet.ToString(), gameObject);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.PistolBullet.ToString(), gameObject);
+                EnemySignals.Instance.onTakeDamage?.Invoke((int)_data.Damage,other.gameObject);
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private async void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("TurretRange"))
             {
-                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.Bullet.ToString(), gameObject);
+                await Task.Delay(600);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.TurretBullet.ToString(), gameObject);
+            }
+            if (other.CompareTag("PlayerSphere"))
+            {
+                await Task.Delay(600);
+                PoolSignals.Instance.onReleasePoolObject?.Invoke(PoolType.PistolBullet.ToString(), gameObject);
             }
         }
         

@@ -79,7 +79,7 @@ public class InputManager : MonoBehaviour
             InputSignals.Instance.onInputReleased?.Invoke();
         }
 
-        if (Input.GetMouseButtonDown(0)  && Input.mousePosition.y <= 960 )
+        if (Input.GetMouseButtonDown(0) && Input.mousePosition.y <= 960)
         {
             _isTouching = true;
             InputSignals.Instance.onInputTaken?.Invoke();
@@ -88,23 +88,22 @@ public class InputManager : MonoBehaviour
                 isFirstTimeTouchTaken = true;
                 InputSignals.Instance.onFirstTimeTouchTaken?.Invoke();
             }
-
             MousePosition = Input.mousePosition;
         }
 
-       if (Input.GetMouseButton(0))
-       {
-           _isTouching = true;
+        if (Input.GetMouseButton(0))
+        {
+            _isTouching = true;
 
-           if (_isTouching)
-           {
-               _joystickPos = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
-               InputSignals.Instance.onInputDragged?.Invoke(new InputParams()
-               {
-                   InputValues = _joystickPos
-               });
-           }
-       }
+            if (_isTouching)
+            {
+                _joystickPos = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
+                InputSignals.Instance.onInputDragged?.Invoke(new InputParams()
+                {
+                    InputValues = _joystickPos
+                });
+            }
+        }
     }
 
     private void OnPlay() => isReadyForTouch = true;

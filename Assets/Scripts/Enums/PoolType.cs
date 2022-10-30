@@ -8,7 +8,11 @@
         EnemyNormal,
         EnemySpeed,
         EnemyTank,
-        Bullet
-        //Miner,
+        TurretBullet,
+        PistolBullet,
+        MoneySupporter,
+        Hostage,
+        Miner
+        //AmmoSupporter
     }
 }

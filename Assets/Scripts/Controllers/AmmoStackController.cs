@@ -62,7 +62,12 @@ namespace Controllers
             }
         }
 
-        public GameObject DecreaseStack()
+        public void DecreaseStack()
+        {
+            _maxAmmoCount--;
+        }
+
+        public GameObject SendAmmoWareHouse()
         {
             if (StackList.Count > 0)
             {

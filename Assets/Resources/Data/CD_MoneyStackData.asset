@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     MoneyInitPoint: {x: 0, y: 0, z: 0}
-    MaxMoneyCount: 30
+    PlayerMaxMoneyCount: 20
     MoneyCountX: 0
     MoneyCountY: 15
     MoneyCountZ: 4
     OffsetFactorX: 1
     OffsetFactorY: 0.12
     OffsetFactorZ: 0.2
+    SupporterMaxMoneyCount: 6

@@ -8,11 +8,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GemDepot
-  m_Shader: {fileID: 4800000, guid: f67804e22f42e8441879353a5604515d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 733fefdcde0d35f4b822d2935d5a22f4, type: 3}
   m_ShaderKeywords: _FRESNELHIGHLIGHTS_ON _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_DETAIL_BLEND_MIX
     _MK_ENVIRONMENT_REFLECTIONS_AMBIENT _MK_FRESNEL_HIGHLIGHTS _MK_INDEX_OF_REFRACTION
-    _MK_LIGHT_CEL _MK_RECEIVE_SHADOWS _MK_SOFT_FADE _MK_SURFACE_TYPE_TRANSPARENT
-    _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON _SOFTFADE_ON _WRAPPEDLIGHTING_ON
+    _MK_RECEIVE_SHADOWS _MK_SOFT_FADE _MK_SURFACE_TYPE_TRANSPARENT _MK_WRAPPED_DIFFUSE
+    _RECEIVESHADOWS_ON _SOFTFADE_ON _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -240,7 +240,7 @@ Material:
     - _IridescenceSize: 0.57
     - _IridescenceSmoothness: 0.5
     - _IridescenceThresholdOffset: 0
-    - _Light: 1
+    - _Light: 0
     - _LightBands: 4
     - _LightBandsScale: 0.5
     - _LightThreshold: 0
@@ -269,7 +269,7 @@ Material:
     - _RefractionDistortionFade: 0
     - _RefractionDistortionMapScale: 1
     - _RefractionTab: 0
-    - _RenderFace: 0
+    - _RenderFace: 2
     - _RenderPriority: 0
     - _Rim: 0
     - _RimSize: 1.17
@@ -309,7 +309,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:
-    - _AlbedoColor: {r: 0, g: 0.5676284, b: 1, a: 0.84313726}
+    - _AlbedoColor: {r: 0, g: 0.7461715, b: 1, a: 0.84313726}
     - _BaseColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}

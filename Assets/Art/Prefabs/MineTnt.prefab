@@ -213,6 +213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5864052835595176929}
   - component: {fileID: 8091494395052495792}
+  - component: {fileID: 3063932679501022249}
   m_Layer: 0
   m_Name: Collider
   m_TagString: MineTargetSphere
@@ -229,7 +230,7 @@ Transform:
   m_GameObject: {fileID: 1371428290896316593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 7}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 5515915327153959722}
   m_RootOrder: 0
@@ -247,6 +248,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3063932679501022249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371428290896316593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b100b61b204a12ad72e45b11d3676b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider: {fileID: 8091494395052495792}
+  manager: {fileID: 2633344953358052926}
 --- !u!1 &2593345126409692496
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,7 +528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyList: []
   minePrice: 10
-  mineCollider: {fileID: 8091494395052495792}
+  mineBuyCollider: {fileID: 4682475765800526178}
+  explosionController: {fileID: 3063932679501022249}
   textMesh: {fileID: 5116150251135440580}
   buyTextMesh: {fileID: 1024703007978185160}
   buyZone: {fileID: 895911020224697616}
@@ -529,7 +545,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.27821535, y: 0.08528357, z: 0.2739887}
+  m_Size: {x: 0.27, y: 0.1, z: 0.27}
   m_Center: {x: 0, y: 0.042641785, z: 0}
 --- !u!54 &2130124199927159144
 Rigidbody:

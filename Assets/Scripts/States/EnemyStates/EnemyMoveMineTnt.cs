@@ -52,6 +52,11 @@ namespace States.EnemyStates
 
         public override void OnTriggerExit(Collider other)
         {
+            if (other.CompareTag("MineTargetSphere"))
+            {
+                _manager.MineTnt = null;
+                _manager.SwitchState(EnemyStatesTypes.MoveBase);
+            }
         }
     }
 }

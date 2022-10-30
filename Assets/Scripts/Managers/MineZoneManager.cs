@@ -8,6 +8,8 @@ using Enums;
 using JetBrains.Annotations;
 using Keys;
 using Signals;
+using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
@@ -26,6 +28,7 @@ namespace Managers
 
         [SerializeField] private GameObject gemDepot;
         [SerializeField] private GameObject tent;
+        [SerializeField] private TextMeshPro minerTextCount;
         [SerializeField] private List<GameObject> veins = new List<GameObject>();
         [SerializeField] private List<GameObject> _gemList = new List<GameObject>();
 
@@ -108,12 +111,18 @@ namespace Managers
             return veins[_rand];
         }
 
+        private void SetText()
+        {
+            minerTextCount.text = (_zoneData.CurrentMinerAmount+"/"+_zoneData.MaxMinerCapacity);
+        }
+
         private void OnMineZoneAddMiner()
         {
             if (_zoneData.CurrentMinerAmount < _zoneData.MaxMinerCapacity)
             {
                 _zoneData.CurrentMinerAmount++;
                 PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Miner.ToString(), tent.transform);
+                SetText();
             }
         }
 
@@ -124,6 +133,7 @@ namespace Managers
                 for (int i = 0; i < _zoneData.CurrentMinerAmount; i++)
                 {
                     PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Miner.ToString(), tent.transform);
+                    SetText();
                 }
             }
         }
